@@ -21,43 +21,42 @@ prints out 107. Equally
 
 prints out "hello world" (note we had to add an extra space after "hello").
 
-Typing and working with variables one-by-one like this is easy, but would be very time-consuming and prone to error if we had to type in all of this
-data line by line. If you want to put large amounts of data into a program, then one of the best ways of doing this is to read it from a file.
+Typing and working with variables one-by-one like this is easy, but would be very time-consuming and prone to error if we had to type in all of this data line by line. If you want to put large amounts of data into a program, then one of the best ways of doing this is to read it from a file.
 
 ## File reading
 
 Python is great at processing text and reading and writing files. Lets type in the following;
 
     $ ipython
-    FILE = open(“README.md”, “r”)
-    lines = FILE.readlines()
-    i = 0
-    for line in lines:
-        i = i + 1
-        print “%4d: %s” % (i, line),
+    $ FILE = open(“textfile”, “r”)
+    $ lines = FILE.readlines()
+    $ i = 0
+    $ for line in lines:
+    $     i = i + 1
+    $     print “%4d: %s” % (i, line),
 
 What you should see is that Python has printed out every line of the file, with each line preceeded by its line number. 
 
-    1: # Software Carpentry at Exeter 2013
-    2: 
-    3: ![Software Carpentry logo](http://software-carpentry.org/img/software-carpentry-banner.png "Software Carpentry logo")
-    4: 
-    5: Thursday 14-Friday 15 November 2013.
+    1: To be, or not to be, that is the question:
+    2: Whether 'tis Nobler in the mind to suffer
+    3: The Slings and Arrows of outrageous Fortune,
+    4: Or to take Arms against a Sea of troubles,
+    5: And by opposing end them: to die, to sleep
 
 Lets go through each line to see how Python has achieved this feat.
 
 The first step was to open the file. You open files using the “open” command, e.g.
 
-    FILE = open(“README.md”, “r”)
+    FILE = open(“textfile”, “r”)
 
-opens the file called “README.md”. The “r” tells Python to open the file for “reading”. We will use “w” later on to open 
+opens the file called “textfile”. The “r” tells Python to open the file for “reading”. We will use “w” later on to open 
 files for “writing”.
 
 The file is opened and a file handle object is returned, which we have assigned to the variable “FILE”. This
 handle provides the means to interact with the file. We could have called it anything we want, e.g. 
 
-    TURTLE = open(“README.md”, “r”)
-    PUSSYCAT = open(“README.md”, “r”)
+    TURTLE = open(“textfile”, “r”)
+    PUSSYCAT = open(“textfile”, “r”)
 
 would open the file and return handles called “TURTLE” and “PUSSYCAT”. Note that, by convention, we tend
 to use capital letters to name file handles, and, normally, you should use reasonable names (TURTLE is perhaps
@@ -102,396 +101,338 @@ are “readline” and “readlines”. Scroll down to take a look at the docume
 
 As you can see, “readline” reads and returns a single line from the file, e.g.
 
-     line = FILE.readline()
-     print line
+     $ FILE = open(“textfile”, “r”)
+     $ line = FILE.readline()
+     $ print line
 
-     # Software Carpentry at Exeter 2013
+     To be, or not to be, that is the question:
 
 We can read each line, one by one, using “readline”, e.g.
 
-     line = FILE.readline()
-     print line
-     
-     
-     line = FILE.readline()
-     ![Software Carpentry logo](http://software-carpentry.org/img/software-carpentry-banner.png "Software Carpentry logo")
+     $ line = FILE.readline()
+     $ print line
+
+     Whether 'tis Nobler in the mind to suffer
+
+     $ line = FILE.readline()
+     $ print line
+
+     The Slings and Arrows of outrageous Fortune,
 
 We can also read lines using a loop, e.g. read the next 5 lines
 
-     for i in range(0,5):
-         line = FILE.readline()
-         print line
+     $ for i in range(0,5):
+     $     line = FILE.readline()
+     $     print line,
 
-    Thursday 14-Friday 15 November 2013.
-    
-    
-    
-    ## Timetable
-    
-    
-    
-    Thursday 14th
-    
+     Or to take Arms against a Sea of troubles,
+     And by opposing end them: to die, to sleep
+     No more; and by a sleep, to say we end
+     The Heart-ache, and the thousand Natural shocks
+     That Flesh is heir to? 'Tis a consummation    
 
+Note that I put a comma at the end of the “print line,”. This comma tells Python not to automatically add
+a newline character at the end of the print. Without the comma, each print would have a newline from the line read from the 
+file, plus a second newline that would be added automatically by Python.
 
-## Lists
+The “readlines” function reads all remaining lines in the file into a list.
 
-Lists, which are also called arrays or vectors, provide a simple list of variables. In python, we create lists using square brackets
+    $ lines = FILE.readlines()
+    $ print lines[0]
 
-    $ a = [ "cat", "dog", "horse", "fish" ]
+    Devoutly to be wished. To die, to sleep,
 
-This has created a list containing four strings, "cat", "dog", "horse" and "fish". To access each item we also use square brackets
+    $ print lines[1]
 
-    $ a[0]
-    'cat'
+    To sleep, perchance to Dream; Aye, there's the rub,
 
-prints "cat", as it accesses the first item in the list.
+    $ print lines[-1]
 
-    $ a[1]
-    'dog'
+    Be all my sins remembered.
 
-prints "dog", as it accesses the second item in the list. As you can probably guess, a[3] will print "fish" as it accesses the fourth item
+    $ print len(lines)
 
-    $ a[3]
-    'fish'
+    27
 
-In python, you can also work from the back of the list, e.g.
+So, going back to our original example…
 
-    $ a[-1]
-    'fish'
+    $ FILE = open(“textfile”, “r”)
+    $ lines = FILE.readlines()
+    $ i = 0
+    $ for line in lines:
+    $     i = i + 1
+    $     print “%4d: %s” % (i, line),
 
-prints the last item,
-
-    $ a[-2]
-    'horse'
-
-prints the second to last item etc. If you access an item that doesn't exist, then you get an error.
-
-    $ a[4]
-
-gives an "index out of range" error.
-
-To get the number of items in the list, we have to use "len"
-
-    $ len(a)
-    4
-
-This prints "4", as we have four things in the list.
-
-We can also change the value of an item by setting it equal to a new value
-
-    $ a[0] = 20
-    $ a
-    [20, 2, 3, 4]
-
-### Functions of a List
-
-A list comes with lots of useful abilities. You can see the list of abilities in ipython by pressing tab
-
-    $ a.[TAB]
-    a.append   a.count    a.extend   a.index    a.insert   a.pop      a.remove   a.reverse  a.sort
-
-The abilities are provided by functions, for example "append". We can see what the function does by using python's help
-
-    $ help(a.append)
-    
-    Help on built-in function append:
-
-    append(...)
-        L.append(object) -- append object to end
-
-So append is used to add items onto the end of the list. For example
-
-    $ a.append("gerbil")
-    $ a
-    ['cat', 'dog', 'horse', 'fish', 'gerbil']
-
-has added the string "gerbil" onto the end of the list. There are other functions, e.g.
-
-    $ a.remove("dog")
-    $ a
-    ['cat', 'horse', 'fish', 'gerbil']
-
-has removed the string "dog".
-
-### Looping over a list
-
-You can iterate over all items in a list using a loop, for example
-
-    $ for i in range(0, len(a)):
-    $     print( a[i] )
-    
-    cat
-    horse
-    fish
-    gerbil
-
-This can be useful, for example, for adding together two sets of numbers;
-
-    $ x = [ 1, 2, 3, 4 ]
-    $ y = [ 5, 6, 7, 8 ]
-    $ z = []
-    $ for i in range(0, len(x)):
-    $     z.append( x[i] + y[i] )
-    $
-    $ z
-    
-    [6, 8, 10, 12]
-
-### Nesting lists
-
-Lists can contain a mixture of any type of data. For example, you can mix numbers and strings
-
-    $ a = [ "cat", 15, 6.5 ]
-    $ a
-    ['cat', 15, 6.5]
-
-Lists can also contain other lists, for example,
-
-    $ matrix = [ [1,2,3,4], [5,6,7,8], [9,10,11,12] ]
-    $ matrix
-    [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
-
-This is called "nesting" one list inside another. Accessing the sub-list, or items within it is easy.
-
-    $ matrix[1]
-    [5, 6, 7, 8]
-    $ matrix[1][2]
-    7
-
-You can nest lists as deeply as you want, creating a multidimensional matrix.
-
-    $ matrix = [ [ [ [ [ 5 ] ] ] ] ]
-    $ matrix[0][0][0][0][0]
-    5
-
-## Dictionaries
-
-Lists let you store lots of variables, and to access them by their location in the list. However, there are lots of times when you want to store lots of variables, but access them using more complex relationships. One example is a dictionary, which lets you store variables and access them using a key. 
-
-Dictionaries in python are represented using curly brakets
-
-    $ a = { "cat" : "mieow", "dog" : "woof", "horse" : "neigh" }
-
-Here I am storing four key-value pairs. I am storing the value "mieow", and saying that this is accessed using the key "cat". 
-
-    $ a["cat"]
-    'mieow'
-
-Similarly, I have stored the value "woof", and have said that this is accessed using the key "dog"
-
-    $ a["dog"]
-    'woof'
-
-Like lists, dictionaries also come with a lot of useful functions, which we can show using the TAB key in ipython
-
-    $ a.[TAB]
-    a.clear       a.get         a.iteritems   a.keys        a.setdefault  a.viewitems   
-    a.copy        a.has_key     a.iterkeys    a.pop         a.update      a.viewkeys    
-    a.fromkeys    a.items       a.itervalues  a.popitem     a.values      a.viewvalues  
-
-and that we can get help with using help()
-
-    $ help(a.keys)
-    Help on built-in function keys:
-
-    keys(...)
-        D.keys() -> list of D's keys
-
-The keys() function thus returns a list of all of the keys
-
-    $ a.keys()
-    ['horse', 'dog', 'cat']
-
-while the values() function returns the list of all of the values
-
-    $ a.values()
-    ['neigh', 'woof', 'mieow']
-
-We can change items in the dictionary by setting them equal to a new value
-
-    $ a["dog"] = "bark"
-    $ a
-    {'cat': 'mieow', 'dog': 'bark', 'horse': 'neigh'}
-
-We can also use this to add new items to the dictionary
-
-    $ a["fish"] = "bubble"
-    $ a
-    {'cat': 'mieow', 'dog': 'bark', 'fish': 'bubble', 'horse': 'neigh'}
-
-### Looping over a dictionary
-
-As the keys() function returns the list of all keys in a dictionary, the best way to loop over all items in a dictionary is to loop over the list of keys
-
-    $ keys = a.keys()
-    $ for i in range(0,len(keys)):
-    $     print("%s == %s" % (keys[i], a[keys[i]]))
-    
-    horse == neigh
-    dog == bark
-    fish == bubble
-    cat == mieow
-
-You could print them out in alphabetical order by using the sort() function of a list to sort the keys before looping
-
-    $ keys.[TAB]
-    keys.append   keys.extend   keys.insert   keys.remove   keys.sort     
-    keys.count    keys.index    keys.pop      keys.reverse  
-
-    $ keys.sort()
-    $ keys
-    ['cat', 'dog', 'fish', 'horse']
-
-    $ for i in range(0,len(keys)):
-    $     print("%s == %s" % (keys[i], a[keys[i]]))
-
-    cat == mieow
-    dog == bark
-    fish == bubble
-    horse == neigh
-
-### Nesting dictionaries
-
-Like lists, dictionaries can contain any type of data, and you can also nest dictionaries and lists inside each other.
-
-    $ a = { "cat" : 5, "dog" : ["walk", "feed", "sleep"], "fish" : {"type" : "goldfish"} }
-    $ a["cat"]
-    5
-    $ a["dog"]
-    ['walk', 'feed', 'sleep']
-    $ a["dog"][1]
-    'feed'
-    $ a["fish"]["type"]
-    'goldfish'
-
-You can also create the above dictionary item-by-item
-
-    $ a = {}
-    $ a["cat"] = 5
-    $ a["dog"] = [ "walk", "feed", "sleep" ]
-    $ a["fish"] = { "type" : "goldfish" }
-    $ a
-    {'cat': 5, 'dog': ['walk', 'feed', 'sleep'], 'fish': {'type': 'goldfish'}}
-
-
-## Strings as lists
-
-Finally, we will finish this session by noting that strings are actually lists. A string is a list container of letters.
-
-    $ a = "hello world"
-    $ len(a)
-    11
-    $ a[0]
-    'h'
-    $ a[-1]
-    'd'
-
-We can loop over all letters in a string using
-
-    $ for i in range(0,len(a)):
-    $     print(a[i])
-    h 
-    e
-    l
-    l
-    o
-     
-    w
-    o
-    r
-    l
-    d
-
-Python provides a nice shorthand for looping over every item in a list
-
-    $ for letter in a:
-    $    print letter
-
-will print the same output.
-
-You can also create a string from a list of letters. For this, you need to import and use the "string" module from python
-
-    $ import string
-    $ a = ['h', 'e', 'l', 'l', 'o']
-    $ a
-    ['h', 'e', 'l', 'l', 'o']
-
-    $ s = string.join(a)
-    $ s
-    'h e l l o'
-
-Note that string.join has added a space between each letter. Using help() we can see how to remove this space
-
-    $ help(string.join)
-    Help on function join in module string:
-    
-    join(words, sep=' ')
-        join(list [,sep]) -> string
-    
-        Return a string composed of the words in list, with
-        intervening occurrences of sep.  The default separator is a
-        single space.
-    
-        (joinfields and join are synonymous)
-
-    $ s = string.join(a, "")
-    $ s
-    'hello'
+you can see that we opened the file for reading, read all of the lines using “readlines”, and then 
+stepped through each line, one by one in a loop, counting up the number of each line, and printing
+it out together with the line number.
 
 ## Exercise
 
-You should have the files for the exercises as they were downloaded when you cloned the repository. They are located in the "Python" directory.
-
 ### Exercise 1a
 
-Here is a script, [1a/encode.py](1a/encode.py) which contains a dictionary for converting the alphabet to Morse code, and a string that must be converted (quite quickly!).
+Using what you have learned so far, write a Python program that opens “textfile”, and prints out every even line. You can test if a 
+number is even using the “%” operator, e.g.
 
-    letter_to_morse = {'a':'.-', 'b':'-...', 'c':'-.-.', 'd':'-..', 'e':'.', 'f':'..-.',
-                       'g':'--.', 'h':'....', 'i':'..', 'j':'.---', 'k':'-.-', 'l':'.-..', 'm':'--',
-                       'n':'-.', 'o':'---', 'p':'.--.', 'q':'--.-', 'r':'.-.', 's':'...', 't':'-',
-                       'u':'..-', 'v':'...-', 'w':'.--', 'x':'-..-', 'y':'-.--', 'z':'--..',
-                       '0':'-----', '1':'.----', '2':'..---', '3':'...--', '4':'....-',
-                       '5':'.....', '6':'-....', '7':'--...', '8':'---..', '9':'----.',
-                       ' ':'/' }
+    $ if i % 2 == 0:
+    $     print “%d is even” % i
+    $ else:
+    $     print “%d is odd” % i
 
-    message = "SOS We have hit an iceberg and need help quickly"
+This is the remainder operator, and it returns the remainder from dividing the integer (whole number) on the left by the integer
+on the right.
 
-You should find a copy of this script in your directory (in [1a/encode.py](1a/encode.py)).
+If you get stuck, you can look at an example program [here](python_files/even_lines.py)
 
-Use what you have learned about lists and dictionaries to loop through each letter in the message, look-up the corresponding Morse code for that letter, and join the result together to create a string that contains the Morse code that will be transmitted to save the ship. Note that the dictionary contains only lowercase letters, so you will need to use "TAB" and help() to find a function to convert uppercase letters to lowercase.
+### Exercise 1b
 
-If you are really stuck, then there is an example completed script available to read in [1a/example/encode.py](1a/example/encode.py).
+Now write a Python program that opens “textfile” and prints the file in reverse, e.g. the last line is printed first, and the first
+line is printed last.
 
-### Exercise 1b
+If you get stuck, you can look at an example program [here](python_files/reverse_file.py)
 
-You have just received the Morse code message in the script [1b/decode.py](1b/decode.py). You need to decode this message back to English.
+## Line Reading
 
-    letter_to_morse = {'a':'.-', 'b':'-...', 'c':'-.-.', 'd':'-..', 'e':'.', 'f':'..-.', 
-                       'g':'--.', 'h':'....', 'i':'..', 'j':'.---', 'k':'-.-', 'l':'.-..', 'm':'--', 
-                       'n':'-.', 'o':'---', 'p':'.--.', 'q':'--.-', 'r':'.-.', 's':'...', 't':'-',
-                       'u':'..-', 'v':'...-', 'w':'.--', 'x':'-..-', 'y':'-.--', 'z':'--..',
-                       '0':'-----', '1':'.----', '2':'..---', '3':'...--', '4':'....-',
-                       '5':'.....', '6':'-....', '7':'--...', '8':'---..', '9':'----.',
-                       ' ':'/' }
+Ok, so now we can read lines from a file. How about extracting data from each line? This is done easily in Python using
+the string functions, which are included in all strings (line is a string).
 
-    message = "... --- ... / .-- . / .... .- ...- . / .... .. - / .- -. / .. -.-. . -... . .-. --. / .- -. -.. / -. . . -.. / .... . .-.. .--. / --.- ..- .. -.-. -.- .-.. -.--"
+    $ ipython
+    $ FILE = open(“textfile”, “r”)
+    $ line = FILE.readline()
+    $ print line
 
-You should find a copy of this script in your directory (in [1b/decode.py](1b/decode.py)).
+    To be, or not to be, that is the question:
 
-Use what you have learned about lists and dictionaries to loop through Morse letters in the Morse code message, and convert them back to English. Note that "letter_to_morse" is a dictionary that goes from letters to Morse code. You will need to first invert this dictionary to let you look up the letter from the Morse code (if you need help, look at [1b/example/invert.py](1b/example/invert.py)). Morse code letters are separated by spaces. Use ipython TAB and help() to find a function that will split the message into letters.
+    $ line.[TAB]
+    line.capitalize line.expandtabs line.isdigit    line.ljust      line.rindex     line.splitlines line.upper     
+    line.center     line.find       line.islower    line.lower      line.rjust      line.startswith line.zfill     
+    line.count      line.format     line.isspace    line.lstrip     line.rpartition line.strip     
+    line.decode     line.index      line.istitle    line.partition  line.rsplit     line.swapcase  
+    line.encode     line.isalnum    line.isupper    line.replace    line.rstrip     line.title     
+    line.endswith   line.isalpha    line.join       line.rfind      line.split      line.translate 
 
-If you are really stuck, then there is an example completed script available to read in [1b/example/decode.py](1b/example/decode.py).
+You can see that there are a large number of functions. You can explore what they do using Python “help”. The function
+we are going to look at now is “split”.
 
-### Extension
+    $ help(line.split)
+    
+    Help on built-in function split:
+    
+    split(...)
+        S.split([sep [,maxsplit]]) -> list of strings
+        
+        Return a list of the words in the string S, using sep as the
+        delimiter string.  If maxsplit is given, at most maxsplit
+        splits are done. If sep is not specified or is None, any
+        whitespace string is a separator and empty strings are removed
+        from the result.
 
-If you have time, combine your completed "encode.py" and "decode.py" scripts into a single script that converts a message from English to Morse code, and then converts it back again into English.
+As you can see, “split” breaks up a string into a set of words based on a separating character. If no character
+is provided, then a “space” is used.
 
-## Version Control
+    $ words = line.split()
+    $ print words
+    
+    ['To', 'be,', 'or', 'not', 'to', 'be,', 'that', 'is', 'the', 'question:']
 
-When you have finished, commit all of your changes to your Git repository.
+    $ print words[0]
+    To
 
-    $ git commit -am "...commit message..."
-    $ git push
+    $ print words[-1]
+    question:
 
-# [Up](python_and_good_programming_practice.md) [Next](2_functions_and_modules.md)
+You can access individual letters by remembering that a string is just an array of letters. For example, 
+the first letter of the line is given by
+
+    $ print line[0]
+    T
+
+Similarly the last letter is given by
+
+    $ print line[-1]
+
+
+(note that the last letter is the newline “\n” character).
+
+The second to last letter is given by
+
+    $ print line[-2]
+    :
+
+How do you print the first letter for the third word? Easy
+
+    $ print words[2][0]
+    o
+
+You can also print out substrings using the range (:) operator, e.g.
+
+    $ print line[10:13]
+    not
+
+prints out letters (columns) 10-13 of the line.
+
+## Exercise
+
+### Exercise 1c
+
+Write a Python program that prints out the last word of every line in “textfile”.
+
+If you get stuck, an example program is [here](python_files/last_word.py)
+
+### Exercise 1d
+
+Write a Python program that prints out the last letter of the first word of every line in “textfile”, 
+where all of the letters are printed on the same line (e.g. put a comma at the end of the print statement).
+
+If you get stuck, an example program is [here](python_files/get_letters.py)
+
+## Searching in files
+
+You can use the Python string functions to search for text as well.
+
+    $ ipython
+    $ FILE = open(“textfile”, “r”)
+    $ line = FILE.readline()
+    $ line.[TAB]
+    line.capitalize line.expandtabs line.isdigit    line.ljust      line.rindex     line.splitlines line.upper     
+    line.center     line.find       line.islower    line.lower      line.rjust      line.startswith line.zfill     
+    line.count      line.format     line.isspace    line.lstrip     line.rpartition line.strip     
+    line.decode     line.index      line.istitle    line.partition  line.rsplit     line.swapcase  
+    line.encode     line.isalnum    line.isupper    line.replace    line.rstrip     line.title     
+    line.endswith   line.isalpha    line.join       line.rfind      line.split      line.translate 
+
+    $ help(line.find)
+    Help on built-in function find:
+    
+    find(...)
+        S.find(sub [,start [,end]]) -> int
+    
+        Return the lowest index in S where substring sub is found,
+        such that sub is contained within S[start:end].  Optional
+        arguments start and end are interpreted as in slice notation.
+    
+        Return -1 on failure.
+
+As you can see, “find” will return the index of the first occurance of the searched-for string in the line,
+or “-1” if it cannot be found. For example,
+
+    $ line.find(“To”)
+    0
+
+    $ line.find(“be”)
+    3
+
+    $ line.find(“bodkin”)
+    -1
+
+You can print all lines that contain a particular string by looping over the lines and using “line.find”
+to search for what you want, e.g.
+
+    $ FILE = open(“textfile”, “r”)
+    $ lines = FILE.readlines()
+    $ for line in lines:
+    $     if line.find(“dream”) != -1:
+    $         print line,
+
+    For in that sleep of death, what dreams may come,
+
+Note that “find” is case-sensitive. You can use the “lower” function to lowercase the line before
+searching to perform a case-insensitive search, e.g.
+
+    $ FILE = open(“textfile”, “r”)
+    $ lines = FILE.readlines()
+    $ for line in lines:
+    $     if line.lower().find(“dream”) != -1:
+    $         print line,
+
+    To sleep, perchance to Dream; Aye, there's the rub,
+    For in that sleep of death, what dreams may come,
+
+## Exercise
+
+### Exercise 1d
+
+Write a Python program that finds and prints all lines from “textfile” that contain the word “sleep”. 
+Print each line together with the line number, and also print out the total number of lines in the file
+that contain the word “sleep”.
+
+If you get stuck, an example program is [here](python_files/search.py)
+
+## Writing Files
+
+We will finish up file handling in Python by seeing how to write to files. Before, we used “open” with “r” to
+open files for reading. To open a file for writing, using “open” with “w”, e.g.
+
+    $ ipython
+    $ FILE = open(“newfile”, “w”)
+
+This has created a new file called “newfile” and has connected it to the filehandle “FILE” in “write” mode.
+To write to the file, we can use the “write” function
+
+    $ FILE.[TAB]
+    FILE.close      FILE.fileno     FILE.name       FILE.readinto   FILE.softspace  FILE.writelines
+    FILE.closed     FILE.flush      FILE.newlines   FILE.readline   FILE.tell       FILE.xreadlines
+    FILE.encoding   FILE.isatty     FILE.next       FILE.readlines  FILE.truncate  
+    FILE.errors     FILE.mode       FILE.read       FILE.seek       FILE.write   
+
+    $ help(FILE.write)
+    Help on built-in function write:
+    
+    write(...)
+        write(str) -> None.  Write string str to file.
+    
+        Note that due to buffering, flush() or close() may be needed before
+        the file on disk reflects the data written.
+
+    $ FILE.write(“Hello world\n”)
+    $ FILE.close()
+
+Note that we have to add newline “\n” characters ourselves to the string, and also that we need to 
+call “FILE.close()” once we have finished writing to make sure that the file is fully written to disk
+(it can sometimes only be written into a temporary memory buffer, and so not be visible when you look 
+at the file on the disk).
+
+    $ cat newfile
+    Hello world
+
+Note that every time you open a file using “w”, the file will be overwritten. Be very careful, as it is
+very easy to overwrite files and delete data by mistake. One way to avoid this is to open files in
+“a” (append) mode. This opens the file for writing, automatically writing at the end of the file if
+it already contains some data, e.g.
+
+    $ FILE = open(“newfile”, “a”)
+    $ FILE.write(“Some more text\n”)
+    $ FILE.close()
+    $ cat newfile
+    Hello world
+    Some more text
+
+You should also note that a file can only be opened for writing by a single filehandle at a time. This
+is because if it is open by two filehandles, then reading or writing from one can get mixed up with
+reading and writing from another. It is very good practice to make sure that you only open a file
+for writing when you need to, to write the data into the file quickly, and to then close the file as
+soon as the data has been written. Note that, as you are writing strings, it is perfectly ok to write
+to the string in the program, and only write the contents to the file once the string has been composed,
+e.g.
+
+    $ lines = []
+    $ lines.append(“first line of data”)
+    $ lines.append(“next line of data”)
+    $ lines.append(“final line of data”)
+    $ FILE = open(“datafile”, “w”)
+    $ for line in lines:
+    $     FILE.write(“%s\n” % line)
+    $ FILE.close()
+    $ cat datafile
+    first line of data
+    next line of data
+    final line of data
+
+## Exercise
+
+### Exercise 1e
+
+Write a program that finds every line in “textfile” that contains the word “the” and writes those lines,
+together with line numbers, to the file “textfile_thelines”.
+
+If you get stuck, an example output is [here](python_files/thelines.py)
