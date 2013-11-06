@@ -1,5 +1,5 @@
 
-# Data handling in Python
+# File Handling in Python
 
 First, lets start python. We will do everything using ipython, which provides a nice interactive python shell. We start ipython using the command
 
