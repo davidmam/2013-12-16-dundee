@@ -114,7 +114,7 @@ A “try” block lets you try to run a piece of code. If an exception is raised
 
     [4, 6, 5]
 
-So you can see that exceptions allow us to fix problems in the context of how the function is called. Note that it would not be appropriate to add this fix into addArrays itself, as addArrays cannot know itself whether or not the arrays contain numbers, or whether or not it would be appropriate to make the arrays equal by padding with zeroes. Only the code that calls addArrays knows what an appropriate fix would be, with exceptions providing a way for addArrays to signal that a problem has occurred, and the “try” block providing the way for the caller to fix the problem.
+So you can see that exceptions allow us to fix problems in the context of how the function is called. Note that it would not be appropriate to add this fix into addArrays itself, as addArrays cannot know itself whether or not the arrays contain numbers, or whether or not it would be appropriate to make the arrays equal by padding with zeroes. Only the code that calls addArrays knows the context of the call, and thus what an appropriate fix would be. Exceptions provide a way for addArrays to signal that a problem has occurred, and the “try” block provides the way for the caller to fix the problem.
 
 ## Correctness tests
 
@@ -274,6 +274,7 @@ If you get stuck, an example test script is [here](python_testing/test_addarrays
 * Always!
 * Early, and not wait till after we've used it to generate data for our important paper, or given it to someone else to use.
 * Often, so that we know that any changes we've made to our code, or to things that our code needs (e.g. libraries, configuration files etc.) haven't introduced any bugs.
+* Before writing the code. The best order to write a function is to write the function documentation, then a function signature, then the tests for a function, and then the function itself. Documentation first, as then you know what the function should do. Then the signature, so you know what it is called and what it takes as input. Then tests, as you then specify what should be returned, and then finally the code itself to actually do all of the work and pass all of your tests. While this may sound long-winded, writing tested, documented code now that works now and can be tested to work for all time is better than writing untested, undocumented code that you will spend the next few years debugging.. and that you suddenly realise is giving the wrong results just before you submit your thesis or Nature paper..!
 
 How much is enough? 
 
@@ -300,6 +301,7 @@ Testing
 * Saves time.
 * Gives confidence that code does what we want and expect it to.
 * Promotes trust that code, and so research, is correct.
+* Mirrors your documentation. Documentation provides the promise of what the code will do. Tests provide the proof.
 
 ## Links
 
