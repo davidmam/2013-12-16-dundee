@@ -31,7 +31,7 @@ that contains all the necessary software
 pre-installed. Please install
 [VirtualBox](https://www.virtualbox.org/)
 and download
-[this virtual machine image](https://docs.google.com/uc?export=download&confirm=no_antivirus&id=0B4Kr6DYkzkQtSjd3RV83NllYU2s).
+[this virtual machine image](http://tinyurl.com/swcexeter-vm).
 Load the VM into VirtualBox by doing `Import Appliance` and loading the `.ova` file.
 
 ##Native Installation
