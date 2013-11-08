@@ -110,9 +110,9 @@ Functions are great for organising your software into self-contained, reusable b
     Or to take Arms against a Sea of troubles,
     And by opposing end them: to die, to sleep
 
-The "import" command has loaded the script, importing all functions, and then running all of the code. If we type "quit" we can exit back to the prompt.
+The "import" command has loaded the script, importing all functions, and then running all of the code (printing the text to the screen).
 
-Now at the prompt, I have access to all of the functions contained in [substitute.py](substitute.py). These functions are prefixed with the name “substitute, e.g.
+Now at the prompt, I have access to all of the functions contained in [substitute.py](substitute.py). These functions are prefixed with the name “substitute”, e.g.
 
     $ substitute.[TAB]
     substitute.line       substitute.py         substitute.re        
@@ -128,7 +128,7 @@ I can call the substitute function from the prompt
      'Or to take Arms against a Sea of troubles,\n',
      'And by opposing end them: to die, to sleep\n',
 
-While this is great, it was quite annoying that the actual code in [substitue.py](substitute.py) was run when we imported the function. We can stop this from happening by using a python hidden variable. Hidden
+While this is great, it was quite annoying that the actual code in [substitute.py](substitute.py) was run when we imported the function. We can stop this from happening by using a python hidden variable. Hidden
 variables begin with one or two underscores, and we can list them all using ipython TAB
 
     $ _[TAB]
@@ -138,12 +138,12 @@ variables begin with one or two underscores, and we can list them all using ipyt
     _4                 __builtin__        __package__        _i3                _oh                
     __                 __debug__          _dh                _i4                _sh           
 
-We want the one called "__name__"
+We want the one called “\_\_name\_\_”
 
     $ __name__
     '__main__'
 
-This gives the name of the current function or module. The top level function is called "__main__". To stop the code in our substitute.py script from running, we just need to make sure that it is only run if the value of "__name__" is "__main__". For example, the [checkmain.py](checkmain.py) script does exactly that;
+This gives the name of the current function or module. The top level function is called “\_\_main\_\_”. To stop the code in our substitute.py script from running, we just need to make sure that it is only run if the value of “\_\_name\_\_” is “\_\_main\_\_”. For example, the [checkmain.py](checkmain.py) script does exactly that;
 
     def addArrays(x, y):
         z = []
