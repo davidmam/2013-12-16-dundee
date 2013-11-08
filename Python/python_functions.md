@@ -168,7 +168,7 @@ If I run this script from the command line, then the whole script is executed;
     $ python checkmain.py
     [6, 8, 10, 12]
 
-However, if I import the script, then "__name__" is not equal to "__main__", so that part of the script is skipped;
+However, if I import the script, then “\_\_name\_\_” is not equal to “\_\_main\_\_”, so that part of the script is skipped;
 
     $ ipython
     $ import checkmain
@@ -181,7 +181,7 @@ It is extremely good programming practice to write all of your scripts as if the
 
 ### Exercise 3c
 
-Edit your [substitute.py](substitute.py) script so that it can be re-used as a module. Do this by adding in an 'if __name__ == "__main__":' check.
+Edit your [substitute.py](substitute.py) script so that it can be re-used as a module. Do this by adding in an 'if \_\_name\_\_ == “\_\_main\_\_”:’ check.
 
 If you are really stuck, there is an example script [here](python_functions/substitute3.py).
 
@@ -292,6 +292,6 @@ We now get better documentation when using help()
 
 ### Exercise 3d
 
-Edit your [substitute.py](substitute.py) script and add documentation strings for the module and also for all of the functions.
+Edit your [substitute.py](python_functions/substitute3.py) script and add documentation strings for the module and also for all of the functions.
 
 If you are really stuck then there is an example script [here](python_functions/substitute4.py)
