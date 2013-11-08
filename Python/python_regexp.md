@@ -145,6 +145,15 @@ by a, i or y, you would use square brackets,
     $     if re.search(r”th[aiy]”, line):
     $         print line,
 
+    To be, or not to be, that is the question:
+    For in that sleep of death, what dreams may come,
+    When we have shuffled off this mortal coil,
+    That patient merit of the unworthy takes,
+    But that the dread of something after death,
+    Than fly to others that we know not of.
+    With this regard their Currents turn awry,
+    The fair Ophelia? Nymph, in thy Orisons
+
 * [abc]  Match a, b or c
 * [a-z]  Match any character between a to z
 * [A-Z]  Match any character between A to Z
@@ -287,7 +296,7 @@ a file called “greetings.txt”
     Dear Mrs.    Peterson, 
       Dear    Mr. Sampson    Dear Dr.Johanson,    Dear Rev Richardson,
 
-Note that you can match the “.” character using “\.”, e.g. to match Dr. use re.search(r”Dr\.”, line)
+Note that you can match the “.” character using “\\.”, e.g. to match Dr. use re.search(r”Dr\\.”, line)
 
 If you get stuck, an example output is [here](python_regexp/greetings.py)
 
@@ -306,7 +315,7 @@ text. You do this using re.sub
 
     To code, or not to code, that is the question:
 
-As you can see, every match is replaced by “code”. We can replace one “n” matches by passing
+As you can see, every match is replaced by “code”. We can replace “n” matches by passing
 that in as an extra argument
 
     # line = lines[0]

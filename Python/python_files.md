@@ -5,7 +5,7 @@ First, lets start python. We will do everything using ipython, which provides a 
 
     $ ipython
 
-Writing a program involves creating and manipulating data, which are held in variables. For example, you have probably used strings and numbers, for example
+Writing a program involves creating and manipulating data, which are held in variables. For example, you have probably used strings and numbers,
 
     $ a = 42
     $ b = 65
@@ -60,7 +60,7 @@ handle provides the means to interact with the file. We could have called it any
 
 would open the file and return handles called “TURTLE” and “PUSSYCAT”. Note that, by convention, we tend
 to use capital letters to name file handles, and, normally, you should use reasonable names (TURTLE is perhaps
-not reasonable, unless it is a file containing turtle-related data?). Note also that you can open and file as
+not reasonable, unless it is a file containing turtle-related data?). Note also that you can open a file as
 many times as you want, and attach it to as many file handles as you want, with each one acting independently.
 
 So, what is a file handle? We can use the help provided by Python to take a look. Python provides “help” which 
