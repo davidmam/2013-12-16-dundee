@@ -53,8 +53,8 @@ You should test your installation using our testing scripts described
 [here](setup/README.md). To access these start a shell and run the 
 commands:
 
-    git clone https://github.com/chryswoods/2013-11-14-exeter.git
-    cd boot-camps/setup
+    git clone https://github.com/chryswoods/2013-11-14-exeter.git ./bootcamp
+    cd bootcamp/setup
 
 before following [these instructions](setup/README.md).
 
