@@ -289,7 +289,7 @@ For example, we could use this to extract all of the words that follow “the”
 
 Here is the list of surnames from above. Can you write a regular expression that will
 match each line, extracting the title and surname for each person? The names are in 
-a file called “greetings.txt”
+a file called [greetings.txt](greetings.txt).
 
     Dear Mr. Johnson, 
       Dear Miss. Jameson,    Dear   Ms.   Jackson, 
