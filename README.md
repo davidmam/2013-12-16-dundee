@@ -11,7 +11,7 @@ Thursday 14th
 * 09:00 Arrival and [Welcome](Welcome.ppt) - David / Chris
 * 09.30 [Recap on the command line](broken_link) - David
 * 10.30 Break
-* 11.00 [Python 1 - Reading and writing files, data handling](Python/python_files.md) - Chris
+* 11.00 [Python 1 - Reading and writing files](Python/python_files.md) - Chris
 * 12.30 Lunch
 * 13.30 [Version control with git](broken_link) - David
 * 15.30 Break
@@ -21,12 +21,12 @@ Thursday 14th
 Friday 15th
 
 * 09.00 Recap - Chris
-* 09.30 [Testing](Python/python_testing.md) - Chris
+* 09.30 [Python 3 - Functions and Documentation](Python/python_functions.md) - Chris
 * 10.30 Break
 * 11.00 [R](broken_link) - David
 * 12.30 Lunch
 * 13.30 [Graphing in R](broken_link) -David
-* 14.30 [Graphing in Python](Python/python_graphing.md) - Chris
+* 14.30 [Python 4 - Testing](Python/python_testing.md) - Chris
 * 15.30 Break
 * 16.00 [Wrap up and clinic](Conclusion.ppt)
 * 17.00 Close
@@ -42,10 +42,9 @@ information on the day. This will be made public on the day.
 
 ## Before you arrive...
 
-We recommend that you bring your own laptop to work on (so 
+You must bring your own laptop to work on (so 
 that you can easily continue to use the same tools after the 
-bootcamp) but we hope to have a handful of backup laptops 
-available. If you choose to bring your own laptop then, before 
+bootcamp). Before 
 you arrive, you will need to ensure you have installed and tested
 some software. Please see our [set-up page](Setup.md) for a list of the 
 software required and instructions.
