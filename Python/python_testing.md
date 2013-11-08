@@ -159,14 +159,14 @@ The only change here is that we have used “assert”. This is a function that 
 This is still a bit manual. Fortunately, Python comes with “nosetests” which automates running test scripts like this. [nose](https://pypi.python.org/pypi/nose/) automatically finds, runs and reports on tests.
 Type
 
-    $ nosetests
+    $ nosetests test_addarrays.py
     .
     ----------------------------------------------------------------------
     Ran 1 test in 0.004s
     
     OK
 
-This automatically found all scripts that started with “test_” in the current directory, and automatically ran all functions that started with “test_”. You can check this by breaking the code, e.g.
+This automatically ran all functions that started with “test_”. You can check this by breaking the code, e.g.
 
     $ def addArrays(a, b):
     $     “””Function to add together the two passed arrays, returning
@@ -182,7 +182,7 @@ This automatically found all scripts that started with “test_” in the curren
     $
     $     return c
 
-    $ nosetests
+    $ nosetests test_addarrays.py
     F
     ======================================================================
     FAIL: test_addarrays.test_add
@@ -214,38 +214,60 @@ Expand test_addarrays.py with more tests, e.g. a function to test that addArrays
 
 Run your tests with “nosetests”. 
 
-If you get stuck, an example test script is [here](BROKEN LINK)
+If you get stuck, an example test script is [here](python_testing/test_addarrays1.py)
 
 ## When 1 + 1 = 2.0000001
 
 Computers don't do floating point arithmetic too well.
 
-    $ python
-    >>> expected = 0
-    >>> actual = 0.1 + 0.1 + 0.1 - 0.3
-    >>> assert expected == actual
-    >>> print actual
+    $ ipython
+    $ expected = 0
+    $ actual = 0.1 + 0.1 + 0.1 - 0.3
+    $ assert(expected == actual)
+
+    ---------------------------------------------------------------------------
+    AssertionError                            Traceback (most recent call last)
+    <ipython-input-3-18a1029b2615> in <module>()
+    ----> 1 assert(expected == actual)
+
+    AssertionError: 
+
+    $ print actual
+
+    5.55111512313e-17
 
 Compare to within a threshold, or delta e.g. expected == actual  if expected - actual < 0.0000000000000001.
 
 Thresholds are application-specific. 
 
-Python [decimal](http://docs.python.org/2/library/decimal.html), floating-point arithmetic functions.
+    $ from nose.tools import assert_almost_equal
+    $ assert_almost_equal(expected, actual, 0)
+    
+    $ assert_almost_equal(expected, actual, 10)
+    
+    $ assert_almost_equal(expected, actual, 15)
+    
+    $ assert_almost_equal(expected, actual, 16)
 
-    $ python
-    >>> from nose.tools import assert_almost_equal
-    >>> assert_almost_equal(expected, actual, 0)
-    >>> assert_almost_equal(expected, actual, 10)
-    >>> assert_almost_equal(expected, actual, 15)
-    >>> assert_almost_equal(expected, actual, 16)
+    ---------------------------------------------------------------------------
+    AssertionError                            Traceback (most recent call last)
+    <ipython-input-9-df3b297d7739> in <module>()
+    ----> 1 assert_almost_equal(expected, actual, 16)
 
-`nose.testing` uses absolute tolerance: abs(x, y) <= delta
+    /System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/case.pyc in assertAlmostEqual(self, first, second, places, msg, delta)
+        561                                                           places)
+        562         msg = self._formatMessage(msg, standardMsg)
+    --> 563         raise self.failureException(msg)
+        564 
+        565     def assertNotAlmostEqual(self, first, second, places=None, msg=None, delta=None):
+    
+    AssertionError: 0 != 5.551115123125783e-17 within 16 places
 
 ## Exercise 4b
 
 Add in tests for floating point addition, using assert_almost_equal. Note that you will need to test each element of the array, one by one.
 
-If you get stuck, an example test script is [here](BROKEN LINK).
+If you get stuck, an example test script is [here](python_testing/test_addarrays2.py).
 
 ## When should we test?
 

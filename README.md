@@ -53,7 +53,7 @@ You should test your installation using our testing scripts described
 [here](setup/README.md). To access these start a shell and run the 
 commands:
 
-    git clone --branch 2013-11-exeter --single-branch  https://github.com/swcarpentry/boot-camps
+    git clone https://github.com/chryswoods/2013-11-14-exeter.git
     cd boot-camps/setup
 
 before following [these instructions](setup/README.md).
