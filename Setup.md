@@ -26,8 +26,9 @@ If this is the case, or have followed the instructions below, then you can check
 * Python [numpy](http://numpy.scipy.org/)
 * Python [scipy](http://www.scipy.org/)
 * Python [matplotlib](http://matplotlib.org/)
+* R [website](http://www.stats.bris.ac.uk/R/) and [R studio](http://rstudio.com) 
 
-Otherwise, follow the instructions below for your operating system.
+Otherwise, follow the instructions below for your operating system
 
 ##Using a Virtual Machine
 Installation issues can and do happen. To ensure that you
@@ -37,7 +38,7 @@ that contains all the necessary software
 pre-installed. Please install
 [VirtualBox](https://www.virtualbox.org/)
 and download
-[this virtual machine image](http://files.software-carpentry.org/swc_lubuntu.ova)
+[this virtual machine image](http://files.software-carpentry.org/swc_lubuntu.ova) (Not yet updated to the Exeter VM which has R and Rstudio)
 ([alternate download](http://is.gd/MosNIh)).
 Load the VM into VirtualBox by doing `Import Appliance` and loading the `.ova` file.
 
@@ -77,6 +78,13 @@ if you aren't comfortable doing this,
 please download the installer corresponding to your operating system
 *before* arriving and your instructor will help you set it up.
 
+####R and R studio
+Go to the [R project download page](http://www.r-project.org), click on the Download link 
+(CRAN) in the sidebar and select a mirror near to you. [Bristol](http://www.stats.bris.ac.uk/R/) may be the best option. 
+Download the Windows binary and run it to install R.
+With R installed, go to the [Rstudio](http://www.rstudio.com/ide/download/desktop) download page and select the appropriate version for your operating system. 
+Install this - you may need to have administrator rights.
+
 ###Mac OS X
 Bash is the default shell in Mac OS X and this should be installed.
 
@@ -112,6 +120,12 @@ To install it:
 Note that the XCode download is over a gigabyte,
 so please do this **before** arriving at the boot camp.
 
+####R and R studio
+Go to the [R project download page](http://www.r-project.org), click on the Download link 
+(CRAN) in the sidebar and select a mirror near to you. [Bristol](http://www.stats.bris.ac.uk/R/) may be the best option. 
+Download the Mac binary installer and run it to install R.
+With R installed, go to the [Rstudio](http://www.rstudio.com/ide/download/desktop) download page and select the appropriate version for your operating system. 
+Install this and an Rstudio app should appear in your Applications folder.
 
 ###Linux
 Below there are brief instructions. More details for RedHat/Scientific Linux 6 and Ubuntu 12.10 are found at the bottom of the page. 
@@ -298,3 +312,23 @@ Ubuntu 12.10 and above already comes with shell, vi and nano text editors, Pytho
     In []: a[:100]=1
     In []: b=fft(a)
     In []: plot(abs(b))
+
+####R and R studio
+#####R - Preferred method
+Use your distributions package manager to install the r-base (or r-base-core) package
+
+#####R - alternative methods
+Go to the [R project download page](http://www.r-project.org), click on the Download link 
+(CRAN) in the sidebar and select a mirror near to you. [Bristol](http://www.stats.bris.ac.uk/R/) may be the best option. 
+Download the linux binary installer and run it to install R.
+
+Or, more painfully, download and install from source. There are so many variations that at this point detailed instructions probably won't help.
+Read and follow the install documentation for your distribution
+
+#####R Studio
+With R installed, go to the [Rstudio](http://www.rstudio.com/ide/download/desktop) download page and select the appropriate version for your operating system. 
+Use your package manager to install this package and any dependencies. You will probably require superuser (sudo) access. 
+On Ubuntu you may also have to install dependent packages such as libjpeg62
+
+    > sudo dpkg -i rstudio.deb
+    > sudo apt-get install libjpeg62
