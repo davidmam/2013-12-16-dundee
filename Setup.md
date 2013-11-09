@@ -291,11 +291,11 @@ Ubuntu 12.10 and above already comes with shell, vi and nano text editors, Pytho
     In []: b=fft(a)
     In []: plot(abs(b))
 
-####R and R studio
-#####R - Preferred method
+###R and R studio
+####R - Preferred method
 Use your distributions package manager to install the r-base (or r-base-core) package
 
-#####R - alternative methods
+####R - alternative methods
 Go to the [R project download page](http://www.r-project.org), click on the Download link 
 (CRAN) in the sidebar and select a mirror near to you. [Bristol](http://www.stats.bris.ac.uk/R/) may be the best option. 
 Download the linux binary installer and run it to install R.
@@ -303,7 +303,7 @@ Download the linux binary installer and run it to install R.
 Or, more painfully, download and install from source. There are so many variations that at this point detailed instructions probably won't help.
 Read and follow the install documentation for your distribution
 
-#####R Studio
+####R Studio
 With R installed, go to the [Rstudio](http://www.rstudio.com/ide/download/desktop) download page and select the appropriate version for your operating system. 
 Use your package manager to install this package and any dependencies. You will probably require superuser (sudo) access. 
 On Ubuntu you may also have to install dependent packages such as libjpeg62
