@@ -13,24 +13,18 @@ You should check that you have the following software and tools available.
 If this is the case, or have followed the instructions below, then you can check your installation using our [setup test scripts](setup/README.md). 
 
 * Web browser
-* Bash shell - other shells are OK (e.g Cygwin) but please ensure they support the commands `grep`, `find`, `awk`, `cat`, `history`.
+* Bash shell - other shells are OK (e.g [Cygwin](http://cygwin.org)) but please ensure they support the commands `grep`, `find`, `awk`, `cat`, `history`.
 * A text editor e.g. nano, vi or emacs
 * [Git](http://git-scm.com/)
 * Python 2.6 or 2.7
-* Python [pip](https://pypi.python.org/pypi/pip)
-* Python [nose](https://nose.readthedocs.org/en/latest/)
-* Python [coverage](http://nedbatchelder.com/code/coverage/)
-* Python [pytest](http://pytest.org/)
-* Python [pytest-cov](https://pypi.python.org/pypi/pytest-cov)
 * Python [ipython](http://ipython.org)
-* Python [numpy](http://numpy.scipy.org/)
-* Python [scipy](http://www.scipy.org/)
-* Python [matplotlib](http://matplotlib.org/)
+* Python [nose](https://nose.readthedocs.org/en/latest/)
 * R [website](http://www.stats.bris.ac.uk/R/) and [R studio](http://rstudio.com) 
 
 Otherwise, follow the instructions below for your operating system
 
 ##Using a Virtual Machine
+
 Installation issues can and do happen. To ensure that you
 can continue to participate in a lesson even if one of your
 software programs fails, we provide a Linux virtual machine
@@ -38,8 +32,8 @@ that contains all the necessary software
 pre-installed. Please install
 [VirtualBox](https://www.virtualbox.org/)
 and download
-[this virtual machine image](http://files.software-carpentry.org/swc_lubuntu.ova) (Not yet updated to the Exeter VM which has R and Rstudio)
-([alternate download](http://is.gd/MosNIh)).
+[this virtual machine image](http://tinyurl.com/swcexeter-vm). (Not yet updated to the Exeter VM which has R and Rstudio)
+
 Load the VM into VirtualBox by doing `Import Appliance` and loading the `.ova` file.
 
 ##Native Installation
@@ -61,12 +55,6 @@ to install [Git Bash](http://msysgit.github.com/).
 
 ####Git
 See "The Unix Bash Shell" above.
-
-####Editor
-[Sublime Text](http://www.sublimetext.com/) is an excellent editor that works on Mac, Windows, and most Linux distributions.
-It's not free, but it has an unlimited trial period. Alternatively
-[Notepad++](http://notepad-plus-plus.org/)
-is a popular free code editor for Windows.
 
 ####Python
 We recommend the all-in-one scientific Python distributions
@@ -92,11 +80,6 @@ Bash is the default shell in Mac OS X and this should be installed.
 Use the [Git installer](http://code.google.com/p/git-osx-installer/downloads/list?can=3)
 (the faster and simpler option) or install XCode and the command line tools (from the Download preferences pane).
 Note that the XCode download is over a gigabyte (see below)...
-
-####Editor
-[Sublime Text](http://www.sublimetext.com/) is an excellent editor that works on Mac, Windows, and most Linux distributions.
-It's not free, but it has an unlimited trial period. Alternatively we recommend [Text Wrangler](http://www.barebones.com/products/textwrangler/),
-or [Text Mate 2](https://github.com/textmate/textmate).
 
 ####Python
 We recommend the all-in-one scientific Python distributions
@@ -140,11 +123,6 @@ Git should already be installed on your machine.
 To check, type `which git` at the command line.
 If it is not found, install it via your distribution's package manager
 (e.g., `apt-get`).
-
-####Editor
-[Sublime Text](http://www.sublimetext.com/) is an excellent editor that works on Mac, Windows, and most Linux distributions.
-It's not free, but it has an unlimited trial period. Alternatively [Kate](http://kate-editor.org/) and [gedit](http://projects.gnome.org/gedit)
-are often pre-installed on Linux.
 
 ####Python
 We recommend the all-in-one scientific Python distributions

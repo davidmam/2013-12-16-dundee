@@ -114,7 +114,7 @@ A “try” block lets you try to run a piece of code. If an exception is raised
 
     [4, 6, 5]
 
-So you can see that exceptions allow us to fix problems in the context of how the function is called. Note that it would not be appropriate to add this fix into addArrays itself, as addArrays cannot know itself whether or not the arrays contain numbers, or whether or not it would be appropriate to make the arrays equal by padding with zeroes. Only the code that calls addArrays knows what an appropriate fix would be, with exceptions providing a way for addArrays to signal that a problem has occurred, and the “try” block providing the way for the caller to fix the problem.
+So you can see that exceptions allow us to fix problems in the context of how the function is called. Note that it would not be appropriate to add this fix into addArrays itself, as addArrays cannot know itself whether or not the arrays contain numbers, or whether or not it would be appropriate to make the arrays equal by padding with zeroes. Only the code that calls addArrays knows the context of the call, and thus what an appropriate fix would be. Exceptions provide a way for addArrays to signal that a problem has occurred, and the “try” block provides the way for the caller to fix the problem.
 
 ## Correctness tests
 
@@ -159,14 +159,14 @@ The only change here is that we have used “assert”. This is a function that 
 This is still a bit manual. Fortunately, Python comes with “nosetests” which automates running test scripts like this. [nose](https://pypi.python.org/pypi/nose/) automatically finds, runs and reports on tests.
 Type
 
-    $ nosetests
+    $ nosetests test_addarrays.py
     .
     ----------------------------------------------------------------------
     Ran 1 test in 0.004s
     
     OK
 
-This automatically found all scripts that started with “test_” in the current directory, and automatically ran all functions that started with “test_”. You can check this by breaking the code, e.g.
+This automatically ran all functions that started with “test_”. You can check this by breaking the code, e.g.
 
     $ def addArrays(a, b):
     $     “””Function to add together the two passed arrays, returning
@@ -182,7 +182,7 @@ This automatically found all scripts that started with “test_” in the curren
     $
     $     return c
 
-    $ nosetests
+    $ nosetests test_addarrays.py
     F
     ======================================================================
     FAIL: test_addarrays.test_add
@@ -214,44 +214,67 @@ Expand test_addarrays.py with more tests, e.g. a function to test that addArrays
 
 Run your tests with “nosetests”. 
 
-If you get stuck, an example test script is [here](BROKEN LINK)
+If you get stuck, an example test script is [here](python_testing/test_addarrays1.py)
 
 ## When 1 + 1 = 2.0000001
 
 Computers don't do floating point arithmetic too well.
 
-    $ python
-    >>> expected = 0
-    >>> actual = 0.1 + 0.1 + 0.1 - 0.3
-    >>> assert expected == actual
-    >>> print actual
+    $ ipython
+    $ expected = 0
+    $ actual = 0.1 + 0.1 + 0.1 - 0.3
+    $ assert(expected == actual)
+
+    ---------------------------------------------------------------------------
+    AssertionError                            Traceback (most recent call last)
+    <ipython-input-3-18a1029b2615> in <module>()
+    ----> 1 assert(expected == actual)
+
+    AssertionError: 
+
+    $ print actual
+
+    5.55111512313e-17
 
 Compare to within a threshold, or delta e.g. expected == actual  if expected - actual < 0.0000000000000001.
 
 Thresholds are application-specific. 
 
-Python [decimal](http://docs.python.org/2/library/decimal.html), floating-point arithmetic functions.
+    $ from nose.tools import assert_almost_equal
+    $ assert_almost_equal(expected, actual, 0)
+    
+    $ assert_almost_equal(expected, actual, 10)
+    
+    $ assert_almost_equal(expected, actual, 15)
+    
+    $ assert_almost_equal(expected, actual, 16)
 
-    $ python
-    >>> from nose.tools import assert_almost_equal
-    >>> assert_almost_equal(expected, actual, 0)
-    >>> assert_almost_equal(expected, actual, 10)
-    >>> assert_almost_equal(expected, actual, 15)
-    >>> assert_almost_equal(expected, actual, 16)
+    ---------------------------------------------------------------------------
+    AssertionError                            Traceback (most recent call last)
+    <ipython-input-9-df3b297d7739> in <module>()
+    ----> 1 assert_almost_equal(expected, actual, 16)
 
-`nose.testing` uses absolute tolerance: abs(x, y) <= delta
+    /System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/case.pyc in assertAlmostEqual(self, first, second, places, msg, delta)
+        561                                                           places)
+        562         msg = self._formatMessage(msg, standardMsg)
+    --> 563         raise self.failureException(msg)
+        564 
+        565     def assertNotAlmostEqual(self, first, second, places=None, msg=None, delta=None):
+    
+    AssertionError: 0 != 5.551115123125783e-17 within 16 places
 
 ## Exercise 4b
 
 Add in tests for floating point addition, using assert_almost_equal. Note that you will need to test each element of the array, one by one.
 
-If you get stuck, an example test script is [here](BROKEN LINK).
+If you get stuck, an example test script is [here](python_testing/test_addarrays2.py).
 
 ## When should we test?
 
 * Always!
 * Early, and not wait till after we've used it to generate data for our important paper, or given it to someone else to use.
 * Often, so that we know that any changes we've made to our code, or to things that our code needs (e.g. libraries, configuration files etc.) haven't introduced any bugs.
+* Before writing the code. The best order to write a function is to write the function documentation, then a function signature, then the tests for a function, and then the function itself. Documentation first, as then you know what the function should do. Then the signature, so you know what it is called and what it takes as input. Then tests, as you then specify what should be returned, and then finally the code itself to actually do all of the work and pass all of your tests. While this may sound long-winded, writing tested, documented code now that works now and can be tested to work for all time is better than writing untested, undocumented code that you will spend the next few years debugging.. and that you suddenly realise is giving the wrong results just before you submit your thesis or Nature paper..!
 
 How much is enough? 
 
@@ -278,6 +301,7 @@ Testing
 * Saves time.
 * Gives confidence that code does what we want and expect it to.
 * Promotes trust that code, and so research, is correct.
+* Mirrors your documentation. Documentation provides the promise of what the code will do. Tests provide the proof.
 
 ## Links
 

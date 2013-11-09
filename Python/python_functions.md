@@ -70,7 +70,7 @@ Note also that you can define your function to take as many arguments, and retur
 
 ### Exercise 3a
 
-In the last session you wrote a python script that substituted all words that followed “the” in the text file with “banana”. Rewrite your script so that the code is put into a function. The function should have a function signature like this;
+In the last session you wrote a [python script](python_regexp/replace.py) that substituted all words that followed “the” in the text file with “banana”. Rewrite your script so that the code is put into a function. The function should have a function signature like this;
 
     def substitute(filename):
         
