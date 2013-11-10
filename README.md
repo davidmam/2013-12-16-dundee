@@ -9,11 +9,11 @@ Thursday 14-Friday 15 November 2013.
 Thursday 14th
 
 * 09:00 Arrival and [Welcome](Welcome.ppt) - David / Chris
-* 09.30 [Recap on the command line](broken_link) - David
+* 09.30 [Recap on the command line](todo) - David
 * 10.30 Break
 * 11.00 [Python 1 - Reading and writing files](Python/python_files.md) - Chris
 * 12.30 Lunch
-* 13.30 [Version control with git](broken_link) - David
+* 13.30 [Version control with git](todo) - David
 * 15.30 Break
 * 16.00 [Python 2 - Regular Expressions](Python/python_regexp.md) - Chris
 * 17.00 Close
@@ -23,9 +23,9 @@ Friday 15th
 * 09.00 Recap - Chris
 * 09.30 [Python 3 - Functions and Documentation](Python/python_functions.md) - Chris
 * 10.30 Break
-* 11.00 [R](broken_link) - David
+* 11.00 [R](R/R.md) - David
 * 12.30 Lunch
-* 13.30 [Graphing in R](broken_link) -David
+* 13.30 [Graphing in R](R/R.md) -David
 * 14.30 [Python 4 - Testing](Python/python_testing.md) - Chris
 * 15.30 Break
 * 16.00 [Wrap up and clinic](Conclusion.ppt)
