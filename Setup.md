@@ -32,7 +32,7 @@ that contains all the necessary software
 pre-installed. Please install
 [VirtualBox](https://www.virtualbox.org/)
 and download
-[this virtual machine image](http://tinyurl.com/swcexeter-vm). (Not yet updated to the Exeter VM which has R and Rstudio)
+[this virtual machine image](http://tinyurl.com/exeter-swc-vm). 
 
 Load the VM into VirtualBox by doing `Import Appliance` and loading the `.ova` file.
 
