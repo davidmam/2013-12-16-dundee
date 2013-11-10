@@ -1,0 +1,489 @@
+\documentclass{article}
+\usepackage{framed}
+\usepackage{lipsum}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage[svgnames,usenames,dvipsnames]{xcolor}
+\definecolor{shadecolor}{named}{lightgray}
+\addtolength{\oddsidemargin}{-.875in}
+  \addtolength{\evensidemargin}{-.875in}
+  \addtolength{\textwidth}{1.75in}
+
+  \addtolength{\topmargin}{-.875in}
+  \addtolength{\textheight}{1.75in}
+\setlength{\parskip}{8pt}
+\setlength{\parindent}{0pt}
+\begin{document}
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontshape=sl, formatcom=\color{Cerulean}}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{fontshape=sl, formatcom=\color{OliveGreen}}
+\SweaveOpts{concordance=TRUE}
+\setkeys{Gin}{width=0.7\textwidth}
+\title{Introductory Statistics with R-Studio}
+\author{Workshop 4 - tests}
+\renewcommand{\today}{ }
+\maketitle
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+\section{Learning Objectives}
+\begin{itemize}
+\item To identify appropriate statistical tests for the question under investigation
+\item To perform appropriate statistical tests and power calculations.
+\item To understand how to examine data for normality.
+\end{itemize}
+
+\section{Statistical testing}
+
+Statistical testing is the process of assessing the probability of a set of results arising by chance. The application of appropriate statistical tests can indicate whether a seemingly important result is actually likely to be that, or whether it is a fluke, occurring by chance. 
+
+
+This workshop builds on the previous three workshops and provides the tools to assess the reliability of the results obtained in the laboratory.
+
+\subsection{The caveat}
+
+No statistical test exists which will confirm that your inferred conclusions are correct. Statistics merely works with the numbers and calculates the probability of particular numbers occuring by chance. Any conclusions you draw from that information is entirely your own fault.
+
+
+\section{Inputs and outputs}
+
+The tests we apply will depend on the question we are asking and how the inputs and outputs are measured. We have already looked at two types of variable - \emph{\textbf{continuous variables}}, where the data may take any value within a distribution; and \emph{\textbf{categorical variables}} or \emph{\textbf{factors}} where the data may only take one of a specific (and not necesarily ordered) set of values.
+A third variable type is a \emph{\textbf{rank order}}, where  the explicit variable measurement is not able to be used in calculations but different measurements can be placed in a rank order.
+
+This workshop will concern itself with the following question types (we consider a \emph{variable} to be continuous and a \emph{category} to be a factor) :
+
+\begin{itemize}
+\item Is variable A covariant with variable B?
+\item Does a treatment (factor A) affect the response (variable B)?
+\item Do my two sets of variable measurements have different means?
+\item Are these two variable distributions different?
+\item What is the distribution of my data?
+\end{itemize}
+
+
+\subsection{Is my data normal?}
+
+A sample which follows the normal distribution will have a characteristic distribution of values. Most (67\%)\footnote{these numbers are approximate} will be clustered within one standard deviation of the mean. A further 30\% will be within 2 standard deviations. Less than 5\% will lie outside this range. 
+
+\textcolor{BrickRed}{ Load up the dataset \texttt{distributions.txt} as the variable \texttt{dists}.} Each column in this dataset is composed of 1000 points sampled from a different distribution. Column \texttt{Normal} is a normal distribution.
+
+<<>>=
+dists <- read.table("distributions.txt", sep="\t", header=T)
+@
+
+The simplest first examination is to view the data as a histogram. The \texttt{breaks=} parameter specifies the number of bins in which to split the data.
+
+
+<<label=hist1, include=FALSE >>=
+h<-hist(dists$Normal, breaks=25, xlab='Value', main="1000 Normally distributed data points")
+plot(h, xlab='Value', main="1000 Normally distributed data points")
+lines(h$mids, 200*dnorm(h$mids), col="red", lwd=2)
+@
+
+
+<<label=hist1fig, fig=TRUE, echo=FALSE, width=6,height=4.5>>=
+<<hist1>>
+@
+
+The graph has a suitably scaled curve corresponding to the normal distribution superimposed.
+
+Not all the distributions give such nice data, though they may superficially appear normal.
+
+<<label=hist2, include=FALSE>>=
+h2<-hist(dists$logNormal, breaks=25)
+plot(h2, xlab='Value', main="1000 data points from a logarithmic distribution")
+lines(h2$mids, 1000*dnorm(h2$mids, mean(dists$logNormal), sd(dists$logNormal)), col="red", lwd=2)
+@
+
+
+<<label=hist2fig, fig=TRUE, echo=FALSE, width=6,height=4.5>>=
+<<hist2>>
+@
+
+
+Given a sample of size $n$ we can predict from the mean and standard deviation the values of $n$ perfectly normally distributed points. We can then compare these points with the sample and plot it. This kind of plot where we split the data into $n$ quantiles  and compare to the distribution is a quantile-quantile plot, or qqplot. 
+
+R has a function for generating a qq plot from arbitrary data.
+
+
+<<eval=FALSE>>=
+qqnorm(dists$Normal)
+qqline(dists$Normal, col='red', lwd=2)
+@
+
+As you can see the points lie neatly (pretty much) along the line indicating a good fit to the normal distribution. 
+
+Some distributions look superficially normal but are subtly different. Students \emph{t} distribution looks normal but is slightly platykurtic (a bit flatter on the peak and with thicker tails) The precise nature of the \emph{t} distribution depends on the number of degrees of freedom for which it is calculated, the fewer the degrees of freedome the more extreme the kurtosis (flattening).
+
+\textcolor{BrickRed}{\emph{\textbf{Challenge:} obtain the q-q plot and line for the t distribution with 7 degrees of freedom (column t7). What do you notice about the fit of the data to the ends of the line?}}
+
+Sometimes the data may fit a normal distribution once transformed. \textcolor{BrickRed}{Obtain the q-q plot for the dataset \texttt{dists\$logNormal}. Next try transforming it using \texttt{log()} as \texttt{log(dists\$logNormal)}.}
+
+Sometimes the data may not fit a normal distribution at all. \texttt{binom0.2} is a binomial distribution and \texttt{pois15} is a Poisson distribution. The last two are discrete value distributions where the quantisation can be clearly seen due to the small number of trials or low number of counts respectively. At high trial numbers or high counts both these distributions tend to normal.
+
+
+\subsection{Are my two means different?}
+
+We presume that the data is normally distributed. If this is not the case then a sign/rank test such as Wilcoxon should be used.
+
+Are the variances the same? If so then a Student's t test is in order. If not then use a Kolmogorov-Smirnov test. The t-test is more specific than the KS test so use it in preference \emph{if} your data is appropriate.
+
+The next question to be asked is whether the individual measurements are \emph{independent} or whether they are \emph{paired}. \emph{Paired} measurements are those taken on the same sample, i.e. before and after treatment, or upstream/downstream on the same river. This can be known as a one sample test. \emph{Independent} samples have no explicit relationship with any particular measurement in the other set. These can be known as two sample measurements. If your samples are paired then always do a paired test as the power is much greater.
+
+Student's t-test calculates the \emph{t}-statistic. This can be simply stated as: 
+
+\[ t = \frac{\mbox{difference between the two means}}{\mbox{s.e. of the difference}} = \frac{\bar{y}_A -\bar{y}_B}{\mbox{s.e.}_{\mbox{diff}}}  \]
+
+Checking this value against the \emph{Student's t distribution} for the appropriate number of \emph{degrees of freedom} allows us to decide whether to accept the null hypothesis (the two means are not significantly different) or to reject it and accept that the meansare different.
+
+\fcolorbox{Red}{SkyBlue}{\parbox{\textwidth}{\textbf{Calculating the standard error of the difference} 
+
+The standard error of the differnece between two means is calculated as the sum of the standard errors of each of the means. This gives rise to the equation 
+
+\[ \mbox{s.e.}_{\mbox{difference}}= \sqrt{\frac{s^2_A}{n_A} +\frac{s^2_B}{n_B} } \] 
+
+For a detailed derivation see \emph{Crawley: An Introduction to Statistics using R, p76}
+
+}}
+
+With the t statistic calculated we can determine the significance for our sample size (which determines the total number of degrees of freedom)
+
+\fcolorbox{red}{SkyBlue}{\parbox{\textwidth}{\textbf{What is a degree of freedom?} It is a value whose value is not constrained. In our case we have two samples. Each sample has a number of measurements, $n$. These measurements can vary but in order to maintain the parameter $\bar{y}$, our mean, the last measurement is constrained. Thus the number of degrees of freedom is the number of measurements, minus the number of estimated parameters. In the case of the t-test this is the number of measurements in both samples - 2 (for the two means).}}
+
+\textbf{Performing the t-test} We could perform this longhand, calculating the mean of each dataset, calculating the variances, the standard errors and so on. R has all the necessary functions. This can take a while and be prone to error so there are simple functions that perform all the mechanics for us.
+
+\textcolor{BrickRed}{Start by importing the dataset \texttt{glucose1.txt} and attaching it.} 
+
+<<>>=
+gluc <- read.table("glucose1.txt", sep="\t", header=T)
+attach(gluc)
+@
+
+This imports two columns \texttt{KO} and \texttt{WT}. We'll compare them as unpaired samples to see whether the KO is significantly different to the WT. \textcolor{BrickRed}{First check that the data is normal (with \texttt{qqnorm()}) and the variances are about the same (by comparing \texttt{sd()}.} We will then calculate a two-sided t-test to see whether the null hypothesis holds.
+
+<<>>=
+t.test(WT, KO)
+@
+
+This is not significant - we would accept the null hypothesis that our experiment has not demonstrated the samples to be significantly different. 
+
+\subsubsection{How many samples do I need?}
+
+R provides a mechanism for calculating how many samples we would need to establish a significant difference between our two test sets. We could do this by hand, adjusting the t-statistic in accordance to a theoretical number of samples and record each significance till we find p<0.05 (or whatever cutoff we are prepared to accept), or we can let R do the donkey work.
+
+If we take our experiment and assume the delta (\texttt{mean(WT)-mean(KO)}) and variance to be a realistic estimate of the population, then we can use the power calculation to determine the number of samples we need.
+
+<<>>=
+power.t.test(power=0.8, sd=sd(WT), delta=mean(WT)-mean(KO))
+@
+
+That is a \emph{minimum} number.
+
+\fcolorbox{Red}{SkyBlue}{\parbox{\textwidth}{\textbf{What is statistical power?} Typically we look at the probability $\alpha$ that we have got a difference by chance (a type I error, or false positive). Statistical power looks at the probability of a type II, or false negative, error. In other words the probability $\beta$ that we accept the null hypothesis when it does not hold. Typically power is calculated as $1 - \beta$ and a reasonable cutoff is 0.8, or 80\%. '\emph{Given an experiment with that delta and those variances, how many samples do I need to give me at least an 80\% chance of not falsely accepting the null hypothesis'}}}
+
+\subsubsection{The paired t-test}
+
+Fortunately in our experiment our samples are paired - we carry out a process between measuring WT and KO \emph{on the same sample} and we are measuring the effect of that process. We can therefore use a paired test.
+
+\fcolorbox{Red}{SkyBlue}{\parbox{\textwidth}{\textbf{Paired or unpaired?} With the unpaired test we are comparing every sample in group A to every sample in group B. If there is a substantial intrinsic variance in the groups then any difference may well be masked. To measure the paired differnece we can measure the standard error of mean of the differences, rather than the standard error of the difference of the means. No difference would give a mean of 0. A significant difference would give a mean away from 0 and a 95\% CI that does not overlap 0.}}
+
+The R code for a paired test is very similar to that we have seen before. We just add the parameter \texttt{paired=T} to the command.
+
+<<>>=
+t.test(KO,WT, paired=T)
+@
+
+Aha! A significant result. How sure were we (what was the statistical power) that we would be able to detect a significant result with data like this?
+
+If we set the \texttt{n=} parameter in the power calculation and leave the power unset, we can calculate this. Note that SD is now the standard deviation of the differences between paired measurements, not the SD of the measurements themselves.
+
+<<>>=
+power.t.test(n=15, sd=sd(WT-KO), delta=mean(WT)-mean(KO), type="paired")
+@
+
+15 samples was plenty to guarantee that we would see a result of that magnitude.
+
+\fcolorbox{Red}{White}{\parbox{\textwidth}{\textcolor{Red}{\textbf{Take home message} Use a paired experimental design wherever possible. The significance of the results is much greater.}}}
+
+\subsection{When the t-test is not suitable}
+
+The t-test is only useful under conditions where the variances are similar. For the rest of the time you will need to try an alternative method.
+
+\subsubsection{Continuous data}
+If we have continuous data that does not have the right properties for a t-test then we have to fall back to the Kolmogorov-Smirnov test. This test uses the cumulative distribution function to determine whether two distributions are significantly different.
+
+The KS test can be run in a simple manner, just like the t-test, but in this case the relevant function is \texttt{ks.test}. This is purely a two sample test. If you have a paired sample you can (and should) use a paired t-test.
+
+If the KS test indicates a positive result (ie a rejection of the null hypothesis) it can be interesting to explore why that is. One test is that of variance - are the variances significantly different? This can be answered with the \texttt{var.test()}. 
+
+\textbf{Example:} If we take the exam results for any particular year, is there a difference between English and Scottish students?\footnote{Yes these are invented data to illustrate the point..}
+
+\textcolor{BrickRed}{Load the file \texttt{students.txt} as the variable \texttt{students}}
+
+<<>>=
+students<-read.table("students.txt", sep="\t", header=T)
+attach(students)
+tapply(grade, nation, mean)
+tapply(grade, nation,sd)
+ks.test(grade[nation=="England"], grade[nation=="Scotland"])
+var.test(grade[nation=="England"], grade[nation=="Scotland"])
+@
+
+We can see from this combination of tests that the means are not different but the variances are significantly greater for the scottish students.
+
+
+
+\subsection{Testing multiple treatments}
+
+Lets start off with a single treatment. \textcolor{BrickRed}{Import the dataset \texttt{gardens.txt} to the variable \texttt{gardens} and attach it.} There should be two columns, \emph{garden} which is a factor describing which garden; and ozone, which is a measurement of ozone concentration.
+<<>>=
+gardens<-read.table("gardens.txt", sep="\t", header=T)
+attach(gardens)
+@
+
+We can compare the two gardens with a t-test.
+
+<<>>=
+t.test(ozone[garden=="A"], ozone[garden=="B"])
+@
+
+This gives a non significant result, but is that all that can be said? What proportion of the observed variation is due to the garden, and what is otherwise unexplained? 
+
+Analysis of Variance (ANOVA) is the method of choice for this analysis. If the dataset for each garden is fitted to the mean for that garden, then the residual sum of squares can be calculated as the sum of the  squared errors. Subtracting this from the residuals calculated when fitted to the whole dataset gives the sum of squares due to the garden. 
+
+We can see this represented in the following graph.
+
+<<label=aov1, include=false, echo=FALSE>>=
+plot(ozone, xlab="sample index", pch=c(1,2), ylab="Ozone concentration (ppm)" ,
+     main="Ozone concentration in two gardens")
+abline(h=mean(ozone), col='gray')
+abline(h=mean(ozone[garden=="A"]),lty=2, col='red')
+abline(h=mean(ozone[garden=="B"]),lty=2, col='darkgreen')
+arrows(1:20, ozone,1:20,mean(ozone), code=0, col='lightgray',lwd=5)
+arrows(1:10 * 2, ozone[garden=="B"],1:10*2,mean(ozone[garden=="B"]), code=0, 
+       col='darkgreen',lwd=2, lty=3)
+arrows((1:10 * 2)-1, ozone[garden=="A"],(1:10*2)-1,mean(ozone[garden=="A"]), code=0, 
+       col='red', lwd=2, lty=3)
+legend(2,7,c("garden A","garden B"), pch=c(1,2))
+@
+
+<<aov1plot, fig=TRUE, echo=FALSE>>=
+<<aov1>>
+@
+
+We can see the mean of the whole dataset (grey line) and the respective residuals. The mean for each garden is shown along with the residuals for that garden in the appropriate (dashed) colour. The grey outline is the total residual for the dataset (from the dataset mean).
+
+This process is simplified in the \texttt{aov()} command.
+
+<<>>=
+aov(ozone~garden)
+@
+
+That gives us the aw data. We can see that the total variance is just under 53 so the gardens explain about 1/3 of the variance in our data. Is this significant?
+
+The ratio of the garden mean sum of squares to the residual mean sum of squares  gives the F-statistic. This can then be assesed to see if the garden parameter has a signficant contribution to the measured ozone value.
+
+Once again, R has this packaged with the \texttt{summary()} function
+
+<<>>=
+summary(aov(ozone~garden))
+@
+
+The garden selection makes a significant contribution to the measurement of ozone. If we treat the analysis as a linear model (as we did for the regression fit in workshop 3) then we can calculate an effect size through the $R^2$ value. Again, R provides a function for this. 
+
+<<>>=
+summary.lm(aov(ozone~garden))
+@
+
+The $R^2$ value can be clearly seen and shows that the garden selection contributes about 30\% to the variance. 
+
+\fcolorbox{Red}{SkyBlue}{\parbox{\textwidth}{The ANOVA summary produced with \texttt{summary.lm()} may be a little confusing. What is this \emph{Intercept}? Why is the estimate for garden B nothing like \texttt{mean(ozone[garden=="B"])}?
+
+The Intercept is the estimate for the first category (garden A in this case). The value shown for garden B is the difference between garden A and garden B, ie \Sexpr{round(mean(ozone[garden=="B"]),4)} - \Sexpr{round(mean(ozone[garden=="A"]),4)} If there were more categories then these would also be listed with the difference between them and the Intercept.}}
+
+\texttt{plot(aov(ozone~garden))} gives several informative plots.
+
+\fcolorbox{Red}{SkyBlue}{\parbox{\textwidth}{Remember from workshop 3 that \emph{\textbf{significance}} refers to the reliability of the result. A result can be highly significant but of very low magnitude. In this case the \emph{explanatory power} is the ratio of the explained variance (from the gardens) to the total variance in the ozone measurement}}
+
+\subsubsection{More than one condition}
+
+Often we have more than two categories for a variable, or more than one variable (with multiple categories in each). These are known as factorial experiments. Applying the same sort of analysis of variance works well in these cases. 
+
+\textcolor{BrickRed}{Load the file \texttt{growth2.txt} as the variable \texttt{weights}}\footnote{This example is taken from the Crawley book. The raw data is available at http://www.bio.ic.ac.uk/research/crawley/statistics/data.htm}
+
+<<>>=
+weights <-read.table("growth2.txt", sep="\t", header=T)
+attach(weights)
+@
+
+This dataset describes the response (weight gain) of farm animals to three grammene crop diets with four additional supplements.
+
+Let's look at the aggregate data by diet and supplement. We can use the \texttt{tapply()} function to apply a function to a set of data grouped according to a factor or group of factors.
+
+<<>>=
+tapply(gain, list(diet,supplement),mean)
+@
+
+Plotting this table gives:
+
+<<bar1, include=FALSE>>=
+barplot(tapply(gain, list(diet,supplement),mean), beside=T, col=c("red", "orange", "yellow"))
+legend(6.3,26.3,c("Barley","Oats","Wheat"), fill=c("red", "orange", "yellow"))
+@
+
+<<bar1fig, fig=TRUE,echo=FALSE, height=6,width=8>>=
+<<bar1>>
+@
+
+We can carry out the ANOVA in much the same way as before, using \texttt{aov()} and \texttt{summary.lm()}. However we have to be careful how we specify the model.
+
+<<>>=
+summary.lm(aov(gain~diet+supplement))
+@
+
+This gives us a detailed breakdown of the \emph{independent} effects of diet and supplement. Each parameter is estimated and cahracterised independently. But what if there is some interaction between the two sets of factors?
+
+If we change the model from \texttt{gain~diet\textcolor{red}{+}supplement} to \texttt{gain~diet\textcolor{red}{*}supplement} we can evaluate the interdependence of the factors.
+
+<<>>=
+summary.lm(aov(gain~diet*supplement))
+@
+
+We see from the table that only five parameters are significantly different from the intercept. The interaction terms are not significant, indicating no interaction between diet and supplement. 
+
+In addition, some factors are not significantly different to one another (less than 2 s.e. apart) so could be grouped in a final model. The factor in question is the supplement, and both agrimore and the control can be grouped, as can supersupp and supergain.
+
+\fcolorbox{Red}{SkyBlue}{\parbox{\textwidth}{What is an interaction? An interaction occurs when the effect seen for a particular combination of factors is significantly different to the sum of the effects seen for the two factors independently.}}
+
+\subsection{Categorical outcomes}
+
+A categorical outcome is one where the response is classified into discrete categories.
+
+\subsubsection{Non-calculable values}
+
+A non-calculable value is one where performing arithmetic (e.g. the calculating of means) makes no sense, either because the number itelf is a convenient label for an ordering and has no quantitative merit beyond that, or the model distribution is not suitable for such calculations. In these cases  a rank test is in order. 
+
+\fcolorbox{Red}{SkyBlue}{\parbox{\textwidth}{\textbf{What is an incalculable number?} '\emph{Please indicate your satisfaction with this explaination on a scale of 1-10 where 1 is extremely dissatisfied and 10 is completely satisfied}' Is a value of 3 really half that of a value of 6 for this question? The finishing order of athletes in a race is another uncalculable number. Is finishing 3rd really 1.5 times finishing second? Does average finishing position actually mean anything? These are numbers thatwe shoudl not do calculations on but which the relative ordering canbe used to infer results. }}
+
+Every year the Hawkhill Harriers, a local running club, take on the Dundee Wheelers, a cycling club, in a cross country race. There is always some debate over whether the course that year favours runners or cyclists and any attempt to determine this from the top placings is subject to influence by one or two exceptional athletes. A signed rank test is the statisticians way to resolve this age old dispute.  
+
+The finish results are listed in \texttt{race.txt}. We need to split them into two groups and then  perform the Wilcoxon test on them.
+
+<<>>=
+race <-read.table("race.txt", sep="\t", header=T)
+cyclists<-race$finish[race$Club=="Wheelers"]
+runners<-race$finish[race$Club=="Harriers"]
+wilcox.test(cyclists, runners)
+@
+
+The slight significance in the data lends itself to meany interpretations. One might be that cyclists are generally better than runners. An alternative hypothesis may be that the course was slightly more favourable this year for the cyclists.
+
+\subsubsection{Statistics without numbers}
+
+In some cases we have no numerical data, just a category choice.  This can be modelled with a binomial distribution. Is the proportion of A to B something we would expect by chance? 
+
+A coin is flipped 6 times. What is the probability of at least 5 heads? we use the \texttt{binom.test()} method to test this. This takes two parameters, the number of 'successes' and the number of tests. An optional parameter specifies the likelihood of any one test failing (by default \texttt{p=0.5})
+
+In our case we have 1 failure (tails) out of 6 attempts. This gives 5 successes.
+
+<<>>=
+binom.test(5, 6)
+@
+
+As can be seen, the tested hypothesis is that the probability of heads is not equal to 50\%. In this case the occurence of 5 out of 6 heads is not significant. \textcolor{BrickRed}{\emph{\textbf{Challenge:} Would five heads in a row be significantly suspicious?\footnote{For the socially accepted significance level of 0.05}}}
+
+
+Instead of coins, let's turn to dice. A dice is rolled 6 times and 5 of those times a 6 is rolled. Is this suspicious? 
+
+In this case we need to set the probability of success. For a standard 6-sided die\footnote{You did check the die has the normal numbers, didn't you?} this is 1 in 6, or 0.1667.
+
+<<>>=
+binom.test(5,6, p=1/6)
+@
+
+I'd definitely want a close look at that die.
+
+
+\subsubsection{Testing proportional data} 
+Similarly, if we have two proportions, we can test to see whether they are significantly different. The \texttt{prop.test()} will take two distributions as two lists (\texttt{c(trials, successes)}) and assess whether the chance of success is significantly different. 
+
+Let us assume that we have a round of promotions and that 4 ladies and 196 men have been appointed. This might seem like a gender imbalance, but there were 3720 men applying for promotion and only 40 ladies. Is this a statistically different success rate between ladies (10\%) and men(6\%)?
+
+\texttt{prop.test()} takes two arguments. The first is a list of successes, the second a list of trials. 
+
+<<>>=
+prop.test(c(4,196), c(40,3720))
+@
+
+Under the hood this is performing a Chi-squared test which is a categorical test.
+\subsubsection{The Chi-squared test (for when you have large counts)}
+
+The Chi-squared test examines distortion in contingency tables. By constructing the table we can establish the expected proportions in each cell from the row and column sums, and then determine how far our results deviate from that. The likelihood of this happening by chance can then be established to give the statistical significance of the result.
+
+\fcolorbox{Red}{SkyBlue}{\parbox{\textwidth}{\textbf{What is a contingency table?} Where we have two (or potentially more) factors with two or more categories then we can construct a table where each axis represents the categories from one factor. Each box in the table is then a count of the number of data points with that combination of factor values.}}
+
+The $\chi^2$ value is the sum of the squared errors divided by the expected values. We can then test this value to see if it is significantly larger than expected.
+
+\begin{tabular}{|l|c|c|c|}
+\hline
+ & Blue eyes & Brown Eyes & Row total \\
+\hline
+Fair Hair & 38 & 11 & 49 \\
+\hline
+Dark Hair & 14 & 51 & 65 \\
+\hline
+Column totals & 52 & 62 & 114 
+\\
+\hline
+
+\end{tabular}
+
+The row totals give the expected proportion for fair and dark hair (49/114 and 65/114 respectively) and the column totals the expected proportion for blue and brown eyes respectively. From this we can determine that the expected count using simple probabilities for fair hair and blue eyes is 49/114 * 52/114 *114, or 22.35. Completing the table can now be done by simple arithmetic so that the column and row totals are correct.
+
+We can now calculate the $\chi^2$ statistic
+
+\[ \chi^2 = \Sigma \frac{(O - E)^2}{E}\]
+
+which evaluates to 35.33, and this value can be tested using the \texttt{pchisq()} function. We first need to establish the number of degrees of freedom. This is calculated as the product of the degrees of freedom in each factor. The degrees of freedom for a factor is the number of levels - 1.
+
+For a $2\times 2$ table the number of degrees of freedom is $(2-1)\times(2-1)$ which is 1.
+
+<<>>=
+pchisq(35.33, 1)
+@
+
+This is a highly significant result. Hair colour and eye colour are strongly dependent.
+
+R, as ever, has one function that will do all of this in one go. First we will construct our contingency table as a matix, then we will call the \texttt{chisq.test()} function with the matrix. 
+
+To construct the matrix we give R a list of values and the number of rows in the matrix. R fills the matrix up by column from top to bottom
+
+<<>>=
+count <- matrix(c(28,14,11,51), nrow=2)
+chisq.test(count)
+@
+
+The chi-squared test is a reasonable model but not a perfect description of the distribution. There are some corrections made, in this case the Yates correction, that adjust the calculation from that described above. This is especially important for small counts (<30 in a cell)
+
+
+\subsubsection{Fisher's exact test (For when you have small counts)}
+
+What is a small count? The Chi-squared test breaks down completely if any of the table cells has an expected count of less than 5. The Fisher's exact test is far better in these cases. 
+
+\fcolorbox{Red}{SkyBlue}{\parbox{\textwidth}{Why don't we just use the Fisher's test? The exact test relies on the calculation of factorial numbers which can be very time consuming, especially as the numbers get bigger. We therefore restrict use of the Fisher's test to smaller numbers}}
+
+R has a function \texttt{fisher.test()} that can take a matrix of counts as prepared previously. However it also has the ability to take two vectors (lists) of factors (which should refer to the same datapoints in the same order) and calculate the contingency tables for you.
+
+In any year 10 essay titles are set from which students have a free choice. This means that some essay titles are selected in some years and not in others. Is there a significant difference betweent eh two years in the table below?
+
+\begin{tabular}{|l|l|l|}\hline
+Year & 2010 & 2011 \\
+\hline
+titles chosen & 6 & 2 \\ \hline
+not chosen & 4 & 8 \\ \hline
+\end{tabular}
+
+<<>>=
+x<-matrix(c(6,4,2,8), nrow=2)
+fisher.test(x)
+@
+
+\end{document}

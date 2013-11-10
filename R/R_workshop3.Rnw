@@ -1,0 +1,366 @@
+\documentclass{article}
+\usepackage{framed}
+\usepackage{lipsum}
+\usepackage{mathptmx}
+\usepackage[svgnames,usenames,dvipsnames]{xcolor}
+\definecolor{shadecolor}{named}{lightgray}
+
+\addtolength{\oddsidemargin}{-.875in}
+  \addtolength{\evensidemargin}{-.875in}
+  \addtolength{\textwidth}{1.75in}
+
+  \addtolength{\topmargin}{-.875in}
+  \addtolength{\textheight}{1.75in}
+\usepackage{rotating}
+\addtolength{\fboxrule}{\fboxrule}
+\setlength{\parskip}{8pt}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontshape=sl, formatcom=\color{Cerulean}}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{fontshape=sl, formatcom=\color{OliveGreen}}
+
+\SweaveOpts{concordance=TRUE}
+\setkeys{Gin}{width=0.6\textwidth}
+
+\setcounter{section}{3}
+\section{Workshop 3}
+
+\subsection{Learning objectives}
+\begin{itemize}
+  \item To save commands as a script file so they can be reused.
+  \item To fit a line to data
+  \item To determine goodness of fit by calculating residuals
+  \item To understand how much variance is explained by a model
+  \item To understand the meaning of \emph{significance} and \emph{Explanatory Power}
+  \item To assess the quality of a model fit 
+\end{itemize}
+
+\subsection{Recap}
+
+In the previous workshops we had loaded a dataset containing data from athletes.  We had then used these data to calculate the Body Mass Index. We will reuse these data for this workshop. \textcolor{BrickRed}{Set your working directory to the folder in which you saved the data files (using \emph{Session > Set Working Directory > \ldots})}. 
+We had plotted the data and drawn a 'best fit' straight line through it using the \texttt{lm()} function. The mathematics behind regression fitting of straight lines is covered elsewhere \footnote{See for example chapter 8 of \emph{Crawley, M.J.} Statistics: An Introduction using R [ISBN 9780470022986]}, in this workshop we will be looking at how they are used and analysed.
+
+
+\textcolor{BrickRed}{Select the \emph{File > New > R Script} menu option.} A new pane will open at the top left. 
+
+\textcolor{BrickRed}{Click on the pane and type in the following:}
+
+<<echo=FALSE>>=
+ais <- read.table("sport.txt", sep="\t", header=T)
+attach(ais)
+BMI <- Weight/((Height/100)**2)
+@
+{\color{BrickRed}
+\begin{verbatim}
+ais <- read.table("sport.txt", sep="\t", header=T)
+attach(ais)
+BMI <- Weight/((Height/100)**2)
+plot(Height~Weight)
+abline(lm(Height~Weight), col="red")
+\end{verbatim}}
+
+This set of commands will return us to the state at which we completed the last session. \textcolor{BrickRed}{Click on \emph{File > Save As \ldots} and save the file as \texttt{myscript.R}}
+
+\textcolor{BrickRed}{Now click on the console pane (lower left) and enter }
+<<eval=FALSE>>=
+source("myscript.R")
+@
+
+R will now run the commands you have saved in your script file.
+
+\fcolorbox{red}{SkyBlue}{\parbox{\textwidth}{When preparing figures for publicationit can be a good idea to write a script file to generate them. This lets you easily reproduce them, records where the data came from and allows changes to be made with very little effort.}}
+
+<<label=plot3-0, include=FALSE>>=
+plot(Height~Weight)
+abline(lm(Height~Weight), col="red")
+@
+
+<<label=plot3-0fig, fig=TRUE,echo=FALSE>>=
+<<plot3-0>>
+@
+
+The data look like they follow a pattern indicated by the straight line, but how well do they really follow it? 
+
+Every experimental observation can be described as a sum of the value expected from the model plus some error value. i.e for observation number $i$ the values are:
+
+\[ \textstyle{Obs}_i = \textstyle{Model}_i + \textstyle{Error}_i\]
+
+The \emph{error} or deviation of the observed value from the model is known as the \emph{residual} and can be readily retrieved from the fitted model with the command \texttt{residuals()}
+
+<<>>=
+residuals(lm(Height~Weight))
+@
+
+These values can be visualised in a plot.
+
+<<label=plot3-1, include=FALSE>>=
+plot(residuals(lm(Height~Weight))~Weight, col='darkgreen', lty=2)
+abline(h=0, lty=3, lwd=2, col=2)
+@
+
+<<label=plot-1fig, fig=TRUE, echo=FALSE>>=
+<<plot3-1>>
+@
+
+The mean residual is shown with a dashed red line. The sum of residuals is always zero (or as close to as a computer can calculate) so the mean will be zero. We can get an idea of how good or poor the fit is by plotting a histogram of the residuals with the \texttt{hist()} function. (The \texttt{breaks=} controls how many bars are plotted)
+
+<<label=plot3-2, include=FALSE>>=
+hist(residuals(lm(Height~Weight)), breaks=20)
+@
+
+<<label=plot3-2fig, fig=TRUE,echo=FALSE>>=
+<<plot3-2>>
+@
+
+\fcolorbox{red}{SkyBlue}{\parbox{\textwidth}{What is a residual? It can also be referred to as the error, or the deviation from prediction. The red line we have fitted to the data is the \emph{Model}. Based on what we have already seen, this is our best estimate of where a new data point should appear. The residual describes how far from this predicted/fitted line the observed data actually lies. The better the model, the smaller the residuals. The analysis we will do later makes use of the residuals to calculate how good the model is.}}
+
+Eyeballing the two plots, the residuals look to be evenly distributed along the plot and their magnitude approximates a normal distribution. 
+
+We can also plot the residuals against the model. This requires learning the \texttt{arrows($x_1$,$y_1$,$x_2$,$y_2$, \ldots)} command which plots an arrow from ($x_1,y_1$) to ($x_2,y_2$). In this case we will plot with $x$ as the weight,  $y_1$ value will be our observed value, and $y_2$ our predicted value for $y$ given $x$. The predicted value is available with the function \texttt{predict()}.
+
+<<label=plot3-3, include=FALSE>>=
+plot(Height~Weight)
+abline(lm(Height~Weight), col='red')
+arrows(Weight, Height, Weight, predict(lm(Height~Weight)), 0, 0, col='blue')
+@
+
+<<label=plot3-3fig, fig=TRUE,echo=FALSE>>=
+<<plot3-3>>
+@
+
+The two \texttt{0} parameters control the size and angle of the arrowheads. We have set this to 0 so no arrowhead is shown. More inforomation on the \texttt{arrows()} command can be found with \texttt{help(arrows)}
+
+\fcolorbox{red}{SkyBlue}{\parbox{\textwidth}{\textbf{The \texttt{arrows()} command} This takes the form \texttt{arrows(x1,y1,x2,y2,arrowheadlength, arrowheadangle, mode, \ldots)} draws a line from the point at coordinate $x_1$,$y_1$ to coordinate $x_2$,$y_2$. The arrowhead sides have a length of \emph{arrowheadlength} (in inches - you have to play with this to get the desired results for your plot), and the sides of the arrow are at an angle of \emph{arrowheadangle} from the straight line. An angle of 30-45 degrees gives a nice looking arrow. An angle of 90 degrees gives a flat bar like an error bar. The \emph{mode} parameter describes whether arrowheads will be drawn at the start, end, both ends or neither end of the arrow.}}
+\subsubsection{Determining the goodness of fit}
+
+The plot of Height against Weight indicates a relationship between the two variables. How well does \texttt{lm} work when the data shows a less clear relationship?
+
+Take a look at the plot of BMI against percent body fat. It might be thought a reasonable hypothesis that BMI (as a commonly used measure of obesity) is related to percent body fat.
+
+<<label=plot3-4, include=FALSE>>=
+plot(BMI~Bodyfat)
+abline(lm(BMI~Bodyfat), col='red')
+@
+
+<<label=plot3-4fig,fig=TRUE,echo=FALSE>>=
+<<plot3-4>>
+@
+
+\texttt{lm} is happy to plot a best fit line throguh any dataset, whether it makes sens or not. We can explore the ability to which our x variable (the explanatory variable) explains the observations we get for the y value (the response variable).
+
+The amount of the variation in \emph{y} which is explained by the model $SSR$ (the line fitted by \texttt{lm} and known as the regression sum of squares) is the variation in \emph{y} as $SSY$ minus the variation remaining after the model has been fitted (the mean sum of squares of the error, $SSE$) 
+
+
+If:
+\[ SSY = SSR + SSE \]
+
+then:
+\[ SSR = SSY - SSE \]
+
+\[ SSY = \Sigma (y-\bar{y})^2 \] 
+
+where $\bar{y}$ is the mean value of $y$
+
+\[ SSE = \Sigma (y-\hat{y})^2 \] 
+
+where $\hat{y}$ is the predicted value of $y$ from the model. $y - \hat{y}$ is the residual which we have plotted before.
+
+\fcolorbox{red}{SkyBlue}{\parbox{\textwidth}{You need to look closely at the equations. $\bar{y}$ is a $y$ with a -
+over it. $\hat{y}$ is a $y$ with a hat ( \string^ ) over it.}}
+
+The degree of fit ($r^2$) is the proportion of $SSY$ which is explained by the model, ie $\frac{SSR}{SSY}$, and this is the square of the correlation coefficient $r$ for the two datasets. 
+
+Let's calculate these values. We'll calculate SSY for the Height/Weight comparison as SSYhw and for the BMI/Bodyfat as SSYbb, and likewise SSEhw, SSEbb and then SSRhw SSRbb.  From the SSR and SSY values we can determine $r^2$ as RSQhw and RSQbb.
+
+First let's calculate the results for Height/Weight
+
+<<>>=
+SSYhw <- sum((Height - mean(Height))^2)
+SSEhw <- sum(residuals(lm(Height~Weight))^2)
+SSRhw <- SSYhw - SSEhw
+RSQhw <- SSRhw/SSYhw
+sqrt(RSQhw)
+@
+
+Now calculate the results for BMI/Bodyfat
+
+<<>>=
+SSYbb <- sum((BMI-mean(BMI))^2)     
+SSEbb <- sum(residuals(lm(BMI~Bodyfat))^2)
+SSRbb <- SSYbb - SSEbb
+RSQbb <- SSRbb/SSYbb
+sqrt(RSQbb)
+@
+
+An $r^2$ value of near 1 indicates that most of the variation in our observed response variable is explained by the explanatory variable. If $r^2$ is close to 0 then very little of the variation can be explained by the explanatory variable.
+
+In the two analyses we have performed, $r^2$ for the Height \emph{vs} Weight comparison is substantial, indicating that over half of the variation in Height can be explained by the value of Weight. In the BMI \emph{vs} Bodyfat analysis the value of $r^2$ is very close to 0, indicating very little explanatory power for Bodyfat with respect to BMI.
+
+\textcolor{BrickRed}{\emph{\textbf{A point to ponder:} Is this a genuine result? What aspects of the experimental design might influence our confidence in the result? Do all sports act the same?}}
+
+\textcolor{BrickRed}{\emph{\textbf{Challenge:} Is the explanatory power the same for all sports or genders? Can you find the sport or set of sports with the strongest and weakest correlation for Height~Weight and BMI~Bodyfat, and does Gender make a difference? }}
+
+\subsubsection{Explanatory power and significance}
+
+How reliable are these results? Should we always expect the same lines (gradient and intercept) to be fitted if we sample more athletes? In order to establish this we need to determine the uncertainty associated with the intercept and the uncertainty associated with the gradient. We cannot calculate these uncertainties until we know the error variance $s^2$.
+
+Variance is calculated as the \textbf{sum of squares} divided by the \textbf{number of degrees of freedom}. Degrees of freedom is the number of observations minus the number of estimated parameters.
+
+For SSY, the number of estimated parameters is 1, $\bar{y}$ in the formula $\Sigma (y - \bar{y})^2$ so the number of degrees of freedom is $n-1$.
+
+For SSE the number of estimated parameters is 2, $a$ and $b$ in the formula $\Sigma (y - a - bx)^2$ ($\hat{y} =  a + bx$) so the number of degrees of freedom is $n - 2$.
+
+For SSR the number of extra parameters in addition to the mean of $y$ is 1, the gradient of the line giving the regression degrees of freedom as 1.
+
+\fcolorbox{red}{SkyBlue}{\parbox{\textwidth}{
+\textbf{What are \emph{Degrees of Freedom}?} Degrees of Freedom refers to the number of parameters, or values, that can be allowed to change whilst still getting the same result. For example, for a certain mean value of a set of data we can allow all bar one of the data points to vary as they wish. That last data point \emph{must} then take a specific value if the set is to have that mean. The degrees of freedom are therefore \emph{N -1} where N is the number of datapoints. For the regression fit, the data must have a specific mean, so the number of parameters that can be allowed to vary at will is all bar one. That last parameter (whether it be the intercept or the gradient) is constrained by the requirement to fit the mean. So the degrees of freedom for our fit is \emph{Q -1} where \emph{Q} is the number of parameters in the fitted equation.
+}}
+
+The \emph{F-ratio} is given by the variance in the regression, divided by the variance in the Error. We can then see how likely it is to get an F-ratio that high by chance (ie establish it's significance.)
+
+To calculate the F-ratio for Height \emph{vs} Weight, first calculate the variance in SSE. Note the $-2$ to get the correct number of degrees of freedom. 
+
+<<>>=
+varSSEhw <- SSEhw / (length(Height)-2)
+@
+
+Then calculate the variance in the regression:
+<<>>=
+varSSRhw <- SSRhw / 1
+@
+
+Then calculate the F-ratio:
+<<>>=
+fratio <- varSSRhw/varSSEhw
+fratio
+@
+
+Is this a significant value? The F distribution can be accessed with several functions in R. The \texttt{pf()} function takes three arguments - the F-ratio, the degrees of freedom for the numerator, and the degrees of freedom for the denominator. It then returns the proportion fo the F-distribution for those degrees of freedom that has that F-ratio or lower.
+
+<<>>=
+pf(fratio, 1, length(Height)-2)
+@
+
+We want the inverse, the proportion that would have that score or higher. This is our \emph{p}-value for the fit.
+
+<<>>=
+1-pf(fratio, 1, length(Height)-2)
+@
+
+The score is very close to 0, so close it can't be measured. There is a highly significant relationship between Weight and Weight with good explanatory power.
+
+BMI and percent body fat show a low correlation (<20\%). Is there a significant relationship between the two variables?
+
+\textcolor{BrickRed}{\emph{\textbf{Challenge:} Determine the p-value for BMI vs Bodyfat.}}
+
+\subsubsection{The relationship between significance and explanatory power.}
+
+As has been seen above, explanatory power and significance are related but distinct concepts. Explanatory power describes the magnitude of any observed relationship between the $x$ and $y$ variables. Significance describes the likelihood that this observed association is genuine.
+
+\setlength{\unitlength}{0.5cm}
+\begin{picture} (20,20)
+\thicklines
+\put(6,6){\line(0,1){10}}
+\multiput(6,11)(1,0){10}{\line(1,0){0.3}}
+\put(16,10.84){\emph{Significance Threshold}}
+\put(6,6){\line(1,0){16}}
+\put(12,4){\vector(1,0){4}}
+\put(4,10){\vector(0,1){6}}
+\put(6,4){\emph{Explanatory power}}
+\put(3.9,6){\begin{sideways}\emph{Significance}\end{sideways}}
+\put(7,7.2){\fbox{\parbox[b][4em][t]{2.7cm}{\textbf{Nothing of note: Gather more data}}}}
+\put(16.2,7.2){\fbox{\parbox[b][4em][t]{2.7cm}{\emph{Interesting: May be a fluke. Get more data}}}}
+\put(7,12){\fbox{\parbox[b][4em][t]{2.7cm}{\emph{Conclusively  Poor association }}}}
+\put(16.2,12){\fbox{\parbox[b][4em][t]{2.7cm}{\textbf{Conclusive and Interesting}}}}
+
+\end{picture}
+
+With low significance, no conclusions can be drawn from the data except that the number of data points is probably insufficient. High effect sizes at low significance are not conclusions - they are suggestive hints that may warrant further investigation to see if the experiment was just an artefact. 
+
+With high significance conclusions can be drawn. Even small relationships can be identified with high significance. However, a high explanatory power is needed for a predictive relationship between $x$ and $y$.
+
+\textcolor{BrickRed}{\emph{\textbf{Challenge:} Classify the sports into four categories for Weight vs body fat. Which of them demonstrate a significant relationship? Which demonstrate a high explanatory power? Which demonstrate both a high explanatory power and a significant relationship?}}
+
+\subsubsection{Analysing the variance of the slope and the intercept}
+
+The standard error in the slope of the line $y=a+bx$ ($se_{b}$) is given by: \[ se_{b} = \sqrt{\frac{s^2}{SSX}}\]
+where $s^2$ is the error variance (sum of squares of the error divided by the number of degrees of freedom in the error; $n - 2$) and $SSX$ is the corrected sum of sqaures of X\footnote{for a derivation of $SSX$ see Crawley chapter 8.} given by \[ SSX = \Sigma x^2 -\frac{(\Sigma x)^2}{n}\]
+
+For our Height \emph{vs} Weight analysis, Weight is the $x$ variable so this can be calculated as 
+
+<<>>=
+seb <- sqrt( (sum(residuals(lm(Height~Weight))**2) / (length(Weight)-2)) 
+            / (sum(Weight**2)-((sum(Weight)**2)/length(Weight)))  )
+seb
+@
+
+So for our Height \emph{vs} Weight analysis the slope is 0.546 $\pm$ 0.031 (Standard Error).
+
+\emph{\textbf{Challenge:} What is the slope $\pm$ SE for the BMI \emph{vs} Bodyfat relationship?}
+
+The calculation of the Standard Error for the intercept $se_a$ is a little more involved.
+\[se_a = \sqrt{\frac{s^2 \Sigma x^2}{n \times SSX} }\]
+
+It can be seen that this is equivalent to: \[ se_a = \sqrt{ se_b^2 \times \frac {\Sigma x^2} {n}}   \]
+
+<<>>=
+sea = sqrt( seb**2 * sum(Weight**2)/length(Weight))
+sea
+@
+
+So the intercept for the Height \emph{vs} Weight plot is 139.2 $pm$ 2.4 (Standard Error).
+
+\subsubsection{Analysis of regression analysis the quick way}
+
+The quick way to analyse the fit of the linear model is to use the \texttt{summary} function which calculates the errors and variances we have laboriously performed earlier.
+
+<<>>=
+summary(lm(Height~Weight))
+@
+
+Another useful feature is the plotting of various diagnostics when the model is passed to plot. This will print four plots. Press the <RETURN> key to move between plots. 
+
+<<label=plot3-5, include=FALSE>>=
+plot(lm(Height~Weight))
+@
+
+<<lable=plot3-5fig, fig=TRUE,echo=FALSE>>=
+par(mfrow=c(2,2))
+<<plot3-5>>
+@
+
+The first plot (top left) illustrates the residuals \emph{vs} the predicted values. This should fit a straight line (shown in red). A very few outliers distort this set. 
+The second plot (top right) shows the ranked qqnorm plot. An ideal fit would follow the diagonal. Significant deviations (a banana or S shape) sould indicate that the model being fitted is wrong. 
+The third plot (lower left) shows the same as the upper left but with the absolute value of the residuals, scaled proportionately to the $x$-value. A good plot will be a straight line. A bad plot will show a triangular shape, indicating a bad fitting model.
+The fourth plot describes the influence of each point. The $x$-axis is the influence, the $y$ axis the residual for that point. A contour line for Cook's distance is shown (just appearing on the lower right corner.) Strongly influential points will be to the right, points which distort the model will be away from the 0 line. In this plot there are a small number of highly influential points that may distort the fit.
+
+\textcolor{BrickRed}{\emph{\textbf{Challenge and discussion:} Which of male or female athletes fit best to Height \emph{vs} Weight and BMI \emph{vs} Bodyfat? Do certain sports distort these fits?}}
+
+\subsection{Summary}
+
+A short summary of useful commands that you have used in this session.
+
+<<eval=FALSE>>=
+model <- lm(Ydata ~ Xdata)
+@
+Fit Ydata to Xdata and store the result in model.
+
+<<eval=FALSE>>=
+summary(model)
+@
+Provide all the analysis summary for the model.
+
+<<eval=FALSE>>=
+plot(Ydata~Xdata)
+abline(model)
+@
+Plot the graph and draw the best fit line through it.
+
+<<eval=FALSE>>=
+plot(model)
+@
+Plot the four graphs that analyse the fit of the model.
+
+\end{document}

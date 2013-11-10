@@ -1,0 +1,300 @@
+\documentclass{article}
+\usepackage{framed}
+\usepackage{lipsum}
+\usepackage[svgnames,usenames,dvipsnames]{xcolor}
+\definecolor{shadecolor}{named}{lightgray}
+\addtolength{\oddsidemargin}{-.875in}
+  \addtolength{\evensidemargin}{-.875in}
+  \addtolength{\textwidth}{1.75in}
+
+  \addtolength{\topmargin}{-.875in}
+  \addtolength{\textheight}{1.75in}
+\setlength{\parskip}{8pt}
+\setlength{\parindent}{0pt}
+\begin{document}
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontshape=sl, formatcom=\color{Cerulean}}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{fontshape=sl, formatcom=\color{OliveGreen}}
+\SweaveOpts{concordance=TRUE}
+\setkeys{Gin}{width=0.7\textwidth}
+\section{Workshop 1}
+
+\subsection{Learning objectives}
+
+\begin{itemize}
+  \item To be able to start and use R-studio, becoming familiar with the different windows and the R environment
+  \item To read in data from tablular text files.
+  \item To calculate descriptive statistics for data and subsets of data
+  \item To produce appropriately labelled plots from one set of x-y data
+\end{itemize}
+
+
+\subsection{Starting R}
+
+Launch R Studio. A window appears with a console window (and others) inside. If you launch R in a terminal (on Mac or Linux) then the prompt changes after some version boilerplate.
+ 
+ The blue \texttt{>} in the Console window is where we will be typing. R is a command line driven program so all commands are typed (or read from a script you prepared earlier. The \texttt{>} in this exercise is where you type - lines starting with a number in square brackets like this \texttt{[1]} are the computer's response. Don't type the \texttt{>} at the start of the line. R is a very fussy language - all the commands must be typed in exactly with the right number of brackets of the right type. If you get an error, try to spot where the mistake is and attempt it again.
+ In particular check that you haven't mixed up a \texttt{1} (one) and \texttt{l} (ell), or \texttt{|} (pipe, a vertical line) and \texttt{/} (forward slash), especially when displayed in a slanting or italic font. 
+ 
+At the back of this document is a table of commands and options that you find useful. At the moment it is blank. As you discover seful commands, make a note in this table as a reminder for when you perform experimental analyses.
+ 
+\subsection{The command prompt}
+
+Try typing in a simple arithmetic expression:
+
+<<>>=
+1+2
+@
+
+The computer has performed the calculation and returned a single value.
+R typically works on sets (vectors or lists) of values. We can describe a set by placing it inside \texttt{c( \ldots )}  with each value separated by a comma. When we perform a calculation, R works on all members of the set.
+
+<<>>=
+c(1,2) + 1
+@
+
+As our set contains two values, R gives us two values in return.
+We can perform calculations using sets as well. R will perform the operation between the first elements of each set, then the second, then the third and will recycle the shorter set as many times as necessary.
+
+<<>>=
+c(1,2) * c(3,4)
+@
+
+\emph{Try different sets and different operators ( \texttt{+ - * / **} are all valid) A list of operators and a crib sheet for commands is given at the end of this document}
+
+\subsection{Variables} 
+
+We can save values for reuse by giving them names
+
+<<>>=
+myvalues <- c(1,2,3,4,5)
+myvalues
+@
+
+These names can be anything that isn't an existing command or keyword. 
+Note that we assign them right to left \texttt{variable <- data} and that the symbol \texttt{<-} is typically used instead of \texttt{=}.
+
+We can then reuse these names wherever we want.
+
+<<>>=
+myvalues + 1
+c(myvalues, myvalues)
+@
+
+ Note that \texttt{c(\ldots)} has joined (concatenated) the two sets into one longer set.
+
+<<>>=
+morevalues <- c(myvalues, myvalues + 5)
+morevalues
+length(morevalues)
+@
+
+We can get basic statistics on the set with the functions \texttt{mean()}, \texttt{median()}, \texttt{sd()} (for standard deviation) and \texttt{var()} (for variance). Standard Error can be calculated by taking the square root (\texttt{sqrt()}) of the variance divided by the number of datapoints. You can find more information about any function by caling \texttt{help( \emph{function name} )}.
+
+<<>>=
+mean(morevalues)
+median(morevalues)
+sd(morevalues)
+sqrt( var(morevalues) / length(morevalues) )
+@
+
+Help in R is easily obtained by typing \texttt{help(function)} to get help on how to use \texttt{function()}. Try this to see the options that can be used with \texttt{sd} (ie. \texttt{help(sd)} )
+
+\subsubsection{Setting your Working Directory}
+Typically you will be keeping your data well organised and have a specific directory (folder) in which you wish to be working. We will refer to this as the \textbf{working directory} and can set this in R Studio.  (You will probably choose to have  a different working directory for each project). \textcolor{BrickRed}{From the menu select \emph{Session > Set Working Directory > Choose Directory \ldots} and navigate to the directory in which you have saved your data. You will not see any files in the directory - just select it anyway by clicking }\fcolorbox{SkyBlue}{SkyBlue}{Choose}. 
+
+\includegraphics[width=3in]{R-setwd.png}
+
+\subsection{Reading from a file}
+
+We can use the `scan()` function to read data from a text file into R variables.
+If we have data stored in the file \emph{Dataset1.txt} then we can read this in to a variable in R. \textcolor{BrickRed}{Download the file from the VLE to the folder you created for the project and take a look at the file using a program such as Wordpad.}\footnote{If this workshop is being run outside a module then the workshop leader will point you tot he correct URL for the files.}
+
+\begin{verbatim}
+
+    3.7
+    7.0
+    9.6
+    9.4
+    8.9
+  and so on ...
+\end{verbatim}
+
+Note that this is a plain text file. R cannot read data from Word documents, just from plain text files. Read in the data ta the variable \textbf{\texttt{ds}} using the \texttt{scan()} function. 
+
+
+
+<<>>=
+ds <- scan("Dataset1.txt")
+ds
+@
+
+\textcolor{BrickRed}{\emph{\textbf{Challenge:} Count how many elements are in the list using \texttt{length()} and calculate the mean, median, standard deviation and variance of these data.}}
+
+We can select an individual datapoint by placing it's row number in square brackets after the variable name. The \texttt{[number]} is known as a subscript.
+<<>>=
+ds[4]
+@
+
+and a range of data points by separating the first and last points in the range with a :
+
+<<>>=
+ds[4:8]
+@
+
+We can also select data by giving a list of elements to retrieve (remember that a list is specified using the \texttt{c( \ldots )} function)
+Retrieve the first three odd numbered values
+
+<<>>=
+ds[c(1,3,5)]
+@
+
+\textcolor{BrickRed}{\emph{\textbf{Challenge:} Calculate the mean and standard deviation for the first 15 and for the last 15 datapoints in the set}}
+
+
+\subsection{Reading tabular data}
+ 
+The data in \emph{Dataset1} is a single column of data. Often the data we want to read is in tabular form and we want to keep all the columns together to preserve the rows. We will read in a set of data describing athletes from the Australian Institute of Sport. Ensure you have downloaded the file \texttt{sport.txt} to your working directory.
+
+We will use the command \texttt{read.table()} to import the data into the variable \texttt{ais}. You could also use the \emph{Tools > Import Dataset >  From Text File} menu option but ensure you set the variable name (top left corner in teh import wizard box) to \texttt{ais}.
+
+<<>>=
+ais <- read.table("sport.txt", sep="\t", header=T)
+@
+
+This has read the table into the variable \texttt{ais}. 
+
+\textcolor{BrickRed}{Examine the contents of \texttt{ais} by clicking on it in the Workspace (upper right window).} It will then open in the upper left. There are five columns, Gender, Sport, Bodyfat, Height, and Weight. Scroll down and look at the values in each column.
+
+\textcolor{BrickRed}{\emph{\textbf{Question:} Which of these columns contain categorical (factorial) data and which contain continuous data?}}
+
+\texttt{ais} is a data frame. Each column is named and each row is numbered. We can access a column as a list using the convention \texttt{variable\$columname}. Try these and see what results you get:
+
+<<eval=FALSE>>=
+ais
+ais$Height
+ais[2]
+ais$Weight[4:10]
+@
+
+Note that the names are \emph{case sensitive}. Upper and lower case are different.
+We can list the column names with \texttt{names(variable)} and use the columns like we would any other list.
+
+<<>>=
+names(ais)
+mean(ais$Bodyfat)
+@
+
+It is often inconvenient to have to type \texttt{ais\$} every time we want to use the data. We can \emph{import} the data frame into our current workspace so all the columns areindependent variables using the function \texttt{attach}.
+
+<<>>=
+attach(ais)
+@
+
+Now we can use the columns directly. \textbf{Warning: Importing data like this will hide any data with the same name as any of the columns.} You can reverse \texttt{attach()} with \texttt{detach()}.
+
+\textcolor{BrickRed}{\emph{\textbf{Challenge:} Calculate the mean, median, min, max and standard deviation of the Height, Weight and Bodyfat data}}
+
+\subsubsection{Simple Plots}
+
+Viewing data graphically is often a good way to begin to understand the relationships. R provides simple yet very powerful plotting functions. The simplest plot is to just plot one variable. This will be displayed on the \emph{y}-axis and R will automatically order them by row number on the \emph{x}-axis.
+
+<<label=firstplot, include=FALSE>>=
+plot(Height)
+@
+
+<<label=firstplotfig, fig=TRUE, echo=FALSE>>=
+<<firstplot>>
+@
+
+A more advanced plot would try to make some sense of the data. If we want to plot the height versus the weight then we can easily do this.
+
+<<label=secondplot, include=FALSE>>=
+plot(Weight, Height)
+@
+<<label=secondplotfig, fig=TRUE,echo=FALSE>>=
+<<secondplot>>
+@
+
+The first set of data is plotted as the \emph{x}-axis, and the second set as the \emph{y}-axis.
+
+This plot would not get you very good marks in a report. \emph{Can you spot the key things that are missing? }
+
+Fortunately the \texttt{plot()} function has many additional options that can help display the data in a more apropriate way. These are called by adding them to the list of arguments for plot; e.g. \texttt{plot( xdata, ydata, \ldots)} where \texttt{\ldots} is the list of additional options. You can find a detailed description with \texttt{help(plot)} and \texttt{help(par)}. This includes setting the axis labels and the main title with \texttt{xlab="label"}, \texttt{ylab="label"} and  \texttt{main="title"} where \emph{label} and \emph{title} are the text you wish to appear placed between speech marks ("). These parameters are included in the plot command like \texttt{\emph{plot(x,y, param1=nnn, param2="nnn", \ldots)}} and so on.
+
+\textcolor{BrickRed}{\emph{Repeat the plot of Height versus  Weight including the additional parameters to produce a properly labelled plot and show it to a demonstrator before finishing the workshop.
+}}
+
+\section{Reference}
+
+\subsection{Operators}
+\subsubsection{Arithmetic Operators}
+\begin{tabular}{|c|l|}
+\hline
+\textbf{Operator} &   \textbf{Description} \\ \hline
+\texttt{+} &	addition \\
+\texttt{-} &	subtraction \\
+\texttt{*} &	multiplication \\
+\texttt{/} &	division \\
+\verb|^| or \texttt{**} &	exponentiation \\
+\texttt{x \%\% y } &	modulus (x mod y) \texttt{5\%\%2} is 1 \\
+\texttt{x \%/\% y} &	integer division \texttt{5\%/\%2} is 2 \\
+\hline
+\end{tabular}
+
+\subsubsection{Logical Operators}
+
+\begin{tabular}{|c|l|}
+\hline
+\textbf{Operator} &   \textbf{Description} \\ \hline
+<  &	less than \\
+<= 	& less than or equal to \\
+> &	greater than \\
+>= &	greater than or equal to \\
+== 	& exactly equal to \\
+!= 	& not equal to \\
+!x 	& Not x\\
+x | y &	x OR y\\
+x \& y &	x AND y \\
+isTRUE(x) &	test if X is TRUE\\ \hline
+\end{tabular}
+
+\subsection{Useful commands}
+\begin{tabular}{|l|l|p{12cm}|} \hline
+
+\textbf{Command} & \textbf{option} & \textbf{notes} \\ \hline
+help(\emph{command}) & -- & Provides the help for \emph{command} \\ \hline
+ & & \\
+ & & \\
+ & & \\ 
+ & & \\
+ & & \\
+ & & \\ 
+ & & \\
+ & & \\
+ & & \\
+ & & \\ 
+ & & \\
+ & & \\
+ & & \\ 
+ & & \\
+ & & \\
+ & & \\ 
+ & & \\
+ & & \\
+ & & \\ 
+ & & \\
+ & & \\
+ & & \\ 
+ & & \\
+ & & \\ 
+ & & \\
+ & & \\
+ & & \\ 
+ & & \\
+ & & \\
+ & & \\ 
+ & & \\
+ & & \\
+ & & \\ \hline
+\end{tabular}
+\end{document}

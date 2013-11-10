@@ -1,0 +1,369 @@
+\documentclass{article}
+\usepackage{framed}
+\usepackage{lipsum}
+\usepackage[svgnames,usenames,dvipsnames]{xcolor}
+\definecolor{shadecolor}{named}{lightgray}
+\addtolength{\oddsidemargin}{-.875in}
+  \addtolength{\evensidemargin}{-.875in}
+  \addtolength{\textwidth}{1.75in}
+
+  \addtolength{\topmargin}{-.875in}
+  \addtolength{\textheight}{1.75in}
+\setlength{\parskip}{8pt}
+\setlength{\parindent}{0pt}
+\begin{document}
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontshape=sl, formatcom=\color{Cerulean}}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{fontshape=sl, formatcom=\color{OliveGreen}}
+\SweaveOpts{concordance=TRUE}
+\setkeys{Gin}{width=0.6\textwidth}
+\setcounter{section}{2}
+\section{Workshop 2}
+
+\subsection{Learning objectives}
+\begin{itemize}
+  \item To select subsets of data according to properties
+  \item To add data to a plot
+  \item To present data on a plot in a variety of styles
+  \item To calculate additional fields for a table. 
+\end{itemize}
+
+\subsection{Recap}
+
+In the previous workshop we had loaded a dataset containing data from athletes. Repeat this step so the \texttt{ais} data is available.
+
+You will first need to set your working directory to where you saved the data during the last workshop. \textcolor{BrickRed}{Go to the menu option \emph{ Session > Set Working Directory > Choose Directory \ldots} and select the correct directory (note that none of the files in the directory will show up in the browser.)} When you have selected the correct directory, the files should appear in the \texttt{Files} pane in the bottom right.  
+
+When you are in the correct directory, run the following commands to reload the data.
+<<>>=
+ais <- read.table("sport.txt", sep="\t", header=T)
+attach(ais)
+@
+
+We had plotted a simple plot of the height versus the weight. 
+
+An alternative way to express this plot is as 'Y interpreted by X', or 'Y \~{ } X'. (\~{ } is the 'tilde' or squiggle character, found next to the ENTER key on a PC or next to left SHIFT on a Mac). We will use this kind of expression later for linear models.
+
+<<label=plot2-1, include=FALSE>>=
+plot(Height ~ Weight)
+@
+<<label=plot2-1fig, fig=TRUE,echo=FALSE>>=
+<<plot2-1>>
+@
+
+\textcolor{BrickRed}{\emph{(Don't forget to add appropriate labels for the axes and a title)}}
+
+\subsection{Selecting data}
+
+The plot in the previous section plots all the data together. What if we want to plot just the data from a particular sport, or a particular gender?
+\subsubsection{Logical expressions}
+We can use logical expressions to select data. If we type an expression that will evaluate to TRUE or FALSE then this will produce a list of TRUE/FALSE values. Note that \texttt{==} is 'is equal to' and \texttt{=} means 'set equal to'. If we want to test for equality we must use \texttt{==}. A full list of logical operators is included at the end of this document.
+
+<<>>=
+Sport=="BBall"
+@
+
+Most of the values are \texttt{FALSE} - only those corresponding to the basketball players are true. If we then use this as the index for our data we should get a subset corresponding to the basketball players. E.g. selecting their height.
+
+<<>>=
+Height[Sport=="BBall"]
+@
+
+Let's replot the data for just the basketball players
+
+<<label=plot2-2, include=FALSE>>=
+plot(Height[Sport=="BBall"] ~ Weight[Sport=="BBall"])
+@
+
+<<label=plot2-2fig, fig=TRUE,echo=FALSE>>=
+<<plot2-2>>
+@
+
+Note that we use the same selector on both X and Y data to ensure they are the same length. If the numbers of X and Y data differ then an error will occur.
+
+\subsubsection{Combining Logical Selectors}
+
+We can combine  selectors using the \emph{boolean operators} \& (AND) | (OR) and ! (NOT). For AND, both criteria must be met. For OR, either criteria must be met. NOT is used in combination with the others as it inverts a particular selection. \texttt{ ! Sport=='Row' } would be true for all cases where the sport is NOT 'Row'.
+
+Lets plot a graph of the female basketball players. For this we need to select on \emph{Gender} AND on \emph{Sport}. Please note that where the line starts with a \texttt{+} that this is a continuation of the command and that you can include that line (or lines) on the end of the previous line. 
+
+<<label=plot2-3,include=FALSE>>=
+plot(Height[Sport=="BBall" & Gender == "female"] ~ 
+       Weight[Sport=="BBall" & Gender == "female"])
+@
+<<label=plot2-3fig, fig=TRUE,echo=FALSE>>=
+<<plot2-3>>
+@
+
+Note how in each plot the axes are rescaled to fit the data.
+
+\textcolor{BrickRed}{\emph{\textbf{Challenge:} Plot the body fat percentage (Y axis) by the height (X axis) for male tennis players}}
+
+\subsubsection{Adding points to a plot}
+
+In this section we will plot two sets of data on the same graph, and learn how to change the character and colour we use for plotting. In addition we will need to find out how to set the size of our plot area.
+
+First start off by plotting the height vs weight of the female basketball players.
+
+<<label=plot2-3fig, fig=TRUE,echo=FALSE>>=
+<<plot2-3>>
+@
+
+Now we will add the data for the male basketball players
+
+<<label=plot2-4,include=FALSE>>=
+plot(Height[Sport=="BBall" & Gender == "female"] ~ 
+       Weight[Sport=="BBall" & Gender == "female"])
+points(Height[Sport=="BBall" & Gender == "male"] ~ 
+         Weight[Sport=="BBall" & Gender == "male"])
+@
+
+<<label=plot2-4fig, fig=TRUE,echo=FALSE>>=
+<<plot2-4>>
+@
+
+Spot the problems? The points all look the same and the men are not all on the plot as the axes are scaled to fit the ladies.
+
+Lets deal with the axis problems first. We can explicitly set the x and y axis limits with the parameters xlim and ylim These take a list of the start and end points on the axis, e.g. \texttt{xlim=c(\emph{start,end})}. 
+
+First we need to establish what the limits are for our data. We can calculate the minimum and maximum with the functions \texttt{min()} and \texttt{max()}. The values will be assigned to the variables \texttt{minh}, \texttt{maxh}, \texttt{minw}and \texttt{maxw}. Check that these are the right values by looking for the minimum and maximum values in the lists returned by \texttt{Height[Sport=="BBall"]} and \texttt{Weight[Sport=="BBall"]}.
+
+<<>>=
+minh <- min(Height[Sport=="BBall"] )
+maxh <- max(Height[Sport=="BBall"] )
+minw <- min(Weight[Sport=="BBall"] )
+maxw <- max(Weight[Sport=="BBall"] )
+@
+
+We can now use these in the plot.
+
+<<label=plot2-5,include=FALSE>>=
+plot(Height[Sport=="BBall" & Gender == "female"] ~ 
+       Weight[Sport=="BBall" & Gender == "female"], 
+     xlim=c(minw, maxw), ylim=c(minh, maxh))
+points(Height[Sport=="BBall" & Gender == "male"] ~ 
+         Weight[Sport=="BBall" & Gender == "male"])
+@
+
+<<label=plot2-5fig, fig=TRUE,echo=FALSE>>=
+<<plot2-5>>
+@
+
+All the points now appear in the plot but we can't tell male from female. We can use a different plotting symbol and/or a different colour for each dataset. The plot characater is set with the \texttt{pch} option and colour is set with the \texttt{col} option. We will be gender stereotypical and plot the females in pink and the men in blue. We will also set the ladies to a '+' symbol and the gentlemen to a triangle
+
+<<label=plot2-6,include=FALSE>>=
+plot(Height[Sport=="BBall" & Gender == "female"] ~ 
+       Weight[Sport=="BBall" & Gender == "female"], 
+     xlim=c(minw, maxw), ylim=c(minh, maxh), pch='+', col='pink')
+points(Height[Sport=="BBall" & Gender == "male"] ~ 
+         Weight[Sport=="BBall" & Gender == "male"],pch=2, col='skyblue')
+@
+
+<<label=plot2-6fig, fig=TRUE,echo=FALSE>>=
+<<plot2-6>>
+@
+
+So now we can plot different datasets on the same plot with different symbols and/or colours. We can add as many \texttt{points()} commands as we like to add data to the current plot.
+
+\textcolor{BrickRed}{\emph{\textbf{Challenge:} Plot several more sports with different symbols on the same plot. Remember to set the x and y limits correctly and to include appropriate axis labels and a title}}
+
+There are many more options for plots listed in the help pages. Try \texttt{help(plot)} and \texttt{help(par)} for more information.
+
+
+\subsubsection{Calculating new parameters}
+
+So far we have just been using the parameters provided with the table. One commonly (mis) used metric is the Body Mass Index. This is calculated as the weight in kilos divided by the square of the height (in meters). We can calculate this directly:
+
+<<>>=
+BMI <- Weight / ((Height/100) ** 2)
+BMI
+@
+
+R automatically matches the right values from each column together - we don't need to do any specific looping or programming to make sure it works. 
+
+\textcolor{BrickRed}{\emph{\textbf{Challenge:} What are the minimum, maximum, mean and standard deviation for BMI}}
+
+Check your results - does the mean look reasonable (between the minimum and maximum values)? Is the SD about right given a visual inspection of the data? Do the minimum and maximum correspond to what you would expect on inspecting the data?
+
+\subsubsection{Drawing lines on plots}
+
+Our athlete data has an obvious shape. There appears to be a correlation between Height and Weight. We can calculate a linear least squares fit using the linear model function, \texttt{lm}. The details of regression fitting like this will be covered in the next workshop.
+
+<<>>=
+lm(Height~Weight)
+@
+
+This gives us the intecept and the gradient for the line of the form $y=mx+c$. These can be passed directly to the \texttt{abline} function to draw a regression fit on the plot.
+
+<<label=plot3-0, include=FALSE>>=
+plot(Height~Weight)
+abline(lm(Height~Weight), col="red")
+@
+
+<<label=plot3-0fig, fig=TRUE,echo=FALSE>>=
+<<plot3-0>>
+@
+
+\texttt{abline} has many options. It can be used to draw any line on the plot given a gradient and intercept. Vertical or horizontal lines can be drawn with simple options. \texttt{help(abline)} will list the relevant parameters.
+
+\subsubsection{Dealing with logarithmic data}
+
+Let us assume that we have a bacterial culture. This doubles in number every time period \emph{t}.
+We can model this growth as $2^t$.
+
+<<>>=
+time <- 0:10
+number <- 2 ** time
+@
+
+And by using the \texttt{type="l"} option we can tell plot to draw lines between points rather than symbols.
+
+<<label=plot3-1, include=FALSE>>=
+plot(number~time, type="l")
+@
+
+<<label=plot3-1fig, fig=TRUE,echo=FALSE>>=
+<<plot3-1>>
+@
+
+This is nice but is not terribly useful. It is more helpful to be able to plot the logistic growth with a log scale for the Y axis. We con do this on two ways. One is to plot the data on a log axis, and the other is to plot the logarithm of the data.
+
+Note the difference in the y-axis scale between these two plots, even though they are functionally identical.
+
+Method 1:
+
+<<label=plot3-2, include=FALSE>>=
+plot(number~time, type="l", log="y" )
+@
+<<label=plot3-2fig, fig=TRUE,echo=FALSE>>=
+<<plot3-2>>
+@
+
+Method 2:
+
+<<label=plot3-3, include=FALSE>>=
+plot(log(number)~time, type="l" )
+@
+<<label=plot3-3fig, fig=TRUE,echo=FALSE>>=
+<<plot3-3>>
+@
+
+
+
+\subsubsection{Applying functions across factors}
+
+Categorical parameters are known as factors. They can be used (as we have seen above) to separate data into groups for boxplots. We can also calculate values across factors by using the \texttt{tapply()} function. \texttt{tapply()} takes a minimum of three arguments; The parameter to which the function should be applied; The grouping variable that describes the different groups that the data should be divided into; and the function that should be applied. For example, to calculate the mean of the BMI for each sport we would use \texttt{tapply()} as:
+
+<<>>=
+tapply(BMI, Sport, mean)
+@
+
+This provides a table of mean counts. These can be plotted with the \texttt{barplot()} function. 
+
+<<label=plot2-12, include=FALSE>>=
+barplot(tapply(BMI,Sport, mean))
+@
+<<label=plot2-12fig, fig=TRUE, echo=FALSE>>=
+<<plot2-12>>
+@
+
+\texttt{tapply()} can also split by multiple factors, but in this case they need to be specified as a list rather than as a formula.
+
+<<>>=
+tapply(BMI, list(Gender,Sport), mean)
+@
+
+and \texttt{barplot()} can handle multidimensional tables as well...
+
+<<label=plot2-13, include=FALSE>>=
+barplot(tapply(BMI, list(Gender,Sport), mean), beside=T, 
+        las=2, col=c('pink','lightblue'))
+@
+
+<<label=plot2-13fig, echo=FALSE,fig=TRUE>>=
+<<plot2-13>>
+@
+
+Look at \texttt{help(barplot)} to find out what the 'beside' parameter does.
+\subsection{Grouping data - the boxplot}
+
+Sometimes we want to compare multiple groups. In this case we will compare between sports. One way to compare is to use a boxplot. This shows the spread of data for each group arranged in adjacent columns. 
+
+<<label=plot2-7, include=FALSE>>=
+boxplot(Height~Sport)
+@
+
+<<label=plot2-7fig, fig=TRUE,echo=FALSE>>=
+<<plot2-7>>
+@
+
+\texttt{boxplot()} takes many of the same options as \texttt{plot()}. In particular we can set the fill colour with \texttt{col}. Previously we used a single colour, but we can set a list of colours which will be used in order and recycled as necessary. 
+
+<<label=plot2-8, include=FALSE>>=
+boxplot(Height~Sport, col=1:10)
+@
+
+<<label=plot2-8fig, fig=TRUE,echo=FALSE>>=
+<<plot2-8>>
+@
+
+This uses the built in colours numbered 1-10. We can also specify the colours directly as a list.
+
+<<label=plot2-9, include=FALSE>>=
+boxplot(Height~Sport, 
+        col=c('lightblue','lightgreen','pink','orange', 'grey'))
+@
+
+<<label=plot2-9fig, fig=TRUE,echo=FALSE>>=
+<<plot2-9>>
+@
+
+\subsubsection{Combining factors in box plots}
+
+If we compare the heights of male and female athletes, there is a difference. Is this due to the inclusion of the gymnasts (exclusively female) who are much smaller than most other athletes?
+
+<<label=plot2-10, include=FALSE>>=
+boxplot(Height~Gender, col=c( 'pink','lightblue'))
+@
+
+<<label=plot2-10fig, fig=TRUE,echo=FALSE>>=
+<<plot2-10>>
+@
+
+We can compare the parameters by both Gender and Sport by combining them in the 'interpreted by' section of our plot command. To do this we use the expression \texttt{Height~Sport+Gender}
+
+<<label=plot2-10a, include=FALSE>>=
+boxplot(Height~Sport+Gender, 
+        col=c('lightblue','lightgreen','pink','orange', 'grey',
+              'cyan', 'purple', 'white', 'red','blue'))
+@
+
+<<label=plot2-10afig, fig=TRUE,echo=FALSE>>=
+<<plot2-10a>>
+@
+
+This splits the data into sections, first by Sport then secondly by Gender. \emph{What happens if you use \texttt{Gender+Sport} instead of \texttt{Sport+Gender}?}
+
+One problem with this plot is that the labels on the X axis clash with eachother so it is not always possible to see which group is which. By using \texttt{help(par)} we can see that axis label styles are set with the \texttt{las} option. Option 2 will set them perpendicular to the axis, and hence more readable.
+
+<<label=plot2-11, include=FALSE>>=
+boxplot(Height~Sport+Gender, 
+        col=c('lightblue','lightgreen','pink','orange', 'grey',
+              'cyan', 'purple', 'white', 'red','blue'), las=2)
+@
+
+<<label=plot2-11fig, fig=TRUE,echo=FALSE>>=
+<<plot2-11>>
+@
+
+
+\textcolor{BrickRed}{\emph{\textbf{Challenge:} Reproduce the plot shown below:}}
+
+<<label=challenge, fig=TRUE, echo=FALSE>>=
+boxplot(BMI~Gender+Sport, col=c( 'pink','lightblue'), las=2, main="BMI by sport and gender", ylab='BMI',cex.axis=0.7)
+legend(10,34, c('female', 'male'), fill=c('pink','lightblue'))
+@
+
+\emph{\textbf{Hint:} You may need to see what the \texttt{legend()} command can do \ldots}
+
+
+\end{document}
