@@ -9,7 +9,7 @@ Thursday 14-Friday 15 November 2013.
 Thursday 14th
 
 * 09:00 Arrival and [Welcome](Welcome.ppt) - David / Chris
-* 09.30 [Recap on the command line](todo) - David
+* 09.30 [Recap on the command line](shell/README.md) - David
 * 10.30 Break
 * 11.00 [Python 1 - Reading and writing files](Python/python_files.md) - Chris
 * 12.30 Lunch
