@@ -350,7 +350,7 @@ searching to perform a case-insensitive search, e.g.
 
 ## Exercise
 
-### Exercise 1d
+### Exercise 1e
 
 Write a Python program that finds and prints all lines from “textfile” that contain the word “sleep”. 
 Print each line together with the line number, and also print out the total number of lines in the file
@@ -430,7 +430,7 @@ e.g.
 
 ## Exercise
 
-### Exercise 1e
+### Exercise 1f
 
 Write a program that finds every line in “textfile” that contains the word “the” and writes those lines,
 together with line numbers, to the file “textfile_thelines”.
