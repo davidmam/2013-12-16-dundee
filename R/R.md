@@ -22,15 +22,15 @@ The other is to right click on the files in the links in the datafiles section a
 [Workshop 4 (Statistical tests)](R_workshop4.pdf)
     
 ####Data files (the first two are needed for the first two worksheets)
-[Dataset1.txt]
-[sport.txt]
-[glucose1.txt]            
-[growth.txt]              
-[students.txt]
-[growth2.txt]             
-[distributions.txt]       
-[gardens.txt]             
-[race.txt]
+[Dataset1.txt](Dataset1.txt)
+[sport.txt](sport.txt)
+[glucose1.txt](glucose1.txt)            
+[growth.txt](growth.txt)              
+[students.txt](students.txt)
+[growth2.txt](growth2.txt)             
+[distributions.txt](distributions.txt)       
+[gardens.txt](gardens.txt)             
+[race.txt](race.txt)
 	
 ####Worksheet source
 The worksheets are produced in LaTeX using Sweave, a convenient way of embedding R analysis 
