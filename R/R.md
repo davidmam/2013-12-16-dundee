@@ -16,28 +16,28 @@ The other is to right click on the files in the links in the datafiles section a
 
 ####Worksheets (all PDF)
 
-    [Worksheet 1 (Introductory R)](Workshop_1.pdf)
-    [Worksheet 2 (Plotting)](Workshop_2.pdf)
-    [Worksheet 3 (Regression)](Workshop_3.pdf)
-    [Workshop 4 (Statistical tests)](Workshop_4.pdf)
+[Worksheet 1 (Introductory R)](Workshop_1.pdf)
+[Worksheet 2 (Plotting)](Workshop_2.pdf)
+[Worksheet 3 (Regression)](Workshop_3.pdf)
+[Workshop 4 (Statistical tests)](Workshop_4.pdf)
     
 ####Data files (the first two are needed for the first two worksheets)
-	[Dataset1.txt]
-	[sport.txt]
-	[glucose1.txt]            
-	[growth.txt]              
-	[students.txt]
-	[growth2.txt]             
-	[distributions.txt]       
-	[gardens.txt]             
-	[race.txt]
+[Dataset1.txt]
+[sport.txt]
+[glucose1.txt]            
+[growth.txt]              
+[students.txt]
+[growth2.txt]             
+[distributions.txt]       
+[gardens.txt]             
+[race.txt]
 	
 ####Worksheet source
 The worksheets are produced in LaTeX using Sweave, a convenient way of embedding R analysis 
 into a document to make in dynamic. The source for these is given below.
-	[R_workshop1.Rnw] 
-	[R_workshop2.Rnw] 
-	[R_workshop3.Rnw] 
-	[R_workshop4.Rnw]
+[R_workshop1.Rnw] 
+[R_workshop2.Rnw] 
+[R_workshop3.Rnw] 
+[R_workshop4.Rnw]
 
 
