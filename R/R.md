@@ -16,10 +16,10 @@ The other is to right click on the files in the links in the datafiles section a
 
 ####Worksheets (all PDF)
 
-[Worksheet 1 (Introductory R)](Workshop_1.pdf)
-[Worksheet 2 (Plotting)](Workshop_2.pdf)
-[Worksheet 3 (Regression)](Workshop_3.pdf)
-[Workshop 4 (Statistical tests)](Workshop_4.pdf)
+[Worksheet 1 (Introductory R)](R_workshop1.pdf)
+[Worksheet 2 (Plotting)](R_workshop2.pdf)
+[Worksheet 3 (Regression)](R_workshop3.pdf)
+[Workshop 4 (Statistical tests)](R_workshop4.pdf)
     
 ####Data files (the first two are needed for the first two worksheets)
 [Dataset1.txt]
