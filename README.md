@@ -4,6 +4,11 @@
 
 Monday 16th and Tuesday 17th December 2013.
 
+## Instructors
+
+Dr Martin Jones
+Dr David Martin
+
 ## Timetable
 
 Monday 16th
@@ -27,7 +32,8 @@ Tuesday 17th
 * 12.30 Lunch
 * 13.30 [Python 4 - Testing](Python/python_testing.md) - Chris
 * 15.30 Break
-* 16.00 [Wrap up and clinic](Conclusion.ppt)
+* 16.00 [Python 5 - Documentation](Python)
+* 16.40 [Wrap up and clinic] (Conclusion.ppt)
 * 17.00 Close
 
 ## Etherpad
