@@ -1,32 +1,31 @@
-# Software Carpentry at Exeter 2013
+# Software Carpentry at Dundee 2013
 
 ![Software Carpentry logo](http://software-carpentry.org/img/software-carpentry-banner.png "Software Carpentry logo")
 
-Thursday 14-Friday 15 November 2013.
+Monday 16th and Tuesday 17th December 2013.
 
 ## Timetable
 
-Thursday 14th
+Monday 16th
 
-* 09:00 Arrival and [Welcome](Welcome.ppt) - David / Chris
+* 09:00 Arrival and [Welcome](Welcome.ppt) - David / Martin
 * 09.30 [Recap on the command line](shell/README.md) - David
 * 10.30 Break
-* 11.00 [Python 1 - Reading and writing files](Python/python_files.md) - Chris
+* 11.00 [Python 1 - Refresher: Reading and writing files](Python/python_files.md) - Martin
 * 12.30 Lunch
 * 13.30 [Version control with git](git/README.md) - David
 * 15.30 Break
-* 16.00 [Python 2 - Regular Expressions](Python/python_regexp.md) - Chris
+* 16.00 [Python 2 - Regular Expressions](Python/python_regexp.md) - Martin
 * 17.00 Close
 
-Friday 15th
+Tuesday 17th
 
 * 09.00 Recap - Chris
-* 09.30 [Python 3 - Functions and Documentation](Python/python_functions.md) - Chris
+* 09.30 [Python 3 - Functions and Classes](Python/python_functions.md) - Martin
 * 10.30 Break
-* 11.00 [R](R/R.md) - David
+* 11.00 [Introducing R](R/R.md) - David
 * 12.30 Lunch
-* 13.30 [Graphing in R](R/R.md) -David
-* 14.30 [Python 4 - Testing](Python/python_testing.md) - Chris
+* 13.30 [Python 4 - Testing](Python/python_testing.md) - Chris
 * 15.30 Break
 * 16.00 [Wrap up and clinic](Conclusion.ppt)
 * 17.00 Close
