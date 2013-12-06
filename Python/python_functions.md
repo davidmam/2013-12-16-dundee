@@ -15,8 +15,7 @@ Creating our own function to carry out a particular job has many benefits. It al
 
 <h2>Defining a function</h2>
 
-Let's go ahead and create our <code>get_at_content</code> function. Before we start typing, we need to figure out what the inputs (the number and types of the <i>function arguments</i>) and outputs (the type of the <i>return value</i>) are going to be. For this function, that seems pretty obvious – the input is going to be a single DNA sequence, and the output is going to be a decimal number. To translate these into Python terms: the function will take a single argument of type <i>string</i>, and will return a value of type <i>number</i>.
-)) . Here's the code:
+Let's go ahead and create our <code>get_at_content</code> function. Before we start typing, we need to figure out what the inputs (the number and types of the <i>function arguments</i>) and outputs (the type of the <i>return value</i>) are going to be. For this function, that seems pretty obvious – the input is going to be a single DNA sequence, and the output is going to be a decimal number. To translate these into Python terms: the function will take a single argument of type <i>string</i>, and will return a value of type <i>number</i>. Here's the code:
 
     def get_at_content(dna):
         length = len(dna)
@@ -27,9 +26,9 @@ Let's go ahead and create our <code>get_at_content</code> function. Before we st
 
 <b>Reminder</b>: if you're using Python 2 rather than Python 3, include this line at the top of your program:
 
-[python]
-from __future__ import division
-[/python]
+
+    from __future__ import division
+
 
 The first line of the function definition contains a several different elements. We start with the word <code>def</code>, which is short for <i>define</i> (writing a function is called <i>defining</i> it). Following that we write the name of the function, followed by the names of the argument variables in parentheses. Just like we saw before with normal variables, the function name and the argument names are arbitrary – we can use whatever we like.
 
@@ -255,9 +254,7 @@ my_function("MSRSLLLRFLLFLLLLPPLP", "Y")
 
 <b>Reminder</b>: if you're using Python 2 rather than Python 3, include this line at the top of your program:
 
-[python]
-from __future__ import division
-[/python]
+    from __future__ import division
 
 
 <h3>Percentage of amino acid residues, part two</h3>
