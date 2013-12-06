@@ -144,8 +144,8 @@ Each `.pdb` file lists atoms in a protein
 
 Write a single command that
 
-* Uses `grep` to find all  hydrogen (`H`) atoms in all `.pdb` files.
-* Stores these in `hydrogen.txt`.
+* Uses `grep` to find all  alpha carbons (`CA`) atoms in all `.pdb` files.
+* Stores these in `carbons.txt`.
 
 You will need wild card, exact matches output redirection
 
@@ -230,6 +230,78 @@ Write a single command that
 * Stores the count in `hydrogen_count.txt`.
 
 You will need commands from previous exercises, back ticks, pipe.
+
+## Some more tools
+###	cut
+
+*cut* allows part of a line to be selected. It will chop out a defined portion of the line, either between certain character positions or by splitting the line based on a specific character. As PDB records are based on a fixed width it is relatively easy to select the portion of the line we want to select. Suppose we want to extract the x coordinate for the atoms. This is in columns 32-38 of each record. We also want the residue name and number (columns 17-25). Using essentially the same command as before to select the ATOM lines, we can then cut out the bits we want.
+
+    % grep ATOM 1boy.pdb | grep -v ATOMS | grep -v ' ATOM' | cut -c 17-25,32-38
+
+(output not shown)
+
+One disadvantage of *cut* is that it just cuts.. it doesn't allow one to change the output, merely select it. The next tool is far more powerful.
+
+### awk
+
+Awk is a tool that manipulates records. It assumes that every text file is some sort of structured document containing records that are divided into fields. Each record is separated by a record separator and each field by a field separator. awk allows the individual fields to be manipulated and incorporates a programming language to allow decision making. awk is a complex tool and you are strongly advised to refer to the book 'sed & awk' from O'Reilly press.
+By default the record separator is a newline and the field separator is whitespace (spaces or tabs). This will allow us to do the same manipulation as we did for cut. When awk separates each record into fields, these fields can be selected as the variables $1, $2 and so on. $0 is the whole record.
+
+    % grep ATOM 1boy.pdb | grep -v ATOMS | grep -v ' ATOM' | awk ' {print $4, $5, $6 }'
+
+(output not shown)
+
+One subtle difference is that cut left multiple spaces between the characters. awk has reduced each space to just one character. This is the effect of putting the commas between the variables in the output. (A variable is a named value, just like using letters to stand for numbers in algebra except that variable names can be any length. You can get the value of a variable by putting the $ in front of the name.) If we try this again without the commas then we lose the spaces.
+
+    % grep ATOM 1boy.pdb | grep -v ATOMS | grep -v ' ATOM' | awk ' {print $4 $5 $6} '
+
+(output not shown)
+
+We can also add extra text into each field as desired by including that text between quotes in the print statement.
+
+    % grep ATOM 1boy.pdb | grep -v ATOMS | grep -v ' ATOM' | awk ' {print $4 ,$5,"X:", $6 }'
+
+(output not shown)
+
+awk also allows commands to be run at the beginning and at the end of the report. The commands inside the  are run for every line. To run commands at the beginning we place them inside another set of braces prefixed by the key word BEGIN. Lets add a title to the report and change it a little by only selecting threoning residues.
+
+    % grep ATOM 1boy.pdb | grep -v ATOMS | grep -v ' ATOM' | grep THR | awk ' BEGIN{ print "Threonine residues" }{ print $4, $5}'
+
+(output not shown)
+
+This has printed every threonine residue. It has done more than that, it has printed the residue name and number for each atom in the threonine residues. To shrink this down to one per residue we can either select just eg. alpha carbons or we can use the unix command uniq. uniq will reduce multiple adjacent lines with the same output to just one line. The lines must be adjacent so we would normally precede uniq with sort but it isn't neccessary in this case as the lines are already sorted.
+
+    % grep ATOM 1boy.pdb | grep -v ATOMS | grep -v ' ATOM' | grep THR | awk ' BEGIN {print "Threonine residues"} { print $4, $5' }| uniq
+
+(output not shown)
+
+Counting these residues by appending wc -l will not give the right number as we have added a header line. We can however get awk to do the counting for us. In this case we will count the total number of atoms present. In the BEGIN block we can set a variable to be a counter and start it at 0. Each time we print a line we can add 1 to the counter variable. At the end we can print a summary line by using an END block that does the same as the BEGIN block but at the end. We can get the value of the counter just by putting the name of the variable.
+
+    % grep ATOM 1boy.pdb | grep -v ATOMS | grep -v ' ATOM' | grep THR | awk ' BEGIN { print "Threonine residues"; counter=0; }{ print $4, $5; counter = counter+1}  END{print "Total:", counter, "atoms"}' | uniq
+
+### sed
+Sometimes we will need to make many identical changes at various points
+through a file. *sed* looks for lines matching a certain pattern (or between lines matching certain
+patterns) and can carry out various operations on them. The one we are interested in is
+substitution. One should note that *sed* can read from a file (or stdin) but writes to stdout so
+if you want to keep the results then you will need to redirect the output to a file (with *>
+filename*).
+Let us assume for some reason or other that we have determined that all the methioine
+residues in our structure are selenomethionine and we wish to rename them. Try something
+like the following:
+
+    % sed -e ' /^ATOM/s/MET/SEL/' 1boy.pdb
+
+(output not shown)
+
+If you were smart and used more or grep to view the output then you will have seen that all
+the MET residues were changed to SEL.
+
+#### Example
+Try to change all the water atoms (HOH) to WAT. (hint: look at how you are choosing the
+lines).
+
+sed can do a lot of other things too. Read the book!
 
 ## Variables
 
