@@ -3,10 +3,9 @@
 <h2> Use comments to annotate your code</h2>
 Occasionally, we want to write some text in a program that is for humans to read, rather than for the computer to execute. We call this type of line a <i>comment</i>. To include a comment in your source code, start the line with a hash symbol:
 
-[python]
-# this is a comment, it will be ignored by the computer
-print("Comments are very useful!")
-[/python]
+
+	# this is a comment, it will be ignored by the computer
+	print("Comments are very useful!")
 
 Comments are a very useful way to document your code, for a number of reasons:
 <ul>
@@ -18,10 +17,9 @@ Don't make the mistake, by the way, of thinking that comments are only useful if
 
 Comments can help with this problem by giving you hints about the purpose of code, meaning that you spend less time trying to understand your old code, thus speeding up your progress. A side benefit is that writing a comment for a bit of code reinforces your understanding at the time you are doing it. A good habit to get into is writing a quick one-line comment above any line of code that does something interesting:
 
-[python]
-# print a friendly greeting
-print("Hello world")
-[/python]
+
+	# print a friendly greeting
+	print("Hello world")
 
 ## docstrings
 
@@ -49,10 +47,10 @@ You have already seen documentation using python "help()". For example, lets loo
         characters outside the US ASCII range.
 
 However, if we ask for the help for one of our functions:
-
-  help(get_at_content)
-  Help on function get_at_content in module __main__:
-    get_at_content(dna)
+	
+	help(get_at_content)
+	Help on function get_at_content in module __main__:
+	get_at_content(dna)
 
 
 Not great... It is very important when programming in any language that we provide full documentation for all of the functions and modules. In python, this is achieved by adding documentation strings to each part of the script. These are strings that are placed at the beginning of the function or module.
@@ -80,10 +78,10 @@ We can do the same thing for our get_at_content function;
 
 We now get better documentation when using help()
   
-  help(get_at_content)
-    Help on function get_at_content in module __main__:
-      get_at_content(dna)
-      returns the AT content of a DNA string. The string must be in upper case
+	help(get_at_content)
+	Help on function get_at_content in module __main__:
+	get_at_content(dna)
+	returns the AT content of a DNA string. The string must be in upper case
 
 
 ##Exercise
