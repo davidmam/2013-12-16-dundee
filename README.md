@@ -50,7 +50,7 @@ information on the day. This will be made public on the day.
 You may bring your own laptop to work on (so that you can easily continue to use the same tools after the 
 bootcamp). Before you arrive, you will need to ensure you have installed and tested
 some software. Please see our [set-up page](Setup.md) for a list of the 
-software required and instructions.
+software required and instructions. Alternatively we may have a suitable installation available via the IT suite computers. 
 
 You should test your installation using our testing scripts described 
 [here](setup/README.md). To access these start a shell and run the 
