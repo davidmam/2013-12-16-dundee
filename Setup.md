@@ -7,7 +7,7 @@ please let your boot camp organizer know as soon as possible.
 
 **You do *not* need to install everything listed below, since some packages are alternatives to one another.**
 
-## Already set-up? Do some testing. 
+### Already set-up? Do some testing. 
 You may already have all the tools you need for the bootcamp installed! 
 You should check that you have the following software and tools available.
 If this is the case, or have followed the instructions below, then you can check your installation using our [setup test scripts](setup/README.md). 
