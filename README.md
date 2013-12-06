@@ -38,7 +38,7 @@ Tuesday 17th
 
 ## Etherpad
 
-We'll be using an [Etherpad](https://etherpad.mozilla.org/swcexeter) to provide additional 
+We'll be using an [Etherpad](https://etherpad.mozilla.org/swcdundee) to provide additional 
 information on the day. This will be made public on the day.
 
 ## Hints and tips
@@ -47,10 +47,8 @@ information on the day. This will be made public on the day.
 
 ## Before you arrive...
 
-You must bring your own laptop to work on (so 
-that you can easily continue to use the same tools after the 
-bootcamp). Before 
-you arrive, you will need to ensure you have installed and tested
+You may bring your own laptop to work on (so that you can easily continue to use the same tools after the 
+bootcamp). Before you arrive, you will need to ensure you have installed and tested
 some software. Please see our [set-up page](Setup.md) for a list of the 
 software required and instructions.
 
@@ -58,7 +56,7 @@ You should test your installation using our testing scripts described
 [here](setup/README.md). To access these start a shell and run the 
 commands:
 
-    git clone https://github.com/chryswoods/2013-11-14-exeter.git ./bootcamp
+    git clone https://github.com/davidmam/2013-12-16-dundee.git ./bootcamp
     cd bootcamp/setup
 
 before following [these instructions](setup/README.md).
@@ -75,8 +73,15 @@ familiarity with the basic syntax will be helpful.
 
 ## Organiser and instructors
 
-The organiser of this boot camp is Konrad Paszkiewicz. The instructors will be David Martin and Christopher Woods.
+The organiser of this boot camp is David Martin. The instructors will be [David Martin](bio/dm.md) and [Martin Jones](bio/mj.md).
+
+## Practical details
+
+The course will take place in Dalhousie room 1G01. When you enter the Dalhousie building, cross the atrium to the block on the far side (Block 1). Turn left down the corridor and room 1G01 is the last on the right.
+You are responsible for your own food and drink during the bootcamp.
+
+Eduroam and UoD WiFi are available. You will need to ensure that you have a University username/password or working eduroam. Some temporary accounts can be arranged.
 
 ## Contact
 
-For help or more information please contact [Konrad Paszkiewicz](mailto:host-exeter@software-carpentry.org).
+For help or more information please contact [David Martin](mailto:d.m.a.martin@dundee.ac.uk).
