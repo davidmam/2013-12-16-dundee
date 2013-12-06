@@ -1,372 +1,262 @@
+<h2>The importance of patterns in biology</h2>
 
-# Regular Expressions in Python
-
-In the last session we saw how to read files and search for text by line number, word number, column
-number or by using “find” to search for specific text. This is all great, but it is not very flexible.
-For example, imagine searching for all surnames and titles from the below text…
-
-    Dear Mr. Johnson, 
-      Dear Miss. Jameson,    Dear   Ms.   Jackson, 
-    Dear Mrs.    Peterson, 
-      Dear    Mr. Sampson    Dear Dr.Johanson,    Dear Rev Richardson,
-
-How would you go about trying to write a program that can do this?
-
-Searching and extracting text from files is remarkably complicated. Fortunately, computer scientists have solved
-this problem. The solution has been adopted by nearly all programming languages. The solution is to use
-what are called “regular expressions”.
-
-## Regular Expressions in Python
-
-Regular expressions can look scary, but are pretty simple once you understand the rules. The syntax for regular
-expressions appeared and was standardised in the Perl language, and now nearly all programming languages support
-“Perl Compatible Regular Expressions” (PCRE). Python provides the “re” and “regexp” modules, that support most
-of PCRE. Let’s take a look using “re”
-
-    $ ipython
-    $ import re
-
-We import the “re” module using the “import” function. You can get help using “help”
-
-    $ help(re)
-    Help on module re:
-    
-    NAME
-        re - Support for regular expressions (RE).
-    
-    FILE
-        /System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/re.py
-    
-    MODULE DOCS
-        http://docs.python.org/library/re
-    
-    DESCRIPTION
-        This module provides regular expression matching operations similar to
-        those found in Perl.  It supports both 8-bit and Unicode strings; both
-        the pattern and the strings being processed can contain null bytes and
-        characters outside the US ASCII range.
-
-Regular expressions can be used for three things; Searching, pattern extraction and replacing.
-
-## Regular Expression Searching
-
-Searching is when you want to look some text in a file.
-
-    $ ipython
-    $ import re
-    $ lines = open(“textfile”, “r”).readlines()
-    $ for line in lines:
-    $     if re.search(r”dream”, line):
-    $         print line,
-
-    For in that sleep of death, what dreams may come,
-
-“re.search” is used to search, in this case for the string “dream” in string “line”. If the text is found, then
-re.search returns True, else it returns False. Note that we put an “r” in front of the search string. This is to
-tell Python that this is a raw string which should not be escaped (more about this later..)
-
-The above was a simple, case-sensitive regular expression search. To perform a case-insensitive search, 
-you use re.IGNORECASE,
-
-    $ for line in lines:
-    $     if re.search(r”dream”, line, re.IGNORECASE):
-    $         print line,
-
-    To sleep, perchance to Dream; Aye, there's the rub,
-    For in that sleep of death, what dreams may come,
-
-So far, so the same as line.find().. Regular expressions are powerful as they provide a sub-language
-to control the search. Let’s say you want to find all lines containing “the” as a word. You can
-do that using the special character “\s”, which means “space”, e.g.
-
-    $ for line in lines:
-    $     if re.search(r”\sthe\s”, line):
-    $         print line,
-
-    To be, or not to be, that is the question:
-    Whether 'tis Nobler in the mind to suffer
-    The Heart-ache, and the thousand Natural shocks
-    To sleep, perchance to Dream; Aye, there's the rub,
-    Must give us pause. There's the respect
-    For who would bear the Whips and Scorns of time,
-    The Oppressor's wrong, the proud man's Contumely,
-    The pangs of despised Love, the Law’s delay,
-    The insolence of Office, and the Spurns
-    That patient merit of the unworthy takes,
-    But that the dread of something after death,
-    No Traveller returns, Puzzles the will,
-    And thus the Native hue of Resolution
-    Is sicklied o'er, with the pale cast of Thought,
-    And lose the name of Action. Soft you now,
-
-Now, let’s search for all lines that contain “the” where the “the” is part of a word. We can
-do this by using “\w” which means “any non-space character”, e.g.
-
-    $ for line in lines:
-    $     if re.search(r”the\w”, line):
-    $         print line,
-
-    Whether 'tis Nobler in the mind to suffer
-    And by opposing end them: to die, to sleep
-    To sleep, perchance to Dream; Aye, there's the rub,
-    And makes us rather bear those ills we have,
-    Than fly to others that we know not of.
-    With this regard their Currents turn awry,
-
-And combining these, together, find lines containing words that start with “the”
-
-    $ for line in lines:
-    $    if line.search(r”\sthe\w”, line):
-    $        print line,
-
-    And by opposing end them: to die, to sleep
-    To sleep, perchance to Dream; Aye, there's the rub,
-    With this regard their Currents turn awry,
-
-There are a lot of special characters. They are
-
-* \d  Match any digit (number)
-* \s  Match a space
-* \w  Match any word character (alphanumeric and “_”)
-* \S  Match any non-whitespace character
-* \D  Match any non-digit character
-* .   Match any character
-* \t  Match a tab
-* \n  Match a newline
-
-Note that the backslash is a special character which is normally removed (escaped) in Python.
-The “r” in front of the string tells Python not to interpret, escape or remove the backslash. You
-must include the “r” or else your regular expressions will not compile.
-
-As well as matching characters, you can match collections of characters, to match “th” followed
-by a, i or y, you would use square brackets,
+A lot of what we do when writing programs for biology can be described as searching for <i>patterns</i> in <i>strings</i>. Because these types of problems crop up in so many different fields, there's a standard set of tools in Python (And in many other languages and utilities) for dealing with them: <i>regular expressions.</i> Regular expressions  are a topic that might not be covered in a general-purpose programming book, but because they're so useful in biology, we're going to devote the whole of this tutorial to looking at them.
 
-    $ for line in lines:
-    $     if re.search(r”th[aiy]”, line):
-    $         print line,
+Although the tools for dealing with regular expressions are built in to Python, they are not made automatically available when you write a program. In order to use them we must first talk about modules.
 
-    To be, or not to be, that is the question:
-    For in that sleep of death, what dreams may come,
-    When we have shuffled off this mortal coil,
-    That patient merit of the unworthy takes,
-    But that the dread of something after death,
-    Than fly to others that we know not of.
-    With this regard their Currents turn awry,
-    The fair Ophelia? Nymph, in thy Orisons
+<h2>Modules in Python</h2>
+The functions and data types that we've discussed so far in this book have been ones that are likely to be needed in pretty much every program – tools for dealing with strings and numbers, for reading and writing files, and for manipulating lists of data. As such, they are automatically made available when we start to create a Python program. If we want to open a file, we simply write a statement that uses the <code>open</code> function.
 
-* [abc]  Match a, b or c
-* [a-z]  Match any character between a to z
-* [A-Z]  Match any character between A to Z
-* [a-zA-Z]  Match any character from a to z and A to Z (any letter)
-* [0-9]  Match any digit
-* [02468] Match any even digit
-* [^0-9] Matches NOT digits (^ means NOT)
+However, there's another category of tools in Python which are more specialized. Regular expressions are one example, but there is a large list of specialized tools which are very useful when you need them, but are not likely to be needed for the majority of programs. Examples include tools for doing advanced mathematical calculations, for downloading data from the web, for running external programs, and for manipulating date/time information. Each collection of specialized tools – really just a collection of specialized <i>functions</i> and data <i>types</i> – is called a <i>module</i>.
 
-You can also use repetition in your matching.
+For reasons of efficiency, Python doesn't automatically make these modules available in each new program, as it does with the more basic tools. Instead, we have to explicitly load each module of specialized tools that we want to use inside our program. To load a module we use the <code>import</code> statement. For example, the module that deals with regular expressions is called <code>re</code>, so if we want to write a program that uses the regular expression tools we must include the line:
 
-* *  Match 0 or more times, e.g. \w* means match 0 or more word characters
-* +  Match 1 or more times, e.g. \w+ means match 1 or more word characters
-* ?  Match 0 or 1 times, e.g. \w? means match 0 or 1 word characters
-* {n} Match exactly n times, e.g. \w{3} means match exactly 3 word characters
-* {n,} Match at least n times, e.g. \w{5,} means match at least 5 word characters
-* {m,n} Match between m and n times, e.g. \w{5,7} means match 5-7 word characters
 
-We can use this to find all lines that contain words with 10-12 characters
+    import re
 
-    $ for line in lines:
-    $     if re.search(r”\w{10-12}”, line):
-    $         print line,
-
-    The Slings and Arrows of outrageous Fortune,
-    That Flesh is heir to? 'Tis a consummation
-    The undiscovered Country, from whose bourn
-    Thus Conscience does make Cowards of us all,
-    And thus the Native hue of Resolution
-    And enterprises of great pitch and moment,
-    Be all my sins remembered.
-
-Finally, flags can be attached to the match. To match only at the beginning
-of the line use a carat
-
-    $ for line in lines:
-    $     if re.search(r”^the\s”, line, re.IGNORECASE):
-    $         print line,
-    
-    The Slings and Arrows of outrageous Fortune,
-    The Heart-ache, and the thousand Natural shocks
-    The Oppressor's wrong, the proud man's Contumely,
-    The pangs of despised Love, the Law’s delay,
-    The insolence of Office, and the Spurns
-    The undiscovered Country, from whose bourn
-    The fair Ophelia? Nymph, in thy Orisons
-
-To match at the end of the line, using a dollar
 
-    $ for line in lines:
-    $     if re.search(r”on$”, line):
-    $         print line,
+at the top of our program. When we then want to use one of the tools from a module, we have to prefix it with the module name. For example, to use the regular expression <code>search</code> function (which we'll discuss later in this section) we have to write:
 
-    That Flesh is heir to? 'Tis a consummation
-    And thus the Native hue of Resolution
 
-## Pattern extraction
+    re.search(pattern, string)
 
-Searching is great, but substring matching is the real power of regular expressions. You can group parts of the 
-regular expression to let you extract the matching part of the string. You do this using round brackets.
+rather than simply:
 
-    $ line = lines[0]
-    $ print line
+    search(pattern, string)
 
-    To be, or not to be, that is the question:
+If we forget to import the module which we want to use, or forget to include the module name as part of the function call, we will get a <code>NameError</code>.
 
-    $ m = re.search(r”the\s(\w+)”, line)
+For the rest of this section, all code examples will require the <code>import re</code> statement in order to work. For clarity, we won't include it, so if you want try running any of the code in this section, you'll need to add it at the top.
 
-This matches “the” followed by a space, followed by 1 or more word characters. The returned object, m, 
-contains information about the match.
+<h2>Raw strings</h2>
+Writing regular expression patterns requires us to type a lot of special characters. Recall from the introduction that certain combinations of characters are interpreted by Python to have special meaning. For example, <code>\n</code> means <i>start a new line</i>, and <code>\t</code> means <i>insert a tab character</i>.
 
-    $ print m.group(0)
-    the question
+Unfortunately, there are a limited number of special characters to go round, so some of the characters that have a special meaning in regular expressions clash with the characters that <b>already</b> have a special meaning. Python's way round this problem is to have a special rule for strings: if we put the letter <code>r</code> immediately before the opening quotation mark, then any special characters inside the string are ignored:
 
-m.group(0) returns the entire matched substring, in this case “the question”. However, we put “\w+” into
-parentheses, and so this part is available as a sub-match, in m.group(1)
 
-    $ print m.group(1)
-    question
+    print(r"\t\n")
 
-If we have added extra groups, these would be available as m.group(2), m.group(3) etc., e.g.
+The r stands for <i>raw</i>, which is Python's description for a string where special characters are ignored. Notice that the <code>r</code> goes <b>outside</b> the quotation marks – it is not part of the string itself. We can see from the output that the above code prints out the string just as we've written it:
 
-    $ m = re.search(r”to (\w+), or not (\w+) (\w+)”, line, re.IGNORECASE)
-    $ print m.group(0)
+    \t\n
 
-    To be, or not to be
+without any tabs or new lines. You'll see this special <i>raw</i> notation used in all the regular expression code examples in this section.
 
-    $ print m.group(1)
+<h2>Searching for a pattern in a string</h2>
+We'll start off with the simplest regular expression tool. <code>re.search</code> is a true/false function that determines whether or not a pattern appears somewhere in a string. It takes two arguments, both strings. The first argument is the pattern that you want to search for, and the second argument is the string that you want to search in. For example, here's how we test if a DNA sequence contains an EcoRI restriction site:
 
-    be
 
-    $ print m.group(2)
+    dna = "ATCGCGAATTCAC"
+    if re.search(r"GAATTC", dna):
+        print("restriction site found!")
 
-    to
 
-    $ print m.group(3)
+Notice that we've used the raw notation for the pattern, even though it's not strictly necessary as it doesn't contain any special characters.
 
-    be
+<h3>Alternation</h3>
+The above example isn't particularly interesting, as the restriction motif has no variation. Let's try it with the AvaII motif, which cuts at two different motifs: GGACC and GGTCC. We can use the techniques we learned in the previous section to make a complex condition using <code>or</code>:
 
-For example, we could use this to extract all of the words that follow “the” in the text, e.g.
 
-    $ for line in lines:
-    $     m = re.search(r”\sthe\s(\w+)”, line, re.IGNORECASE)
-    $     if m:
-    $         print line,
-    $         print m.group(1)
+    dna = "ATCGCGAATTCAC"
+    if re.search(r"GGACC", dna) or re.search(r"GGTCC", dna):
+        print("restriction site found!")
 
-    To be, or not to be, that is the question:
-    question
-    Whether 'tis Nobler in the mind to suffer
-    mind
-    The Heart-ache, and the thousand Natural shocks
-    thousand
-    To sleep, perchance to Dream; Aye, there's the rub,
-    rub
-    Must give us pause. There's the respect
-    respect
-    For who would bear the Whips and Scorns of time,
-    Whips
-    The Oppressor's wrong, the proud man's Contumely,
-    proud
-    The pangs of despised Love, the Law’s delay,
-    Law
-    The insolence of Office, and the Spurns
-    Spurns
-    That patient merit of the unworthy takes,
-    unworthy
-    But that the dread of something after death,
-    dread
 
-## Exercise
+But a better way is to capture the variation in the AvaII site using a regular expression:
 
-### Exercise 2a
+    dna = "ATCGCGAATTCAC"
+    if re.search(r"GG(A|T)CC", dna):
+        print("restriction site found!")
 
-Here is the list of surnames from above. Can you write a regular expression that will
-match each line, extracting the title and surname for each person? The names are in 
-a file called [greetings.txt](greetings.txt).
+Here we're using the alternation feature of regular expressions. Inside parentheses, we write the alternatives separated by a pipe character, so <code>(A|T)</code> means <i>either A or T</i>. This lets us write a single pattern – <code>GG(A|T)CC</code> – which captures the variation in the motif.
 
-    Dear Mr. Johnson, 
-      Dear Miss. Jameson,    Dear   Ms.   Jackson, 
-    Dear Mrs.    Peterson, 
-      Dear    Mr. Sampson    Dear Dr.Johanson,    Dear Rev Richardson,
+<h3>Character groups</h3>
 
-Note that you can match the “.” character using “\\.”, e.g. to match Dr. use re.search(r”Dr\\.”, line)
+The BisI restriction enzyme cuts at an even wider range of motifs – the pattern is GCNGC, where N represents any base. We can use the same alternation technique to search for this pattern:
 
-If you get stuck, an example output is [here](python_regexp/greetings.py)
+    dna = "ATCGCGAATTCAC"
+    if re.search(r"GC(A|T|G|C)GC", dna):
+        print("restriction site found!")
 
-## Pattern Replacing
+However, there's another regular expression feature that lets us write the pattern more concisely. A pair of square brackets with a list of characters inside them can represent any one of these characters. So the pattern <code>GC[ATGC]GC</code> will match <code>GCAGC</code>, <code>GCTGC</code>, <code>GCGGC</code> and <code>GCCGC</code>. Here's the same program using character groups:
 
-As well as using regular expressions for searching for text, you can also use it to replace
-text. You do this using re.sub
+    dna = "ATCGCGAATTCAC"
+    if re.search(r"GC[ATGC]GC", dna):
+        print("restriction site found!")
 
-    $ line = lines[0]
-    $ print line
+If we want a character in a pattern to match <b>any </b>character in the input, we can use a period – the pattern <code>GC.GC</code> would match all four possibilities. However, the period would also match any character which is not a DNA base, or even a letter. Therefore, the whole pattern would also match <code>GCFGC</code>, <code>GC&GC</code> and <code>GC9GC</code>, which may not be what we want.
 
-    To be, or not to be, that is the question:
+Sometimes it's easier, rather than listing all the acceptable characters, to specify the characters that we <b>don't</b> want to match. Putting a caret ^ at the start of a character group like this [^XYZ] will negate it, and match any character that <b>isn't</b> in the group.
 
-    $ line = re.sub(r”be”, “code”, line)
-    $ print line
+<h3>Quantifiers</h3>
+The regular expression features discussed above let us describe variation in the individual characters of patterns. Another group of features, <i>quantifiers</i>, let us describe variation in the number of times a section of a pattern is repeated.
 
-    To code, or not to code, that is the question:
+A question mark immediately following a character means that that character is optional – it can match either <b>zero or one</b><b> times</b>. So in the pattern <code>GAT?C </code>the <code>T</code> is optional, and the pattern will match either <code>GATC</code> or <code>GAC</code>. If we want to apply a question mark to more than one character, we can group the characters in parentheses. For example, in the pattern GGG(AAA)?TTT the group of three <code>A</code>s is optional, so the pattern will match either <code>GGGAAATTT</code> or <code>GGGTTT</code>.
 
-As you can see, every match is replaced by “code”. We can replace “n” matches by passing
-that in as an extra argument
+A plus sign immediately following a character or group means that the character or group <b>must</b> be present but can be repeated any number of times – in other words, it will match <b>one or more times</b>. For example, the pattern <code>GGGA+TTT</code> will match three <code>G</code>s, followed by one or more <code>A</code>s, followed by three <code>T</code>s. So it will match <code>GGGATTT</code>, <code>GGGAATT</code>, <code>GGGAAATT</code>, etc. but <b>not</b> <code>GGGTTT</code>.
 
-    # line = lines[0]
-    # line = re.sub(r”be”, “code”, line, 1)
-    # print line
+An asterisk immediately following a character or group means that the character or group is optional, but can also be repeated. In other words, it will match <b>zero or more times</b>. For example, the pattern <code>GGGA*TTT</code> will match three <code>G</code>s, followed by zero or more <code>A</code>s, followed by three <code>T</code>s. So it will match <code>GGGTTT</code>, <code>GGGATTT</code>, <code>GGGAATTT</code>, etc.
 
-    To code, or not to be, that is the question:
+If we want to specify a specific number of repeats, we can use curly brackets. Following a character or group with a <b>single</b> number inside curly brackets will match exactly that number of repeats. For example, the pattern <code>GA{5}T</code> will match <code>GAAAAAT </code>but not <code>GAAAAT</code> or <code>GAAAAAAT</code>. Following a character or group with a <b>pair of numbers</b> inside curly brackets separated with a comma allows us to specify an acceptable range of number of repeats. For example, the pattern <code>GA{2,4}T</code> will match <code>GAAT</code>, <code>GAAAT</code> and <code>GAAAAT</code> but not <code>GAT</code> or <code>GAAAAAT</code>.
 
-In this case, we only replace “1” time, hence only the first match is replaced.
+<h3>Positions</h3>
 
-We can add some logic to the replacement, e.g. replace “be” or “question” with “code”
+The final set of regular expression tools we're going to look at don't represent characters at all, but rather positions in the input string. The caret symbol <code>^</code> matches the <b>start</b> of a string, and the dollar symbol <code>$</code> matches the <b>end</b> of a string. The pattern <code>^AAA </code>will match <code>AAATTT</code> but not <code>GGGAAATTT</code>. The pattern <code>GGG$</code> will match <code>AAAGGG</code> but not <code>AAAGGGCCC</code>.
+<h3>Combining</h3>
 
-    # line = lines[0]
-    # line = re.sub(r”be|question”, “code”, line)
-    # print line
+The real power of regular expressions comes from combining these tools. We can use quantifiers together with alternations and character groups to specify very flexible patterns. For example, here's a complex pattern to identify full-length eukaryotic messenger RNA sequences:
 
-    To code, or not to code, that is the code:
+    ^ATG[ATGC]{30,1000}A{5,10}$
 
-If you want to do a case-insensitive match, you need to compile the first string, e.g.
+Reading the pattern from left to right, it will match:
+<ul>
+	<li>an ATG start codon at the beginning of the sequence</li>
+	<li>followed by between 30 and 1000 bases which can be A, T, G or C</li>
+	<li>followed by a poly-A tail of between 5 and 10 bases at the end of the sequence</li>
+</ul>
+As you can see, regular expressions can be quite tricky to read until you're familiar with them! However, it's well worth investing a bit of time learning to use them, as the same notation is used across multiple different tools. The regular expression skills that you learn in Python are transferable to other programming languages, command line tools, and text editors.
 
-    # line = lines[0]
-    # line = re.sub( re.compile(r”to be”, re.IGNORECASE), “ice-cream”, line )
-    # print line
+The features we've discussed above are the ones most useful in biology, and are sufficient to tackle all the exercises at the end of the section. However, there are many more regular expression features available in Python. If you want to become a regular expression master, it's worth reading up on <i>greedy vs. minimal quantifiers</i>, <i>back-references</i>, <i>lookahead</i> and <i>lookbehind assertions</i>, and<i> built-in character classes</i>.
 
-    ice-cream, or not ice-cream, that is the question:
+Before we move on to look at some more sophisticated uses of regular expressions, it's worth noting that there's a method similar to <code>re.search</code> called <code>re.match</code>. The difference is that <code>re.search</code> will identify a pattern occurring <b>anywhere</b> in the string, whereas <code>re.match</code> will only identify a pattern if it matches the <b>entire</b> string. Most of the time we want the former behaviour.
 
-You can also nest re.sub calls together if you want to perform multiple substitutions
+<h2>Extracting the part of the string that matched</h2>
 
-    # line = lines[0]
-    # line = re.sub( re.compile(r”to”, re.IGNORECASE), “go”, re.sub(r”be”, “home”, line) )
-    # print line
+In the section above we used <code>re.search</code> as the condition in an <code>if</code> statement to decide whether or not a string contained a pattern. Often in our programs, we want to find out not only <b>if</b> a pattern matched, but <b>what part </b>of the string was matched. To do this, we need to store the result of using <code>re.search</code>, then use the <code>group</code> method on the resulting object.
 
-    go home, or not go home, that is the question:
+When introducing the <code>re.search</code> function above I wrote that it was a true/false function. That's not <i>exactly</i> correct though – if it finds a match, it doesn't return <code>True</code>, but rather an object that is evaluated as true in a conditional context (if the distinction doesn't seem important to you, then you can safely ignore it). The value that's actually returned is a match object – a new data type that we've not encountered before. Like a file object (that we learned about in the first sessino), a match object doesn't represent a simple thing, like a number or string. Instead, it represents the results of a regular expression search. And again, just like a file object, a match object has a number of useful methods for getting data out of it.
 
-## Exercise
+One such method is the <code>group</code> method. If we call this method on the result of a regular expression search, we get the portion of the input string that matched the pattern:
 
-### Exercise 2b
+    dna = "ATGACGTACGTACGACTG"
+    # store the match object in the variable m
+    m = re.search(r"GA[ATGC]{3}AC", dna)
+    print(m.group())
 
-Find all words that follow “the” in “textfile” and replace them with “banana”.
+In the above code, we're searching inside a DNA sequence for <code>GA</code>, followed by three bases, followed by <code>AC</code>. By calling the <code>group</code> method on the resulting match object, we can see the part of the DNA sequence that matched, and figure out what the middle three bases were:
 
-If you get stuck, take a look at the example output [here](python_regexp/replace.py)
+    GACGTAC
 
-## Health Warning
+What if we want to extract more than one bit of the pattern? Say we want to match this pattern:
 
-Regular expressions are very powerful. You can use them to search for specific output from your programs
-and to do powerful text manipulation. However, as you have seen, they are very “write-only”. Extremely
-difficult to understand for non-experts, and complex regular expressions can be difficult even for 
-your future-self to understand (i.e. “what was I thinking when I wrote that last year? What does it 
-mean and what does it do?”). You should ALWAYS comment your regular expressions and explain in English
-exactly what you intended to match when you wrote them. Once you have memorised the rules, you will
-find regular expressions are very easy to read, use and are extremely powerful. However, without comments,
-they will be completely unintelligable to everyone else who looks at or relies on your code.
+    GA[ATGC]{3}AC[ATGC]{2}AC
 
+That's <code>GA</code>, followed by three bases, followed by <code>AC</code>, followed by two bases, followed by <code>AC</code> again. We can surround the bits of the pattern that we want to extract with parentheses – this is called <i>capturing</i> it:
 
+    GA([ATGC]{3})AC([ATGC]{2})AC
+
+We can now refer to the captured bits of the pattern by supplying an argument to the <code>group</code> method. <code>group(1)</code> will return the bit of the string matched by the section of the pattern in the first set of parentheses, <code>group(2)</code> will return the bit matched by the second, etc.:
+
+    dna = "ATGACGTACGTACGACTG"
+    # store the match object in the variable m
+    m = re.search(r"GA([ATGC]{3})AC([ATGC]{2})AC", dna)
+    print("entire match: " + m.group())
+    print("first bit: " + m.group(1))
+    print("second bit: " + m.group(2))
+
+The output shows that the three bases in the first variable section were <code>CGT</code>, and the two bases in the second variable section were <code>GT</code>:
+
+    entire match: GACGTACGTAC
+    first bit: CGT
+    second bit: GT
+
+
+<h2>Getting the position of a match</h2>
+As well as containing information about the <b>contents</b> of a match, the match object also holds information about the <b>position</b> of the match. The <code>start</code> and <code>end</code> methods get the positions of the start and end of the pattern on the sequence:
+
+    dna = "ATGACGTACGTACGACTG"
+    m = re.search(r"GA([ATGC]{3})AC([ATGC]{2})AC", dna)
+    print("start: " + str(m.start()))
+    print("end: " + str(m.end()))
+
+Remember that we start counting from zero, so in this case, the match starting at the third base has a start position of two:
+
+    start: 2
+    end: 13
+
+We can get the start and end positions of individual groups by supplying a number as the argument to <code>start</code> and <code>end</code>:
+
+    dna = "ATGACGTACGTACGACTG"
+    m = re.search(r"GA([ATGC]{3})AC([ATGC]{2})AC", dna)
+    print("start: " + str(m.start()))
+    print("end: " + str(m.end()))
+    print("group one start: " + str(m.start(1)))
+    print("group one end: " + str(m.end(1)))
+    print("group two start: " + str(m.start(2)))
+    print("group two end: " + str(m.end(2)))
+
+In this particular case, we could figure out the start and end positions of the individual groups from the start and end positions of the whole pattern:
+
+    start: 2
+    end: 13
+    group one start: 4
+    group one end: 7
+    group two start: 9
+    group two end: 11
+
+but that might not always be possible for patterns that have variable length repeats.
+
+<h2>Splitting a string using a regular expression</h2>
+Occasionally it can be useful to split a string using a regular expression pattern as the delimiter. The normal string <code>split</code> method doesn't allow this, but the <code>re</code> module has a <code>split</code> function of its own that takes a regular expression pattern as an argument. The first argument is the pattern, the second argument is the string to be split.
+
+Imagine we have a consensus DNA sequence that contains ambiguity codes, and we want to extract all runs of contiguous unambiguous bases. We need to split the DNA string wherever we see a base that isn't A, T, G or C:
+
+    dna = "ACTNGCATRGCTACGTYACGATSCGAWTCG"
+    runs = re.split(r"[^ATGC]", dna)
+    print(runs)
+
+Recall that putting a caret ^ at the start of a character group negates it. The output shows how the function works – the return value is a list of strings:
+
+    ['ACT', 'GCAT', 'GCTACGT', 'ACGAT', 'CGA', 'TCG']
+
+<h2>Finding multiple matches</h2>
+The examples we've seen so far deal with cases where we're only interested in a single occurrence of a pattern in a string. If instead we want to find every place where a pattern occurs in a string, there are two functions in the <code>re</code> module to help us.
+
+<code>re.findall</code> returns a list of all matches of a pattern in a string. The first argument is the pattern, and the second argument is the string. Say we want to find all runs of <code>A</code> and <code>T</code> in a DNA sequence longer than five bases:
+
+    dna = "ACTGCATTATATCGTACGAAATTATACGCGCG"
+    runs = re.findall(r"[AT]{4,100}", dna)
+    print(runs)
+
+Notice that the return value of the <code>findall</code> method is not a match object – it is a straightforward list of strings:
+
+    ['ATTATAT', 'AAATTATA']
+
+so we have no way to extract the positions. If we want to do anything more complicated than simply extracting the text of the matches, we need to use the <code>re.finditer</code> method. <code>finditer</code> returns a sequence of match objects, so to do anything useful with it, we need to use the return value in a loop:
+
+    dna = "ACTGCATTATATCGTACGAAATTATACGCGCG"
+    runs = re.finditer(r"[AT]{3,100}", dna)
+    for match in runs:
+        run_start = match.start()
+        run_end = match.end()
+        print("AT rich region from " + str(run_start) + " to " + str(run_end))
+
+As we can see from the output:
+
+    AT rich region from 5 to 12
+    AT rich region from 18 to 26
+
+<code>finditer</code> gives us considerably more flexibility that <code>findall</code>.
+
+<h2>Exercises</h2>
+
+<h2>Accession names</h2>
+Here's a list of made-up gene accession names:
+
+xkn59438, yhdck2, eihd39d9, chdsye847, hedle3455, xjhd53e, 45da, de37dp
+
+Write a program that will print only the accession names that satisfy the following criteria – treat each criterion separately:
+<ul>
+	<li>contain the number 5</li>
+	<li>contain the letter d or e</li>
+	<li>contain the letters d and e in that order</li>
+	<li>contain the letters d and e in that order with a single letter between them</li>
+	<li>contain both the letters d and e in any order</li>
+	<li>start with x or y</li>
+	<li>start with x or y and end with e</li>
+	<li>contain three or more numbers in a row</li>
+	<li>end with d followed by either a, r or p</li>
+</ul>
+
+<h2>Double digest</h2>
+In the martin_python folder, there's a file called <i>dna.txt</i> which contains a made-up DNA sequence. Predict the fragment lengths that we will get if we digest the sequence with two made-up restriction enzymes – AbcI, whose recognition site is <code>ANT*AAT</code>, and AbcII, whose recognition site is <code>GCRW*TG</code> (asterisks indicate the position of the cut site).
