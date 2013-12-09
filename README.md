@@ -25,7 +25,7 @@ Monday 16th
 
 Tuesday 17th
 
-* 09.00 Recap - Chris
+* 09.00 Recap - Martin
 * 09.30 [Python 3 - Functions and Classes](Python/python_functions.md) - Martin
 * 10.30 Break
 * 11.00 [Introducing R](R/R.md) - David
@@ -65,8 +65,7 @@ You also need to create a free individual account on
 [BitBucket](https://bitbucket.org/account/signup/). Make sure 
 you know your username and password when you arrive
 
-We recommend that you to work through this short tutorial on 
-[Beginning Python](http://chryswoods.com/beginning_python) before the
+We recommend that you to work through ththe first few sections of [Python for Biologists](http://pythonforbiologists.com/index.php/introduction-to-python-for-biologists/) before the
 bootcamp. This is designed for people completely new to Python (the main
 language used for the programming parts of the bootcamp) and some 
 familiarity with the basic syntax will be helpful.  
