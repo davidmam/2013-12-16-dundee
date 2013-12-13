@@ -9,6 +9,8 @@ Monday 16th and Tuesday 17th December 2013.
 Dr Martin Jones
 Dr David Martin
 
+Please read the 'Before you arrive' section at the bottom of this page.
+
 ## Timetable
 
 Monday 16th
