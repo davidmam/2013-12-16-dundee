@@ -44,7 +44,29 @@ It's common to group a collection of assertions for a particular function togeth
     assert get_at_content("AGG") == 0.33
     assert get_at_content("AGG", 1) == 0.3
     assert get_at_content("AGG", 5) == 0.33333
+
+A slightly more structured way to group tests is using Python's built-in testing framework. This involves writing a class definition - we won't go into details on how it works, but here's an example:
+
+    import unittest
+    
+    def get_at_content():
+        ...
+    
+    class TestATContent(unittest.TestCase):
+    
+        def test_single_base(self):
+            self.assertEqual(get_at_content("A"), 1)
+    
+        def test_lowercase(self):
+    		self.assertEqual(get_at_content("agtc"), 0.5)
+    
+    if __name__ == '__main__':
+        unittest.main()
+
+We can add as many testing functions as we like, and when we run the script on the command line it will run all the functions one after another and print out a report. This is a nice approach because we can give the testing functions meaningful names, so that when one of them fails it's obvious what the incorrect behaviour is. 
     
 ##Exercise
 
 Look back at the code you've written for the exercises in the last session (writing functions). Write assertions to test each of the function calls that were specified in the exercise text, and verify that your answers pass the assertions. Can you think of any other tricky cases to test?
+
+
