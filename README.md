@@ -26,13 +26,13 @@ Monday 16th
 Tuesday 17th
 
 * 09.00 Recap - Martin
-* 09.30 [Python 3 - Functions and Classes](Python/python_functions.md)  ([solutions](Python/python_functions_solutions.md))- Martin
+* 09.30 [Python 3 - Functions](Python/python_functions.md)  ([solutions](Python/python_functions_solutions.md))- Martin
 * 10.30 Break
 * 11.00 [Introducing R](R/R.md) - David
 * 12.30 Lunch
-* 13.30 [Python 4 - Testing](Python/python_testing.md) - Martin
+* 13.30 [Python 4 - Classes](Python/python_classes.md)   ([solutions](Python/python_classes_solutions.md))- Martin
 * 15.30 Break
-* 16.00 [Python 5 - Documentation](Python)
+* 16.00 [Python 5 - Testing and Documentation](Python/python_testing.md)   ([solutions](Python/python_testing_solutions.md))
 * 16.40 [Wrap up and clinic] (Conclusion.ppt)
 * 17.00 Close
 
