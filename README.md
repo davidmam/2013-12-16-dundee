@@ -16,7 +16,7 @@ Monday 16th
 * 09:00 Arrival and [Welcome](Welcome.ppt) - David / Martin
 * 09.30 [Recap on the command line](shell/README.md) - David
 * 10.30 Break
-* 11.00 [Python 1 - Refresher: Reading and writing files](Python/python_files.md) ([solutions](Python/python_files_solutions.md)) - Martin
+* 11.00 [Python 1 - Refresher: Reading and writing files](Python/python_files.md) ([slides](https://docs.google.com/presentation/d/1WRPLlzFOByzmKUsxxlzA8Cjp0cb6qSLKr02yoiS4HSY/edit?usp=sharing), [solutions](Python/python_files_solutions.md)) - Martin
 * 12.30 Lunch
 * 13.30 [Version control with git](git/README.md) - David
 * 15.30 Break
