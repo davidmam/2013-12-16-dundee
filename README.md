@@ -16,17 +16,17 @@ Monday 16th
 * 09:00 Arrival and [Welcome](Welcome.ppt) - David / Martin
 * 09.30 [Recap on the command line](shell/README.md) - David
 * 10.30 Break
-* 11.00 [Python 1 - Refresher: Reading and writing files](Python/python_files.md)([solutions](Python/python_files_solutions.md)) - Martin
+* 11.00 [Python 1 - Refresher: Reading and writing files](Python/python_files.md) ([solutions](Python/python_files_solutions.md)) - Martin
 * 12.30 Lunch
 * 13.30 [Version control with git](git/README.md) - David
 * 15.30 Break
-* 16.00 [Python 2 - Regular Expressions](Python/python_regexp.md)([solutions](Python/python_regexp_solutions.md)) - Martin
+* 16.00 [Python 2 - Regular Expressions](Python/python_regexp.md) ([solutions](Python/python_regexp_solutions.md)) - Martin
 * 17.00 Close
 
 Tuesday 17th
 
 * 09.00 Recap - Martin
-* 09.30 [Python 3 - Functions and Classes](Python/python_functions.md) - Martin
+* 09.30 [Python 3 - Functions and Classes](Python/python_functions.md)  ([solutions](Python/python_functions_solutions.md))- Martin
 * 10.30 Break
 * 11.00 [Introducing R](R/R.md) - David
 * 12.30 Lunch
