@@ -30,9 +30,9 @@ Tuesday 17th
 * 10.30 Break
 * 11.00 [Introducing R](R/R.md) - David
 * 12.30 Lunch
-* 13.30 [Python 4 - Classes](Python/python_classes.md)   ([solutions](Python/python_classes_solutions.md))- Martin
+* 13.30 [Python 4 - Testing](Python/python_testing.md)   ([solutions](Python/python_testing_solutions.md))- Martin
 * 15.30 Break
-* 16.00 [Python 5 - Testing and Documentation](Python/python_testing.md)   ([solutions](Python/python_testing_solutions.md))
+* 16.00 [Python 5 - Documentation](Python/python_documentation.md)- Martin
 * 16.40 [Wrap up and clinic] (Conclusion.ppt)
 * 17.00 Close
 
