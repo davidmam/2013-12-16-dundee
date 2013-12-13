@@ -20,7 +20,7 @@ Monday 16th
 * 12.30 Lunch
 * 13.30 [Version control with git](git/README.md) - David
 * 15.30 Break
-* 16.00 [Python 2 - Regular Expressions](Python/python_regexp.md) - Martin
+* 16.00 [Python 2 - Regular Expressions](Python/python_regexp.md)([solutions](Python/python_regexp_solutions.md)) - Martin
 * 17.00 Close
 
 Tuesday 17th
