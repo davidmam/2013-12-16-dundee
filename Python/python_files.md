@@ -205,7 +205,7 @@ and if you're on a Mac, like this:
 
 <h2>Exercises</h2>
 <h2>Splitting genomic DNA</h2>
-Look in the <i>python1</i> folder for a file called <i>genomic_dna.txt </i>– it contains a piece of genomic DNA which comprises two exons and an intron. The first exon runs from the start of the sequence to the sixty-third character, and the second exon runs from the ninety-first character to the end of the sequence. Write a program that will split the genomic DNA into coding and non-coding parts, and write these sequences to two separate files.
+Look in the <i>data/martin_python</i> folder for a file called <i>genomic_dna.txt </i>– it contains a piece of genomic DNA which comprises two exons and an intron. The first exon runs from the start of the sequence to the sixty-third character, and the second exon runs from the ninety-first character to the end of the sequence. Write a program that will split the genomic DNA into coding and non-coding parts, and write these sequences to two separate files.
 
 <h2>Writing a FASTA file</h2>
 FASTA file format is a commonly-used DNA and protein sequence file format. A single sequence in FASTA format looks like this:
