@@ -262,7 +262,7 @@ Use this piece of code as a template:
 
 	import re
 	
-	accs = "xkn59438", "yhdck2", "eihd39d9", "chdsye847", "hedle3455", "xjhd53e", "45da", "de37dp"
+	accs = ["xkn59438", "yhdck2", "eihd39d9", "chdsye847", "hedle3455", "xjhd53e", "45da", "de37dp"]
 	my_pattern = r'put your regular expression pattern here'
 	for acc in accs:
 	    if re.search(my_pattern, acc):
