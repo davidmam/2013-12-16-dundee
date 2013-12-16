@@ -266,7 +266,7 @@ Use this piece of code as a template:
 	my_pattern = r'put your regular expression pattern here'
 	for acc in accs:
 	    if re.search(my_pattern, acc):
-	        print("\t" + acc)
+	        print(acc)
 
 <h2>Double digest</h2>
 In the martin_python folder, there's a file called <i>dna.txt</i> which contains a made-up DNA sequence. Predict the fragment lengths that we will get if we digest the sequence with two made-up restriction enzymes – AbcI, whose recognition site is <code>ANT*AAT</code>, and AbcII, whose recognition site is <code>GCRW*TG</code> (asterisks indicate the position of the cut site).
