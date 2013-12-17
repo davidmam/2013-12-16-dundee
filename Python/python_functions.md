@@ -248,8 +248,11 @@ Function argument defaults allow us to write very flexible functions which can h
 Write a function that takes two arguments – a protein sequence and an amino acid residue code – and returns the percentage of the protein that the amino acid makes up. Use the following calls to test your function:
 
 my_function("MSRSLLLRFLLFLLLLPPLP", "M")
+
 my_function("MSRSLLLRFLLFLLLLPPLP", "r")
+
 my_function("MSRSLLLRFLLFLLLLPPLP", "L")
+
 my_function("MSRSLLLRFLLFLLLLPPLP", "Y")
 
 <b>Reminder</b>: if you're using Python 2 rather than Python 3, include this line at the top of your program:
@@ -262,7 +265,10 @@ Modify the function from part one so that it accepts a list of amino acid residu
 
 
 my_function("MSRSLLLRFLLFLLLLPPLP", ["M"])
+
 my_function("MSRSLLLRFLLFLLLLPPLP", ['M', 'L']) 
+
 my_function("MSRSLLLRFLLFLLLLPPLP", ['F', 'S', 'L']) 
+
 my_function("MSRSLLLRFLLFLLLLPPLP") 
 
