@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Language" content="en-us" />
+<title>/swcdundee</title>
+</head>
+<body>'5+'<br
+/><br
+/>Welcome to MoPad!<br
+/><br
+/>This pad text is synchronized as you type, so that everyone viewing this page sees the same text.&nbsp; This allows you to collaborate seamlessly on documents!<br
+/><br
+/>Please be cognizant of whether you are using a public pad or private/team pad, and take appropriate precautions with data you post here!<br
+/><br
+/><b><u>Course webpage</u></b><br
+/>David has put the workshop webpage online at a site called GitHub, which we will talk about more later - it is normally used for sharing code:<br
+/><br
+/><a href="https://github.com/davidmam/2013-12-16-dundee/blob/gh-pages/README.md">https://github.com/davidmam/2013-12-16-dundee/blob/gh-pages/README.md</a><br
+/><br
+/><b><u>Accessing a Dundee Linux Sever</u></b><br
+/><br
+/>If you are not using Mac, Linux, or a Linux virtual machine - i.e. you have just got Windows, we can remotley access a Dundee Linux Server in putty, the server is <b>ts-ug-dev.lifesci.dundee.ac.uk</b><br
+/><br
+/>In Putty, can write this as username, it will ask you to confirm you've not used this machine before (strange message about a fingerprint), you will be asked for your password. Unfortuneately some people are getting error message "Server unexpectedly closed network connection" (wait and retry).<br
+/><br
+/>University of Dundee people, usual life sciences username and password.<br
+/><br
+/><br
+/>External people (e.g. JHI), use the external id you got when registering at <a href="http://lsd.lifesci.dundee.ac.uk/register/external">http://lsd.lifesci.dundee.ac.uk/register/external</a><br
+/>For the sponsor, please use: d.m.a.martin@dundee.ac.uk<br
+/><br
+/>On a Mac or Linux, at the command line, you would type:<br
+/>ssh username@<b>ts-ug-dev.lifesci.dundee.ac.uk</b><br
+/>However, you can run the exercises directly on your own machine too (easier).<br
+/>i.e. On a Mac or Linux, use the terminal directly.<br
+/><br
+/><br
+/><b><u>Getting all the course files to your machine</u></b><br
+/><br
+/><ul><li>git clone <a href="https://github.com/davidmam/2013-12-16-dundee.git">https://github.com/davidmam/2013-12-16-dundee.git</a> mybootcamp</li
+><li>cd mybootcamp</li
+><li>ls</li
+><li>ls -F<br/><br
+/></li></ul
+>Then try the examples listed here:<br
+/><a href="https://github.com/davidmam/2013-12-16-dundee/blob/gh-pages/shell/README.md">https://github.com/davidmam/2013-12-16-dundee/blob/gh-pages/shell/README.md</a><br
+/><br
+/><br
+/><b><u>Catching up with Python</u></b><br
+/><br
+/>Stuff to do with text manipulation (printing, substrings, etc.) : <a href="http://pythonforbiologists.com/index.php/introduction-to-python-for-biologists/2-printing-and-manipulating-text/">http://pythonforbiologists.com/index.php/introduction-to-python-for-biologists/2-printing-and-manipulating-text/</a><br
+/><br
+/>Stuff to do with file IO; <a href="http://pythonforbiologists.com/index.php/introduction-to-python-for-biologists/reading-and-writing-files/">http://pythonforbiologists.com/index.php/introduction-to-python-for-biologists/reading-and-writing-files/</a><br
+/><br
+/>Link to slides on main webpage, <a href="https://github.com/davidmam/2013-12-16-dundee/blob/gh-pages/README.md">https://github.com/davidmam/2013-12-16-dundee/blob/gh-pages/README.md</a> - see also <a href="https://github.com/davidmam/2013-12-16-dundee/blob/gh-pages/Python/python_files.md">https://github.com/davidmam/2013-12-16-dundee/blob/gh-pages/Python/python_files.md</a><br
+/><br
+/><b>Nano text editor for Python scripting:</b><br
+/><br
+/><ul><li>Creating a python script called myscript</li></ul
+>nano myscript.py<br
+/><ul><li>As you cant point and click inside nano, you should use your keyboard to save your python script with <b>ctrl + o </b>and exit nano<b>.</b></li
+><li>now your are ready to run your script with python.&nbsp;<br/><br
+/></li></ul
+><b>Python files:</b><br
+/><br
+/>cd data/martin_python<br
+/>more genomic_dna.txt<br
+/><br
+/><b><u>Regular Expression Examples:</u></b><br
+/><br
+/>r'd[arp]$'<br
+/><br
+/>my_pattern = r'(d[arp])'<br
+/><br
+/>r"d[arp]$"<br
+/><br
+/><b><u>Python Functions:</u></b><br
+/><br
+/><i>Can you modify global variables inside a function?</i> Yes but it isn't good practice for reusability.<br
+/><br
+/><i>Do you need to define the function in every program you want to use it in? </i>Yes, but you can define it in a file that you<b> import</b> at the beginning of your program<br
+/><br
+/><i>Do you have to define the function before you use it? </i>Yes<br
+/><br
+/><i>can you mix the arguments with and without keyword args?. eg at = get_at_content(dna, sgi_figs = 3)&nbsp;</i> Yes, that is fine but positional arguments (ie without labels) must be defined in the correct order before keyword arguments<br
+/><br
+/>&nbsp;<i>how do you specify input type? or do you need to?? </i>You don't, but may need to (should) check it inside your function. Python uses 'duck typing', ie it tries to call the correct methods and if it works then all may well be fine. Python doesn't support function overloading except in the number of arguments a method takes.<br
+/>&nbsp;<br
+/>&nbsp;<i>Why from __future__ import division? </i>Python 2 will do integer division by default if given integers, which means it rounds down to a whole number. Python 3 (the __future__) does floating point division by default.<br
+/>&nbsp;<br
+/>&nbsp;<br
+/>&nbsp;<br
+/>&nbsp;<br
+/><br
+/><b>Mounting windows shares on virtual box</b><br
+/>This may help you - <a href="http://www.giannistsakiris.com/2008/04/09/virtualbox-access-windows-host-shared-folders-from-ubuntu-guest/">http://www.giannistsakiris.com/2008/04/09/virtualbox-access-windows-host-shared-folders-from-ubuntu-guest/</a><br
+/><br
+/><b>A visual guide to git</b><br
+/><a href="http://marklodato.github.io/visual-git-guide/index-en.html">http://marklodato.github.io/visual-git-guide/index-en.html</a><br
+/>and an interactive game/tutorial<br
+/><a href="http://pcottle.github.io/learnGitBranching/">http://pcottle.github.io/learnGitBranching/</a><br
+/><br
+/><b><i><u>For the clinic</u></i></b><br
+/><br
+/>Post your questions for the clinic here:<br
+/><br
+/>1. I have a number of files in one directory and I want to extract the first column from each of them into its own file?&nbsp;<br
+/><br
+/><br
+/>in the shell:<br
+/><b>for f in *.txt; do awk '{print $1}' &lt;$f &gt;${f%.txt}_onecolumn.txt; done</b><br
+/><br
+/><i>How this works</i>:<br
+/><b>for f in *.txt; do ....; done</b><br
+/>&nbsp;&nbsp;&nbsp; <i>This generates a list of all files matching *.txt and assigns them one at a time to the variable f. It will then execute all the commands between do and done for each value of f.</i><br
+/><b>awk '{print $1}'</b><br
+/>&nbsp;&nbsp;&nbsp;<i> This uses the program awk. Awk splits input records (by default separated by \n) into fields (by default separated by whitespace). print $1 prints the first field from each record (and $2 the second etc.)&nbsp;&nbsp;</i>&nbsp;&nbsp;<br
+/><b>&lt;$f&nbsp; &gt;${f%.txt}_onecolumn.txt</b><br
+/>&nbsp;&nbsp;&nbsp; <i>Input and output redirection with some variable rewriting. Read input from the file whose name is the value of the variable f. Write output to the file whose filename is the value in f where the last '.txt' has been removed (that is what the ${f%.txt} does) and '_onecolumn.txt' added to the name</i><br
+/>&nbsp;&nbsp;&nbsp;&nbsp;<br
+/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br
+/>2. When I call a python script from the command line that requires arguments, Is that using the same idea -&nbsp; is the first line of code just a function?<br
+/><br
+/>No. The arguments on the command line are parsed using a specific variable.&nbsp;<br
+/>To read command line arguments use:<br
+/><b>import sys</b><br
+/><br
+/>and the list of command line arguments will be in the list <b>sys.argv</b><br
+/><br
+/>There are libraries that can make your code easy to run with command line arguments - we'll cover them in the clinic. The library to use for this is <b>argparse </b><a href="http://docs.python.org/2/library/argparse.html#module-argparse"><b>http://docs.python.org/2/library/argparse.html#module-argparse</b></a><br
+/><br
+/><br
+/>3. Using Python for NGS analysis and SNP calling from mutant population (CAMBA pipeline)<br
+/><br
+/>Is there a specific question as people may not be familiar with this pipeline? URL?<br
+/>&nbsp;<a href="http://www.cs.ucdavis.edu/~filkov/CAMBa/">http://www.cs.ucdavis.edu/~filkov/CAMBa/</a> and <a href="http://www.cs.ucdavis.edu/~filkov/CAMBa/bmc_camba.pdf">http://www.cs.ucdavis.edu/~filkov/CAMBa/bmc_camba.pdf</a><br
+/><br
+/>My question was how to run complicated pipelines that are available and fits our purposes?<br
+/><br
+/>&nbsp;<br
+/>4 There is an&nbsp; excercise about predicting fragment sizes from a Double digest reaction on a DNA sequence but no solution is provided for this.&nbsp; Some elaboration on this will be very helpful including the count of predicted fragments.<br
+/><br
+/>I've updated the solutions page with some code - I can go through this in the clinic if people are interested.<br
+/><br
+/>Thanks!<br
+/><br
+/><br
+/><br
+/>5. Why you chose to teach (or conversely I should know why I opted to learn) Python&nbsp; OR any pros and cons of Python over other available programming languages?<br
+/><br
+/>This would start a very long debate which is best in a pub, but briefly - it is widely used in biology. There are many libraries for different applications so you don't have to reinvent the wheel, and it is quite easy to learn. There are always pros and cons and it does some things better than other languages and some things worse. Text handling may be better in Perl, dynamic function handling possibly better in python. Graphics are better in Java but Java is poor at ease of use and text processing.<br
+/><br
+/>6. How to access the help for python using virtual machine?<br
+/>Start a python interpreter by typing 'python' at the shell prompt. You will then get a prompt like<br
+/>&gt;&gt;&gt;<br
+/>You can then use python commands such as import and help.<br
+/>e.g.<br
+/>&gt;&gt;&gt; help(len)<br
+/>&gt;&gt;&gt; ...<br
+/>&gt;&gt;&gt; quit()<br
+/>very quick one,&nbsp;<br
+/>chmod all files in all folders below ending in *.pl or *.py<br
+/>chmod 755 -r *.pl?<br
+/><br
+/>8. how to view doc string of python script in command line<br
+/><br
+/><b><u>Add your R questions below</u></b><br
+/><br
+/>Why can't we just use = rather than &lt;-<br
+/><br
+/><b>Answer:</b> you can probably use = for most things, but there is a technical difference - read more here: <a href="http://stackoverflow.com/questions/1741820/assignment-operators-in-r-and">http://stackoverflow.com/questions/1741820/assignment-operators-in-r-and</a><br
+/><br
+/>Can we load data directly from the web?<br
+/><br
+/><b>Answer:</b> yes - try this:&nbsp;<br
+/><br
+/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X &lt;- read.csv(url("<a href="http://some.where.net/data/foo.csv">http://some.where.net/data/foo.csv</a>"))<br
+/><br
+/><br
+/>What are these escaped characters? (for regular expressions? Or R?)<br
+/>Here is a list&nbsp;<br
+/>\n - newline<br
+/>\r - carriage return<br
+/>\t - tab<br
+/>\s - space \S - not a space<br
+/>\d - digits \D not a digit<br
+/>\w alphanumeric characters \W not an alphanumeric character<br
+/><br
+/>is there a way to do the mean for weight height and body fat all in one go? i.e. i have tried to do&gt; mean(height, weight, bodyfat)<br
+/><br
+/>colMeans(x) will do it but x has to be entirely numeric values or it fails.<br
+/><br
+/>To select specific columns from a data frame use e.g. ais[,3:5] to select columns 3-5 (the blank before the comma means take all rows)<br
+/><br
+/>colMeans(ais[,3-5])<br
+/><br
+/><b><u>Questions on testing</u></b><br
+/><br
+/><br
+/><b><u>Misc Python Questions - File input:</u></b><br
+/><br
+/>is there a way of changing the input separator so that a file can be divided into chunks on-the-fly?<br
+/><br
+/>Generally we can do this by processing files one line at a time:<br
+/><br
+/>for line in open("somefile.txt"):<br
+/>&nbsp;&nbsp;&nbsp; # process one line<br
+/>&nbsp;&nbsp;&nbsp;&nbsp;<br
+/>And by splitting each line into fields using a custom field delimitor:<br
+/><br
+/>for line in open("somefile.txt"):<br
+/>&nbsp;&nbsp;&nbsp; fields = line.split(",")<br
+/>&nbsp;&nbsp;&nbsp;&nbsp;<br
+/>If we really want to read entire files one chunk at a time, then we need to handle the buffering ourselves e.g. <a href="http://stackoverflow.com/questions/19600475/how-to-read-records-terminated-by-custom-separator-from-file-in-python">http://stackoverflow.com/questions/19600475/how-to-read-records-terminated-by-custom-separator-from-file-in-python</a>&nbsp;<br
+/><br
+/>That's a "no",then :-)<br
+/><br
+/><b><u>Misc Python Questions - strange "__main__" thing:</u></b><br
+/><br
+/>&nbsp;<i>What does this do/mean?:&nbsp;</i><br
+/>&nbsp;if __name__ == '__main__':&nbsp;<br
+/>&nbsp;&nbsp;&nbsp;&nbsp; unittest.main()<br
+/><br
+/>When python reads a file from an import it gives it the name of the package it is importing, so 'import re' gives all the functions and classes the package name re. When we just run a script from the command line it is given the package name __main__<br
+/><br
+/>If we want to import the file with the functions in so that we can use them again but don't want to run them automatically every time the file is read then we can use this bit of code. It checks whether the file has been imported (import file will have __name__ == 'file'), or run from the command line (when&nbsp; __name__ == __main__). When it is read from the command line it will then automatically run that method.<br
+/><br
+/><b><i><u>Feedback</u></i></b><br
+/><br
+/>Feedback captured during a round the room survey at the end of the day, electronic feedback form to be sent round later as well.<br
+/><br
+/>Good:<br
+/><br
+/><ul><li>Really good introduction (to programming)</li
+><li>Introduction to the command line</li
+><li>Good base to build on</li
+><li>Discovered R and will use it</li
+><li>Really good.</li
+><li>Given tools and working on problems was good</li
+><li>Plotting with R!</li
+><li>Lots of resources to build on</li
+><li>Well structured, hard to make it simpler</li
+><li>Hoping for a more advanced course</li
+><li>Dense but we learnt a lot and looking forward to more</li
+><li>I really liked the “flags” system</li
+><li>Not just an introduction, but biology flavoured<br/><br
+/></li></ul
+>Bad:<br
+/><br
+/><ul><li>Dense</li
+><li>Too fast</li
+><li>Intense two days, but more exercises would be helpful</li
+><li>Easier to follow PDF for R than the Python examples</li
+><li>Getting the working environment setup at the start took time</li
+><li>Want a history of commands typed on screen by presenter</li
+><li>Preparation info by email was all repeated on day one</li
+><li>As a complete beginner the first morning was very intense</li
+><li>Preparation exercises hard to start from nothing</li
+><li>Internet access was problematic</li
+><li>Split into a basic and advanced class.</li
+><li>Frustrating to miss a step and then not follow rest</li
+><li>Version control too much for beginners (loops etc better?)<br/><br
+/><br/><br
+/><br/><br
+/><br/><br
+/><br/><br
+/><br/><br
+/></li></ul
+></body>
+</html>
